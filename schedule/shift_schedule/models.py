@@ -32,6 +32,15 @@ class Controller(models.Model):
     pto = models.IntegerField(default=120)
     manager = models.ForeignKey(Manager)
     shift = models.ForeignKey(Shift)
+    employee_id = models.IntegerField(default= 9999, unique=True)
+
+    def list_oqs(self):
+        alloqs = Console_oq.objects.filter(controller = self.id)
+        return alloqs
+    def onshift(self):
+        allshifts = Shift.objects.filter(id = self.shift)
+        return allshifts
+
 
     def __str__(self):
         return self.employee_name
@@ -48,6 +57,13 @@ class Console_oq(models.Model):
     controller = models.ForeignKey(Controller, on_delete=models.CASCADE)
     oq_date = models.DateField()
     console = models.ForeignKey(Console)
+
+    def readable(self):
+        controller = Controller.objects.get(employee_name = self.controller)
+        console_name = Console.objects.get(console_name=self.console)
+        return "%s %s %s" % (controller, console_name, self.oq_date)
+
+
 
     def __str__(self):
         console_name = Console.objects.get(console_name = self.console)

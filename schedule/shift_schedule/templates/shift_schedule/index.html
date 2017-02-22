@@ -5,8 +5,26 @@
     <title></title>
 </head>
 <body>
-    {% if allshifts %}
-    <p>
+{% if allshifts %}
+    <ul>
+    {% for shifts in allshifts %}
+        <li><a>{{ shifts.supervisor }}</a></li>
+        {% for operator in allcontrollers %}
+
+        {% if operator.shift  == shifts %}
+
+{{operator.empoyee_name }}
+
+            <table>
+                {% for oqs in  operator.list_oqs %}
+                <tr>{{oqs.readable}}</tr>
+
+        {% endfor %}
+            </table>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+    </ul>
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
