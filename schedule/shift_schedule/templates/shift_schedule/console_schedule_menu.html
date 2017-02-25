@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+{% for desk in consoles %}
+<h1>{{desk.console_name}}</h1>
+ <table style="width:100%">
+  <tr>
+      <th>  </th>
+       {% for cal in cal_dates %}
+      <th>{{ cal }}</th>
+
+    {% endfor %}
+
+ </tr>
+{% for shift in shifts %}
+     <tr>
+
+         {% for item in desk_shift_name %}
+         {% if item.0 == desk and item.1 == shift %}
+             <td>{{item.2}}</td>
+         {% endif %}
+         {% endfor %}
+
+         {% for data in allshifts_console_schedule %}
+         {% if data.1 == shift and data.2 == desk %}
+         <td>{{data.0}}</td>
+         {% endif %}
+         {% endfor %}
+
+     </tr>
+{% endfor %}
+
+</table>
+{% endfor %}
+
+</body>
+</html>
