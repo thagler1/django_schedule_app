@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Hello {{user.first_name}}</title>
 </head>
 <body>
+
 {% if allshifts %}
     <ul>
     {% for shifts in allshifts %}
@@ -13,7 +14,7 @@
 
         {% if operator.shift  == shifts %}
 
-{{operator.empoyee_name }}
+{{operator.full_name }}
 
             <table>
                 {% for oqs in  operator.list_oqs %}

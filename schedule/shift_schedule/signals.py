@@ -1,6 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import Console, Manager, Console_schedule, Master_schedule, Shift, Controller, Console_oq
+from django.contrib.auth.models import User
+from .models import Console, Manager, Console_schedule, Master_schedule, Shift, UserProfile, Console_oq
 import datetime
 
 @receiver(post_save, sender=Console_oq)
@@ -57,4 +58,14 @@ def assign_shift_to_Console_schedule(sender, instance, created, **kwargs):
             full_sequence.append(shift)
 
     addshift(full_sequence[:timeframe], instance, start_date)
+
+@receiver(post_save, sender = User)
+def create_new_user_profife(sender, instance, created, **kwargs):
+    '''
+    creates a UserProfile when a new user is added. Extends Djangos standard user class
+    '''
+    user = instance
+    if created:
+        user_profile = UserProfile(user = user)
+        user_profile.save()
 
