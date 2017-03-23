@@ -1,0 +1,137 @@
+
+body {
+    margin: 0;
+
+}
+
+.sidenav {
+    list-style-type: none;
+    margin: 0;
+    margin-top: 25px;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+.sidenav li img {
+
+    height: 150px;
+    display: block;
+    margin: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    width: 150px;
+}
+
+.sidenav li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+/*
+.sidenav li a.active {
+    background-color: blue;
+    color: white;
+}
+*/
+.sidenav li a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+
+.section {
+    margin-left: 200px;
+}
+
+/* Calendar style sheet */
+  table {
+   margin-left:250px;
+
+   border: 1px solid #999;
+   border-collapse: collapse;
+   font-family: Georgia, Times, serif;
+   }
+   th {
+   border: 1px solid #999;
+
+   font-size: 70%;
+   text-transform: uppercase;
+   }
+   td {
+   border: 1px solid #999;
+   height: 5em;
+   width:5em;
+   padding: 5px;
+   vertical-align: top;
+   }
+   .daybox {
+
+   background: rgba(170,170,246, .3);
+   }
+   .nightbox {
+
+   background: rgba(19,88,168, .3)
+   }
+
+   caption {
+   font-size: 300%;
+   font-style: italic;
+   margin-top: 50px;
+   }
+   .day {
+   text-align: right;
+   }
+   .notes {
+   font-family: Arial, Helvetica, sans-serif;
+   font-weight: 900;
+   font-size: 80%;
+   text-align: center;
+   padding-left: 20px;
+   opacity: 1;
+   }
+   .dayshift {
+   color: blue;
+   }
+   .nightshift{
+   color: darkblue;
+   }
+
+   .birthday {
+   background-color: #ECE;
+   }
+   .weekend {
+   background-color: #F3F3F3;
+   }
+
+   .topnav {
+        height: 25px;
+        width: 100%;
+        background-color: rgb(19,88,168);
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        position: fixed;
+        overflow: auto;
+   }
+
+   .small-form{
+        width: 500px;
+        height:300px;
+        position: absolute;
+        top:0;
+        bottom:0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        border: solid;
+        border-radius: 25px;
+        padding: 20px;
+   }
+   .small-form h1{
+        text-align: center;
+   }

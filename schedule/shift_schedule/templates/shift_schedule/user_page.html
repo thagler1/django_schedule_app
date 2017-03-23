@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Hello, {{ user.first_name }}</title>
+</head>
+<topnav class="topnav"></topnav>
+
+
+    <ul class="sidenav">
+        <li><img src={{user_profile.profile_image.url}}></li>
+  <li><a href="#news">{{user.first_name}} {{user.last_name}}</a></li>
+  <li><a href="#news">PTO Availabe: {{user_profile.pto}}</a></li>
+  <li><a href="#contact">Contact me!</a></li>
+  <li><a href="#about">{{test}}</a></li>
+</ul>
+<div>
+{% include "shift_schedule/calendar.html" %}
+</div>
+</body>
+</html>
+
+</body>
+</html>

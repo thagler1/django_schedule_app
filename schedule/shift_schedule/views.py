@@ -2,12 +2,13 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq
 import datetime
-from .forms import UserForm
+from .forms import UserForm, PTOForm
+from .functions import user_oqs, user_console_schedules
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.shortcuts import render
-
+from .schedule_validation_rules import one_shift_per_controller
 
 
 def index(request):
@@ -121,7 +122,7 @@ def user_login(request):
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the homepage.
                 login(request, user)
-                return HttpResponseRedirect('/shift_schedule/')
+                return HttpResponseRedirect('/shift_schedule/user')
             else:
                 # An inactive account was used - no logging in!
                 return HttpResponse("Your account is disabled.")
@@ -136,3 +137,47 @@ def user_login(request):
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
         return render(request, 'shift_schedule/login.html', {})
+
+def user_page(request):
+    user = request.user
+    user_object = User.objects.get(id=user.id)
+    userprofile = UserProfile.objects.get(user=user_object)
+    #scroll through oq's and and get a list of consoles the user is oq'd on
+    users_oqs = user_oqs(user)
+    allshifts_console_schedule, desk_shift_name, shifts, consoles, cal_dates, daterange, month = user_console_schedules(user, users_oqs)
+    testdate = Console_schedule.objects.get(date = (datetime.datetime(2017,5,5)))
+    test = one_shift_per_controller(userprofile, testdate)
+
+    context = {
+        'consoles':consoles,
+        'daterange':daterange,
+        'cal_dates':cal_dates,
+        'shifts':shifts,
+        'allshifts_console_schedule': allshifts_console_schedule,
+        'desk_shift_name':desk_shift_name,
+        'oqs':users_oqs,
+        'user_profile': userprofile,
+        'month': month,
+        'test':test,
+
+    }
+
+    template = loader.get_template('shift_schedule/user_page.html')
+
+
+    return HttpResponse(template.render(context, request))
+
+
+def controller_pto_form(request):
+    user = request.user
+    user_object = User.objects.get(id=user.id)
+    userprofile = UserProfile.objects.get(user=user_object)
+    if request.method =='POST':
+        form = PTOForm(request.POST)
+        if form.is_valid():
+            return HttpResponseRedirect ('/user/')
+    else:
+        form = PTOForm()
+    return render(request, 'shift_schedule/controller_pto_form.html', {'form':form})
+
+

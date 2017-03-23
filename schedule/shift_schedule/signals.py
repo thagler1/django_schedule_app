@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
-from .models import Console, Manager, Console_schedule, Master_schedule, Shift, UserProfile, Console_oq
+from .models import Console, Manager, Console_schedule, Master_schedule, Shift, UserProfile, Console_oq, PTO_table
 import datetime
 
 @receiver(post_save, sender=Console_oq)
@@ -68,4 +68,19 @@ def create_new_user_profife(sender, instance, created, **kwargs):
     if created:
         user_profile = UserProfile(user = user)
         user_profile.save()
+
+@receiver(post_save, sender = PTO_table)
+def add_pto_to_schedule(sender, instance, created, **kwargs):
+    '''
+
+    once pto has been approved by supervisor remove controller from scheduled shift
+    '''
+    if instance.supervisor_approval == True: #ends if not approved
+        controller = instance.user
+        scheduled_date = instance.date_pto_taken
+
+        if Console_schedule.objects.get(controller = controller, date = scheduled_date):
+            console_day = Console_schedule.objects.get(controller=controller, date=scheduled_date)
+            console_day.controller = None #change controller value to nill
+            console_day.save()
 
