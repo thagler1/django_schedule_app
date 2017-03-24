@@ -58,7 +58,9 @@ class UserProfile(models.Model):
     shift = models.ForeignKey(Shift, blank=True, null=True)
     user = models.OneToOneField(User)
     phone = models.CharField(max_length=20, blank=True, default="")
-    profile_image = models.ImageField(upload_to=get_image_path, blank=True, null=True)
+    #profile_image = models.ImageField(upload_to=get_image_path, blank=True, null=True)
+    #is_supervisor = models.BooleanField(default=False)
+
 
     def list_oqs(self):
         alloqs = Console_oq.objects.filter(controller=self.id)

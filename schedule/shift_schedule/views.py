@@ -170,14 +170,16 @@ def user_page(request):
 
 def controller_pto_form(request):
     user = request.user
-    user_object = User.objects.get(id=user.id)
+    user_object = User.objects.get(id=user.id)  # returns userprofile for logged in user
     userprofile = UserProfile.objects.get(user=user_object)
+
     if request.method =='POST':
         form = PTOForm(request.POST)
         if form.is_valid():
-            return HttpResponseRedirect ('/user/')
+            form.save(commit=True)  # saves form and commits to DB
+            return HttpResponseRedirect('/shift_schedule/user')
     else:
         form = PTOForm()
-    return render(request, 'shift_schedule/controller_pto_form.html', {'form':form})
+    return render(request, 'shift_schedule/controller_pto_form.html', {'form': form})
 
 
