@@ -65,7 +65,7 @@ def user_console_schedules(user, users_oqs):
                 console_day_schedule = Console_schedule.objects.filter(date=date,
                                                                        controller=userprofile)
                 for day in console_day_schedule:
-                    allshifts_console_schedule[rownum].append((day.which_shift, display_date))
+                    allshifts_console_schedule[rownum].append((day.which_shift, display_date, day.deskname.console_name))
             else:
                 allshifts_console_schedule[rownum].append(("", display_date))
         except:

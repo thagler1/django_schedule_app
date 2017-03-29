@@ -27,11 +27,13 @@
  <tr>
 {% for day in row %}
      {% if day.0 == "D" %}
-<td class="daybox"><div class="day">{{day.1}}</div>
+<td class="daybox tooltip"><div class="day">{{day.1}}</div>
+        <span class="tooltiptext">{{day.2}}</span>
         <div class="notes dayshift">{{day.0}}</div></td>
      {% endif %}
      {% if day.0 == "N" %}
-     <td class="nightbox"><div class="day">{{day.1}}</div>
+     <td class="nightbox tooltip"><div class="day">{{day.1}}</div>
+         <span class="tooltiptext">{{day.2}}</span>
         <div class="notes nightshift">{{day.0}}</div></td>
      {% endif %}
      {% if day.0 == "" %}

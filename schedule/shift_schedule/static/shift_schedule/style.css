@@ -1,6 +1,7 @@
 
 body {
     margin: 0;
+    background-color: rgb(43,43,43)
 
 }
 
@@ -54,11 +55,12 @@ body {
 
    border: 1px solid #999;
    border-collapse: collapse;
+   border-color:white
    font-family: Georgia, Times, serif;
    }
    th {
    border: 1px solid #999;
-
+   font-color: white;
    font-size: 70%;
    text-transform: uppercase;
    }
@@ -68,6 +70,7 @@ body {
    width:5em;
    padding: 5px;
    vertical-align: top;
+   font-color: silver;
    }
    .daybox {
 
@@ -105,7 +108,7 @@ body {
    background-color: #ECE;
    }
    .weekend {
-   background-color: #F3F3F3;
+
    }
 
    .topnav {
@@ -135,3 +138,33 @@ body {
    .small-form h1{
         text-align: center;
    }
+
+   .adjusted-content {
+    margin-left: 200px;
+   }
+
+/* Tooltip container */
+.tooltip {
+
+
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}

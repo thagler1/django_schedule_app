@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+<link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
+<body>
+
+<ul>
+{% for pto_request in all_unapproved_pto %}
+
+    <li>{{ pto_request.user.full_name }} {{ pto_request.console_date }}></li>
+{% endfor %}
+
+</body>
+</html>

@@ -16,32 +16,17 @@ class Supervisor(models.Model):
         return self.name
 
 
-class Shift(models.Model):
-    """
-    this shift itself is agnostic the the supervisor, a supervisor can be replaced on a shift without effecting the
-    underlying shift characteristics
-    """
-    shift_id = models.CharField(max_length=20)
-    supervisor = models.ForeignKey(Supervisor)
-    zero_day = models.IntegerField()
-
-    def __str__(self):
-        return self.shift_id
-
-    def supervisor_name(self):
-        supervisor_name = Supervisor.objects.get(name=self.supervisor)
-        return supervisor_name
 
 
 class Manager(models.Model):
     """
     employees and consoles are assigned a manager. This model is more for reporting purposes
     """
-    name = models.CharField(max_length=100)
+    name = models.ForeignKey('UserProfile', limit_choices_to={'is_manager':True}, related_name='Operations_Manager')
     email = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return self.name.full_name()
 
 class UserProfile(models.Model):
     """
@@ -54,21 +39,19 @@ class UserProfile(models.Model):
 
     hire_date = models.DateField(blank=True, default ="1950-01-01")
     pto = models.IntegerField(default=120, blank=True)
-    manager = models.ForeignKey(Manager, blank=True, null=True)
-    shift = models.ForeignKey(Shift, blank=True, null=True)
+    manager = models.ForeignKey('UserProfile', limit_choices_to={'is_manager':True}, blank=True, null=True)
+    shift = models.ForeignKey('Shift', blank=True, null=True)
     user = models.OneToOneField(User)
     phone = models.CharField(max_length=20, blank=True, default="")
-    #profile_image = models.ImageField(upload_to=get_image_path, blank=True, null=True)
-    #is_supervisor = models.BooleanField(default=False)
+    profile_image = models.ImageField(upload_to=get_image_path, blank=True, null=True)
+    is_supervisor = models.BooleanField(default=False)
+    is_manager = models.BooleanField(default=False)
 
 
     def list_oqs(self):
         alloqs = Console_oq.objects.filter(controller=self.id)
         return alloqs
 
-    def onshift(self):
-        allshifts = Shift.objects.filter(id=self.shift)
-        return allshifts
 
     def full_name(self):
         user_object = User.objects.get(id=self.user.id)
@@ -80,13 +63,29 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.full_name()
 
+class Shift(models.Model):
+    """
+    this shift itself is agnostic the the supervisor, a supervisor can be replaced on a shift without effecting the
+    underlying shift characteristics
+    """
+
+    shift_id = models.CharField(max_length=20)
+    supervisor = models.ForeignKey(UserProfile, limit_choices_to={'is_supervisor': True},related_name='Supervisor')
+    zero_day = models.IntegerField()
+
+    def __str__(self):
+        return self.shift_id
+
+    def supervisor_name(self):
+        supervisor_name = UserProfile.objects.get(name=self.supervisor)
+        return supervisor_name.Full_name
 
 class Console(models.Model):
     """
     console have a manager, and a list of qualified employees(console_oq) and have to be staffed 24 seven
     """
     console_name = models.CharField(max_length=100)
-    manager = models.ForeignKey(Manager)
+    manager = models.ForeignKey(UserProfile, limit_choices_to={'is_manager':True})
 
     def __str__(self):
         return self.console_name
@@ -140,6 +139,8 @@ class Console_schedule(models.Model):
     is_holiday = models.BooleanField(default=False)
     off_schedule_controller = models.BooleanField(default=False)
     date = models.DateField(default='2000-01-01')
+    #is_deviation = models.BooleanField(default=False)
+
 
     def __str__(self):
         return "%s %s" % (self.date, self.deskname)

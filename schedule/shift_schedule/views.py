@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
-from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq
+from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq, PTO_table
 import datetime
 from .forms import UserForm, PTOForm
 from .functions import user_oqs, user_console_schedules
@@ -8,7 +8,9 @@ from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from .schedule_validation_rules import one_shift_per_controller
+from .schedule_validation_rules import one_shift_per_controller, deviation_check
+
+
 
 
 def index(request):
@@ -25,6 +27,8 @@ def index(request):
 
 
 def console_schedule_menu(request):
+    # this creates a simple layout showing all of the desk schedules. this is outdated. want to use for alternate
+    # views though
     consoles = Console.objects.all()
     template = loader.get_template('shift_schedule/console_schedule_menu.html')
     todaysdate = datetime.datetime.now()
@@ -142,11 +146,17 @@ def user_page(request):
     user = request.user
     user_object = User.objects.get(id=user.id)
     userprofile = UserProfile.objects.get(user=user_object)
+    testdate = datetime.datetime(2017,3,28)
+    test = deviation_check(userprofile, testdate)
     #scroll through oq's and and get a list of consoles the user is oq'd on
     users_oqs = user_oqs(user)
     allshifts_console_schedule, desk_shift_name, shifts, consoles, cal_dates, daterange, month = user_console_schedules(user, users_oqs)
-    testdate = Console_schedule.objects.get(date = (datetime.datetime(2017,5,5)))
-    test = one_shift_per_controller(userprofile, testdate)
+
+
+    if userprofile.is_manager is True or userprofile.is_supervisor is True:
+        all_unapproved_pto = PTO_table.objects.filter(supervisor_approval=False)
+    else:
+        all_unapproved_pto = PTO_table.objects.filter(supervisor_approval=False, user=userprofile)
 
     context = {
         'consoles':consoles,
@@ -159,6 +169,7 @@ def user_page(request):
         'user_profile': userprofile,
         'month': month,
         'test':test,
+        'all_unapproved_pto':all_unapproved_pto
 
     }
 
@@ -182,4 +193,15 @@ def controller_pto_form(request):
         form = PTOForm()
     return render(request, 'shift_schedule/controller_pto_form.html', {'form': form})
 
+def unnaproved_pto(request):
+    user = request.user
+    user_object = User.objects.get(id=user.id)  # returns userprofile for logged in user
+    userprofile = UserProfile.objects.get(user=user_object)
+
+    template = loader.get_template('shift_schedule/unnaproved_pto.html')
+    all_unapproved_pto = PTO_table.objects.filter(supervisor_approval=True)
+    context = {
+        'all_unapproved_pto': all_unapproved_pto
+    }
+    return HttpResponse(template.render(context, request))
 

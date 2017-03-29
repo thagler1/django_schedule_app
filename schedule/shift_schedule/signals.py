@@ -34,30 +34,31 @@ def addshift (sequence, instance, start_date):
 
 @receiver(post_save, sender = Shift)
 def assign_shift_to_Console_schedule(sender, instance, created, **kwargs):
-    n = "Night"
-    d = "Day"
-    o = "off"
-    dupont = [n, n, n, n, o, o, o, d, d, d, o, n, n, n, o, o, o, d, d, d, d, o, o, o, o, o, o, o]
+    if created:
+        n = "Night"
+        d = "Day"
+        o = "off"
+        dupont = [n, n, n, n, o, o, o, d, d, d, o, n, n, n, o, o, o, d, d, d, d, o, o, o, o, o, o, o]
 
-    sequence = []
-    full_sequence = []
-    start_date = datetime.date(2017, 1, 1)
-    end_date = datetime.date(2017,12,31)
-    span = (end_date - start_date)
-    timeframe = span.days
+        sequence = []
+        full_sequence = []
+        start_date = datetime.date(2017, 1, 1)
+        end_date = datetime.date(2017,12,31)
+        span = (end_date - start_date)
+        timeframe = span.days
 
 
-    zeroday = instance.zero_day
+        zeroday = instance.zero_day
 
-    for shift in dupont[zeroday - 1:]:
-        sequence.append(shift)
-    for shift in dupont[:zeroday - 1]:
-        sequence.append(shift)
-    while len(full_sequence) <timeframe:
-        for shift in sequence:
-            full_sequence.append(shift)
+        for shift in dupont[zeroday - 1:]:
+            sequence.append(shift)
+        for shift in dupont[:zeroday - 1]:
+            sequence.append(shift)
+        while len(full_sequence) <timeframe:
+            for shift in sequence:
+                full_sequence.append(shift)
 
-    addshift(full_sequence[:timeframe], instance, start_date)
+        addshift(full_sequence[:timeframe], instance, start_date)
 
 @receiver(post_save, sender = User)
 def create_new_user_profife(sender, instance, created, **kwargs):

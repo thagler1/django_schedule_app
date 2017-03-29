@@ -14,11 +14,21 @@
   <li><a href="#news">{{user.first_name}} {{user.last_name}}</a></li>
   <li><a href="#news">PTO Availabe: {{user_profile.pto}}</a></li>
   <li><a href="#contact">Contact me!</a></li>
+
   <li><a href="#about">{{test}}</a></li>
+
 </ul>
+
 <div>
 {% include "shift_schedule/calendar.html" %}
+
+
 </div>
+
+<div class="adjusted-content">
+ {% include "shift_schedule/unnaproved_pto.html" %}
+</div>
+
 </body>
 </html>
 
