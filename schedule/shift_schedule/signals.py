@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from .models import Console, Manager, Console_schedule, Master_schedule, Shift, UserProfile, Console_oq, PTO_table
 import datetime
-
+'''
 @receiver(post_save, sender=Console_oq)
 def initialize_desk_schedule(sender, instance, created, **kwargs):
     #/todo enforce one primary controller per shift
@@ -19,6 +19,7 @@ def initialize_desk_schedule(sender, instance, created, **kwargs):
                                                    shift = shift,
                                                    controller = controller,
                                                    date = date.date)
+'''
 
 #Build Master Schedule
 def addshift (sequence, instance, start_date):

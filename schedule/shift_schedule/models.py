@@ -161,6 +161,10 @@ class Master_schedule(models.Model):
     shift = models.ForeignKey(Shift)
     date = models.DateField()
     is_day = models.BooleanField()
+    is_repeating = models.BooleanField()
+    repeat_start = models.DateField(default="2017-01-01")
+    repeat_interval = models.BigIntegerField(default= 28)
+    repeat_end = models.DateField(default="2099-12-31")
 
     def __str__(self):
         return "%s %s" % (Shift.objects.get(shift_id=self.shift), self.date)

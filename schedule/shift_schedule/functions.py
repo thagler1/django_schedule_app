@@ -73,3 +73,10 @@ def user_console_schedules(user, users_oqs):
 
     return (allshifts_console_schedule, desk_shift_name, shifts, consoles, cal_dates, daterange, month)
 
+
+
+
+
+
+
+
