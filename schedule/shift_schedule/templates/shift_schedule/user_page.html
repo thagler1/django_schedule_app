@@ -4,10 +4,9 @@
 <link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
 <head>
     <meta charset="UTF-8">
-    <title>Hello, {{ user.first_name }}</title>
+    <title>Welcome, {{ user.first_name }} {{ user.last_name }}</title>
 </head>
 <topnav class="topnav"></topnav>
-
 
     <ul class="sidenav">
         <li><img src={{user_profile.profile_image.url}}></li>
@@ -25,9 +24,7 @@
 
 </div>
 
-<div class="adjusted-content">
- {% include "shift_schedule/unnaproved_pto.html" %}
-</div>
+
 
 </body>
 </html>
