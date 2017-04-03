@@ -38,7 +38,7 @@ body {
 .sidenav li a.active {
     background-color: blue;
     color: white;
-}
+
 */
 .sidenav li a:hover:not(.active) {
     background-color: #555;
