@@ -19,7 +19,8 @@ def user_oqs(user):
     all_user_oqs = Console_oq.objects.filter(controller = userprofile)
     return all_user_oqs
 
-def calcdaterange(today):
+def calcdaterange(today): #used for calendar output
+
     month = today.strftime("%B")
 
     first_day_of_month = datetime.datetime(today.year, today.month,1)

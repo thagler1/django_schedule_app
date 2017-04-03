@@ -207,4 +207,4 @@ class PTO_table(models.Model):
         controller_last_name = controller_object.last_name
         return "%s %s %s " % (controller_first_name, controller_last_name, self.date_pto_taken)
 
-from .signals import initialize_desk_schedule
+#from .signals import initialize_desk_schedule

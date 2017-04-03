@@ -1,7 +1,7 @@
 
 body {
     margin: 0;
-    background-color: rgb(43,43,43)
+    background-color: white;
 
 }
 
@@ -11,7 +11,7 @@ body {
     margin-top: 25px;
     padding: 0;
     width: 200px;
-    background-color: #f1f1f1;
+    background-color: rgb(28,45,86);
     position: fixed;
     height: 100%;
     overflow: auto;
@@ -55,12 +55,12 @@ body {
 
    border: 1px solid #999;
    border-collapse: collapse;
-   border-color:white
+   border-color:black;
    font-family: Georgia, Times, serif;
    }
    th {
    border: 1px solid #999;
-   font-color: white;
+   font-color: black;
    font-size: 70%;
    text-transform: uppercase;
    }
@@ -70,7 +70,7 @@ body {
    width:5em;
    padding: 5px;
    vertical-align: top;
-   font-color: silver;
+   font-color: black;
    }
    .daybox {
 
@@ -114,7 +114,7 @@ body {
    .topnav {
         height: 25px;
         width: 100%;
-        background-color: rgb(19,88,168);
+        background-color: rgb(28,45,86);
         list-style-type: none;
         margin: 0;
         padding: 0;
