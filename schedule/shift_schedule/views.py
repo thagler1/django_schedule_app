@@ -3,6 +3,7 @@ from django.template import loader
 from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq, PTO_table
 import datetime
 from .forms import UserForm, PTOForm
+from .schedule_calculations import project_schedule
 from .functions import user_oqs, user_console_schedules
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
@@ -89,7 +90,7 @@ def user_page(request):
     user_object = User.objects.get(id=user.id)
     userprofile = UserProfile.objects.get(user=user_object)
     testdate = datetime.datetime(2017,3,28)
-    test = deviation_check(userprofile, testdate)
+    test = project_schedule(datetime.date(2017,3,1),datetime.date(2017,4,1))
     #scroll through oq's and and get a list of consoles the user is oq'd on
     users_oqs = user_oqs(user)
     allshifts_console_schedule, desk_shift_name, shifts, consoles, cal_dates, daterange, month = user_console_schedules(user, users_oqs)
