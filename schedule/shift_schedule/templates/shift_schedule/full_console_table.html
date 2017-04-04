@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+{% for console in consoles %}
+<table>
+
+  <thead>
+    <tr>
+    <th>{{console}}</th>
+{% for day in cal_dates %}
+<th>{{day|date:"n"}}/{{day|date:"d"}}</th>
+        {% endfor %}
+    </tr>
+
+  </thead>
+  <tbody>
+
+  </tbody>
+</table>
+{% endfor %}
+</body>
+</html>

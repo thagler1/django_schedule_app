@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq
 import datetime
+from .schedule_calculations import project_schedule
 from .forms import UserForm
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
@@ -50,7 +51,7 @@ def user_console_schedules(user, users_oqs):
 
     cal_dates = [start_date + datetime.timedelta(days=x) for x in range(timeframe)] # generates list of datetime objects
     daterange = Master_schedule.objects.filter(date__range=(start_date, end_date)) # this needs to porint to recurring events and get a return
-
+    recurring_calendar = project_schedule(start_date,end_date)
     shifts = Shift.objects.all()
     allshifts_console_schedule = [[] for y in range(7)] #creates 7 rows for calendar display. 
     desk_shift_name = [] # i dont think this is used. Tagged for removal
@@ -59,12 +60,12 @@ def user_console_schedules(user, users_oqs):
         display_date = date.day # used to create calendar date in template
         rownum = i//7 # no remainder division
         try:
-            # look at using date__range
-            if Console_schedule.objects.filter(date=date, controller=userprofile).exists():
-                console_day_schedule = Console_schedule.objects.filter(date=date,
-                                                                       controller=userprofile)
-                for day in console_day_schedule:
-                    allshifts_console_schedule[rownum].append((day.which_shift, display_date, day.deskname.console_name))
+            # for day in cal dates. if day is in recurring event calendar add to ascs, else add place holder
+            if date in recurring_calendar:
+                indices = [i for i, x in enumerate(recurring_calendar) if x == date]
+
+                for day in indices:
+                    allshifts_console_schedule[rownum].append((day[0].which_shift, display_date, day[0].deskname.console_name))
             else:
                 allshifts_console_schedule[rownum].append(("", display_date))
         except:

@@ -15,7 +15,8 @@ class DateItem:
         print("running check")
         self.date_object.is_repeating
         return self.date_object.is_repeating
-   
+   def mod_object(self):
+       return self.date_object
 
 
 def project_schedule(start_date, end_date):
