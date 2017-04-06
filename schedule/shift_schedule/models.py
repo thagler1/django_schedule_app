@@ -169,6 +169,11 @@ class Master_schedule(models.Model):
     def __str__(self):
         return "%s %s" % (Shift.objects.get(shift_id=self.shift), self.date)
 
+    def which_shift(self):
+        if self.is_day is True:
+            return 'D'
+        else:
+            return 'N'
 
 class PTO_table(models.Model):
     """
@@ -205,6 +210,8 @@ class PTO_table(models.Model):
         controller_object = User.objects.get(id=self.user.user.id)
         controller_first_name = controller_object.first_name
         controller_last_name = controller_object.last_name
-        return "%s %s %s " % (controller_first_name, controller_last_name, self.date_pto_taken)
+
+        return "%s %s %s %s" % (controller_first_name, controller_last_name, self.date_pto_taken,)
+
 
 #from .signals import initialize_desk_schedule

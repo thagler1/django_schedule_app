@@ -11,12 +11,32 @@
     <tr>
     <th>{{console}}</th>
 {% for day in cal_dates %}
-<th>{{day|date:"n"}}/{{day|date:"d"}}</th>
+<th>{{day|date:"n"}}/{{day|date:"d"}}<BR> {{day|date:"D"}}</th>
+
+
         {% endfor %}
     </tr>
 
   </thead>
   <tbody>
+  {% for controller in allshifts_console_schedule %}
+  {% if controller.0.1 == console %}
+  <tr>
+      <td>{{controller.0.0}}</td>
+      {% for day in controller %}
+      {% if day.5 == None %}
+<td>{{day.2}}</td>
+
+      {% endif %}
+
+      {% if day.5 != None %}
+      <td> {{day.5}}</td>
+      {% endif %}
+      {% endfor %}
+  </tr>
+
+  {% endif %}
+  {% endfor %}
 
   </tbody>
 </table>

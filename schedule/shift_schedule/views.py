@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from .schedule_validation_rules import one_shift_per_controller, deviation_check
-
+from collections import namedtuple
 
 
 
@@ -90,10 +90,10 @@ def user_page(request):
     user_object = User.objects.get(id=user.id)
     userprofile = UserProfile.objects.get(user=user_object)
     testdate = datetime.datetime(2017,3,28)
-    test = project_schedule(datetime.date(2017,3,1),datetime.date(2017,4,1))
+    test = project_schedule(datetime.date(2017,3,1),datetime.date(2017,4,1), userprofile)
     #scroll through oq's and and get a list of consoles the user is oq'd on
     users_oqs = user_oqs(user)
-    allshifts_console_schedule, desk_shift_name, shifts, consoles, cal_dates, daterange, month = user_console_schedules(user, users_oqs)
+    allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, month = user_console_schedules(user, users_oqs)
 
 
     if userprofile.is_manager is True or userprofile.is_supervisor is True:
@@ -106,13 +106,15 @@ def user_page(request):
         'daterange':daterange,
         'cal_dates':cal_dates,
         'shifts':shifts,
-        'allshifts_console_schedule': allshifts_console_schedule,
+        'user_calendar': user_calendar,
         'desk_shift_name':desk_shift_name,
         'oqs':users_oqs,
         'user_profile': userprofile,
         'month': month,
         'test':test,
-        'all_unapproved_pto':all_unapproved_pto
+        'all_unapproved_pto':all_unapproved_pto,
+        'allshifts_console_schedule': allshifts_console_schedule
+
 
     }
 
