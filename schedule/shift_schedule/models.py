@@ -198,6 +198,7 @@ class PTO_table(models.Model):
     date_requested = models.DateField()
     date_pto_taken = models.DateField()
     user = models.ForeignKey(UserProfile)
+    coverage = models.ForeignKey(UserProfile, default=None,blank=True, related_name="+")
     console_date = models.ForeignKey(Console_schedule)
     supervisor_approval = models.BooleanField(default=False)
     manager_approval = models.BooleanField(default=False)
@@ -206,12 +207,13 @@ class PTO_table(models.Model):
                             choices=pto_choices,
                             default=regularPTO)
 
+
     def __str__(self):
         controller_object = User.objects.get(id=self.user.user.id)
         controller_first_name = controller_object.first_name
         controller_last_name = controller_object.last_name
 
-        return "%s %s %s %s" % (controller_first_name, controller_last_name, self.date_pto_taken,)
+        return "%s %s %s" % (controller_first_name, controller_last_name, self.date_pto_taken,)
 
 
 #from .signals import initialize_desk_schedule

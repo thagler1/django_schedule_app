@@ -5,6 +5,13 @@
 </head>
 <body>
 
+    <div>
+
+    <ul class="cal">
+  <li><a class="cal active" href="#home">Home</a></li>
+
+</ul>
+</div>
 <table>
       <caption>{{month}}</caption>
 
@@ -28,12 +35,24 @@
 {% for day in row %}
      {% if day.0 == "D" and day.3 == None %}
 <td class="daybox tooltip"><div class="day">{{day.1}}</div>
-        <span class="tooltiptext">{{day.2}}</span>
+        <span class="tooltiptext">{{day.2}}
+        {% if day.4 != None %}
+            Covering for :{{day.4 }}
+            {% endif %}
+        </span>
         <div class="notes dayshift">{{day.0}}</div></td>
+
+
+
      {% endif %}
      {% if day.0 == "N" and day.3 == None  %}
      <td class="nightbox tooltip"><div class="day">{{day.1}}</div>
-         <span class="tooltiptext">{{day.2}}</span>
+         <span class="tooltiptext">{{day.2}}
+         {% if day.4 != None %}
+            Covering for :{{day.4 }}
+            {% endif %}
+        </span>
+         </span>
         <div class="notes nightshift">{{day.0}}</div></td>
      {% endif %}
      {% if day.0 == "" and day.3 == None %}
@@ -43,12 +62,17 @@
      {% if day.3 != None %}
                <td><div class="day">{{day.1}}</div>
         <div class="notes pto">{{day.3}}</div></td>
+
      {% endif %}
+
     {% endfor %}
  </tr>
 {% endfor %}
+
+
   </tbody>
 </table>
+
 
 </body>
 </html>

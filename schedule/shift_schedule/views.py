@@ -85,7 +85,7 @@ def user_login(request):
         # blank dictionary object...
         return render(request, 'shift_schedule/login.html', {})
 
-def user_page(request):
+def user_page(request, calyear = None,calmonth=None):
     user = request.user
     user_object = User.objects.get(id=user.id)
     userprofile = UserProfile.objects.get(user=user_object)
@@ -93,7 +93,7 @@ def user_page(request):
     test = project_schedule(datetime.date(2017,3,1),datetime.date(2017,4,1), userprofile)
     #scroll through oq's and and get a list of consoles the user is oq'd on
     users_oqs = user_oqs(user)
-    allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, month = user_console_schedules(user, users_oqs)
+    allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, month = user_console_schedules(user, users_oqs, calyear,calmonth)
 
 
     if userprofile.is_manager is True or userprofile.is_supervisor is True:

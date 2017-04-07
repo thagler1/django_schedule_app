@@ -10,6 +10,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 
 
+
+
 def user_oqs(user):
     '''
     :param user:
@@ -42,9 +44,8 @@ def find_oq_controllers(consoles):
 
 
 
-def user_console_schedules(user, users_oqs):
+def user_console_schedules(user, users_oqs, calyear,calmonth):
     '''
-
     :param user:
     :param user_oqs:
     :return: dictionary of consoles with schedules as their values
@@ -60,8 +61,18 @@ def user_console_schedules(user, users_oqs):
             primary_console = console.console
     all_qualified_controllers = find_oq_controllers(consoles)
 
-
+    print(calmonth)
     todaysdate = datetime.date.today()
+    if calmonth: # DEFENSIVELY CODE THIS
+        try:
+            strippedmonth = int(calmonth)
+            if strippedmonth>12 or strippedmonth < 1:
+                pass
+            else:
+                todaysdate = datetime.date(2017,strippedmonth,1)
+        except:
+            pass
+
     start_date, end_date, month = calcdaterange(todaysdate)
     timeframe = (end_date - start_date).days
 
@@ -85,11 +96,20 @@ def user_console_schedules(user, users_oqs):
                     pto_type = event.pto.get_type_display()
                 else:
                     pto_type = None
+                if event.original_controller:
+                    original_controller = event.original_controller
+                else:
+                    original_controller = None
                 schedule_item = event.model_object  # the is the Master_schedule object itself
                 #print(schedule_item.which_shift())
+                '''
                 if event.model_object.shift == userprofile.shift:
                     user_calendar[rownum].append(
                         (schedule_item.which_shift(), display_date, primary_console,pto_type ))
+                '''
+                user_calendar[rownum].append(
+                    (schedule_item.which_shift(), display_date, primary_console, pto_type, original_controller))
+
 
 
         if found_event is False:
@@ -118,8 +138,8 @@ def user_console_schedules(user, users_oqs):
                         (controller[0],controller[1],schedule_item.which_shift(), display_date, primary_console, pto_type ))
             if found_event is False:
                 temp_cal.append((controller[0],controller[1],"", display_date,None,None))
-        print(temp_cal)
         allshifts_console_schedule.append(temp_cal)
+
 
 
     return (allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, month)
