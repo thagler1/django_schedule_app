@@ -140,6 +140,11 @@ def OTO_calc(userprofile, year):
         total = len(PTO_table.objects.filter(coverage = userprofile, date_pto_taken__gte=datetime.date(year,1,1)))
     return total
 
+def check_supervisor(userprofile):
+    if userprofile.is_supervisor:
+        return True
+    else:
+        return False
 
 
 

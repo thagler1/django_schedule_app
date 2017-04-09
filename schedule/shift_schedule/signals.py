@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from .models import Console, Manager, Console_schedule, Master_schedule, Shift, UserProfile, Console_oq, PTO_table
@@ -84,4 +84,9 @@ def add_pto_to_schedule(sender, instance, created, **kwargs):
         pto_taker.pto -=12
         pto_taker.save()
 
-
+@receiver(pre_delete, sender= PTO_table)
+def recredit_pto(sender, instance, **kwargs):
+    pto_event = instance
+    pto_taker = UserProfile.objects.get(id = pto_event.user.id)
+    pto_taker.pto +=12
+    pto_taker.save()

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% csrf_token %}
+<link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome, {{ user.first_name }} {{ user.last_name }}</title>
+</head>
+
+
+
+  <body>
+
+      <ul class="sidenav">
+        <li><img src={{user_profile.profile_image.url}}></li>
+  <li><a href="#news">{{user.first_name}} {{user.last_name}}</a></li>
+  <li><a href="#news">PTO Availabe: {{user_profile.pto}}</a></li>
+  <li><a href="#contact">{{user.email}}</a></li>
+
+</ul>
+<div class="wrapper">
+	<div class="row">
+		<div class="col span9"></div>
+	</div>
+
+      <div class="row">
+        <div class="layoutcol span1">Gas- Gathering</div>
+        <div class="layoutcol span1">Gas- Central Tx</div>
+        <div class="layoutcol span1">Gas- Western</div>
+	<div class="layoutcol span1">Gas- Channel</div>
+        <div class="layoutcol span1">Texas NGL</div>
+        <div class="layoutcol span1">Louisiana</div>
+        <div class="layoutcol span1">Crude- Red River</div>
+        <div class="layoutcol span1">Eagle/Ford</div>
+        <div class="layoutcol span1">(Spare)</div>
+
+      </div>
+
+
+
+      <div class="row">
+        <div class="layoutcol span1">Gas- Louisiana</div>
+        <div class="layoutcol span1">Gas- North Tx</div>
+        <div class="layoutcol span1">Gas- Western</div>
+	<div class="layoutcol span1">Gas- Channel</div>
+        <div class="layoutcol span1">Texas NGL</div>
+        <div class="layoutcol span1">Louisiana</div>
+        <div class="layoutcol span1">Crude- Red River</div>
+        <div class="layoutcol span1">Eagle/Ford</div>
+        <div class="layoutcol span1">(Spare)</div>
+
+      </div>
+
+	<div class="row">
+		<div class="layoutcol span9">9</div>
+	</div>
+    </div>
+  </body>
+</html>

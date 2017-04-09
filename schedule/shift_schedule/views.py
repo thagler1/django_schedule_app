@@ -4,7 +4,7 @@ from .models import Shift, UserProfile, Console, Master_schedule, Console_schedu
 import datetime
 from .forms import UserForm, PTOForm
 from .schedule_calculations import project_schedule
-from .functions import user_oqs, user_console_schedules, OTO_calc
+from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -66,6 +66,11 @@ def user_login(request):
         if user:
             # Is the account active? It could have been disabled.
             if user.is_active:
+                userprofile = UserProfile.objects.get(user=user)
+                if check_supervisor(userprofile):
+                    login(request, user)
+                    return HttpResponseRedirect("/shift_schedule/shift_supervisor_console.html")
+
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the homepage.
                 login(request, user)
@@ -86,6 +91,7 @@ def user_login(request):
         return render(request, 'shift_schedule/login.html', {})
 
 def user_page(request, calyear = None,calmonth=None):
+
     user = request.user
     user_object = User.objects.get(id=user.id)
     userprofile = UserProfile.objects.get(user=user_object)
@@ -94,7 +100,6 @@ def user_page(request, calyear = None,calmonth=None):
     #scroll through oq's and and get a list of consoles the user is oq'd on
     users_oqs = user_oqs(user)
     allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, month = user_console_schedules(user, users_oqs, calyear,calmonth)
-
 
     if userprofile.is_manager is True or userprofile.is_supervisor is True:
         all_unapproved_pto = PTO_table.objects.filter(supervisor_approval=False)
@@ -114,12 +119,9 @@ def user_page(request, calyear = None,calmonth=None):
         'month': month,
         'all_unapproved_pto':all_unapproved_pto,
         'allshifts_console_schedule': allshifts_console_schedule
-
-
     }
 
     template = loader.get_template('shift_schedule/user_page.html')
-
 
     return HttpResponse(template.render(context, request))
 
@@ -155,5 +157,18 @@ def unnaproved_pto(request):
         'all_unapproved_pto': all_unapproved_pto
     }
     return HttpResponse(template.render(context, request))
+
+def supervisors_console(request):
+    user = request.user
+    user_object = User.objects.get(id = user.id)
+    userprofile = UserProfile.objects.get(user= user_object)
+    template = loader.get_template('shift_schedule/shift_supervisor_console.html')
+    #/todo create onshift console layout that links to sister console tables
+
+    context = {
+
+    }
+    return HttpResponse(template.render(context, request))
+
 
 
