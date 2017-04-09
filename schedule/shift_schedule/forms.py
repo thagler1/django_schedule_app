@@ -12,4 +12,4 @@ class UserForm(ModelForm):
 class PTOForm(ModelForm):
     class Meta:
         model = PTO_table
-        fields = ['date_requested', 'date_pto_taken','user', 'type', 'notes', 'console_date']
+        fields =  ['date_pto_taken', 'type', 'notes']

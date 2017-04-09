@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+{% csrf_token %}
 <link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
 <head>
     <meta charset="UTF-8">
     <title>Welcome, {{ user.first_name }} {{ user.last_name }}</title>
 </head>
+<body>
 
     <ul class="sidenav">
         <li><img src={{user_profile.profile_image.url}}></li>
   <li><a href="#news">{{user.first_name}} {{user.last_name}}</a></li>
   <li><a href="#news">PTO Availabe: {{user_profile.pto}}</a></li>
   <li><a href="#contact">{{user.email}}</a></li>
-
+  <li><a href="#contact">Overtime Offered: {{oto}}</a></li>
+  <li><a href="http://127.0.0.1:8000/shift_schedule/pto">Reqeust PTO</a></li>
 </ul>
-
-<div>
+<div class="wrapper">
+     <div class="row">
+<div class="col span2">
 {% include "shift_schedule/calendar.html" %}
-
-
 </div>
 
-<div>
+</div>
+<div class="row">
+<div class="col span2">
     {% include "shift_schedule/full_console_table.html" %}
 </div>
 
-
+</div>
+</div>
 </body>
 </html>
 

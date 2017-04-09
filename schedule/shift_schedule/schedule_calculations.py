@@ -43,6 +43,8 @@ class DateItem:
                     self.is_on_pto = True
                     self.controller = pto_event.coverage
                     self.pto = pto_event
+                else:
+                    self.pto = None
 
         else:
             self.pto = None

@@ -4,7 +4,7 @@ from .models import Shift, UserProfile, Console, Master_schedule, Console_schedu
 import datetime
 from .forms import UserForm, PTOForm
 from .schedule_calculations import project_schedule
-from .functions import user_oqs, user_console_schedules
+from .functions import user_oqs, user_console_schedules, OTO_calc
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -90,7 +90,7 @@ def user_page(request, calyear = None,calmonth=None):
     user_object = User.objects.get(id=user.id)
     userprofile = UserProfile.objects.get(user=user_object)
     #testdate = datetime.datetime(2017,3,28)
-    test = deviation_check(userprofile,datetime.date(2017,4,25))
+    oto = OTO_calc(userprofile,2017)
     #scroll through oq's and and get a list of consoles the user is oq'd on
     users_oqs = user_oqs(user)
     allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, month = user_console_schedules(user, users_oqs, calyear,calmonth)
@@ -106,7 +106,7 @@ def user_page(request, calyear = None,calmonth=None):
         'daterange':daterange,
         'cal_dates':cal_dates,
         'shifts':shifts,
-        'test':test,
+        'oto':oto,
         'user_calendar': user_calendar,
         'desk_shift_name':desk_shift_name,
         'oqs':users_oqs,
@@ -131,8 +131,14 @@ def controller_pto_form(request):
 
     if request.method =='POST':
         form = PTOForm(request.POST)
+
+
         if form.is_valid():
-            form.save(commit=True)  # saves form and commits to DB
+            post =form.save(commit=False)  # saves form and commits to DB
+            post.date_requested=datetime.datetime.now()
+            post.user = userprofile
+            #post.coverage = userprofile
+            post.save()
             return HttpResponseRedirect('/shift_schedule/user')
     else:
         form = PTOForm()

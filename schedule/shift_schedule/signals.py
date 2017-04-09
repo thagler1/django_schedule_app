@@ -77,12 +77,11 @@ def add_pto_to_schedule(sender, instance, created, **kwargs):
 
     once pto has been approved by supervisor remove controller from scheduled shift
     '''
-    if instance.supervisor_approval == True: #ends if not approved
-        controller = instance.user
-        scheduled_date = instance.date_pto_taken
 
-        if Console_schedule.objects.get(controller = controller, date = scheduled_date):
-            console_day = Console_schedule.objects.get(controller=controller, date=scheduled_date)
-            console_day.controller = None #change controller value to nill
-            console_day.save()
+    if created:
+        pto_event = instance
+        pto_taker = UserProfile.objects.get(id = pto_event.user.id)
+        pto_taker.pto -=12
+        pto_taker.save()
+
 

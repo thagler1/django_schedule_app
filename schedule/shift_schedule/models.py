@@ -161,7 +161,7 @@ class Master_schedule(models.Model):
     shift = models.ForeignKey(Shift)
     date = models.DateField()
     is_day = models.BooleanField()
-    is_repeating = models.BooleanField()
+    is_repeating = models.BooleanField(default=True)
     repeat_start = models.DateField(default="2017-01-01")
     repeat_interval = models.BigIntegerField(default= 28)
     repeat_end = models.DateField(default="2099-12-31")
@@ -198,10 +198,10 @@ class PTO_table(models.Model):
     date_requested = models.DateField()
     date_pto_taken = models.DateField()
     user = models.ForeignKey(UserProfile)
-    coverage = models.ForeignKey(UserProfile, default=None,blank=True, related_name="+")
-    console_date = models.ForeignKey(Console_schedule)
-    supervisor_approval = models.BooleanField(default=False)
-    manager_approval = models.BooleanField(default=False)
+    coverage = models.ForeignKey(UserProfile, default=None,blank=True,null=True, related_name="+")
+    #console_date = models.ForeignKey(Console_schedule)
+    supervisor_approval = models.BooleanField(default=True)
+    manager_approval = models.BooleanField(default=True)
     notes = models.TextField(default="")
     type = models.CharField(max_length=4,
                             choices=pto_choices,
@@ -216,4 +216,4 @@ class PTO_table(models.Model):
         return "%s %s %s" % (controller_first_name, controller_last_name, self.date_pto_taken,)
 
 
-#from .signals import initialize_desk_schedule
+from .signals import add_pto_to_schedule

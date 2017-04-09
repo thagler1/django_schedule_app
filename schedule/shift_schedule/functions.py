@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
-from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq
+from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq, PTO_table
 import datetime
 from .schedule_calculations import project_schedule
 from .forms import UserForm
@@ -134,8 +134,11 @@ def user_console_schedules(user, users_oqs, calyear,calmonth):
     return (allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, month)
 
 
-
-
+def OTO_calc(userprofile, year):
+    total =0
+    if PTO_table.objects.filter(coverage = userprofile,date_pto_taken__gte=datetime.date(year,1,1)).exists():
+        total = len(PTO_table.objects.filter(coverage = userprofile, date_pto_taken__gte=datetime.date(year,1,1)))
+    return total
 
 
 
