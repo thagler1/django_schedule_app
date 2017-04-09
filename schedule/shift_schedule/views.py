@@ -89,8 +89,8 @@ def user_page(request, calyear = None,calmonth=None):
     user = request.user
     user_object = User.objects.get(id=user.id)
     userprofile = UserProfile.objects.get(user=user_object)
-    testdate = datetime.datetime(2017,3,28)
-    test = project_schedule(datetime.date(2017,3,1),datetime.date(2017,4,1), userprofile)
+    #testdate = datetime.datetime(2017,3,28)
+    test = deviation_check(userprofile,datetime.date(2017,4,25))
     #scroll through oq's and and get a list of consoles the user is oq'd on
     users_oqs = user_oqs(user)
     allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, month = user_console_schedules(user, users_oqs, calyear,calmonth)
@@ -106,6 +106,7 @@ def user_page(request, calyear = None,calmonth=None):
         'daterange':daterange,
         'cal_dates':cal_dates,
         'shifts':shifts,
+        'test':test,
         'user_calendar': user_calendar,
         'desk_shift_name':desk_shift_name,
         'oqs':users_oqs,

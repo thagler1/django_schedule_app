@@ -6,13 +6,12 @@
     <meta charset="UTF-8">
     <title>Welcome, {{ user.first_name }} {{ user.last_name }}</title>
 </head>
-<topnav class="topnav"></topnav>
 
     <ul class="sidenav">
         <li><img src={{user_profile.profile_image.url}}></li>
   <li><a href="#news">{{user.first_name}} {{user.last_name}}</a></li>
   <li><a href="#news">PTO Availabe: {{user_profile.pto}}</a></li>
-  <li><a href="#contact">Contact me!</a></li>
+  <li><a href="#contact">{{user.email}}</a></li>
 
 </ul>
 

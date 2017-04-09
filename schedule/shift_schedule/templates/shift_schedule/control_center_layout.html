@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Simple grid</title>
+    <style>
+* {
+  box-sizing: border-box;
+}
+
+
+body {
+  width: 90%
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.wrapper {
+  padding-right: 2.08%;
+}
+.row {
+  display: flex;
+}
+.col {
+  text-align: center;
+  margin-left: 2.08333333%;
+  margin-bottom: 1em;
+width: 6.25%;
+  flex: 1 1 auto;
+  background: dimgray;
+  border: solid;
+}
+/* Two column widths (12.5%) plus one gutter width (2.08333333%) */
+.col.span2 { width: 14.58333333%; }
+/* Three column widths (18.75%) plus two gutter widths (4.1666666) */
+.col.span3 { width: 22.91666666%; }
+/* And so on... */
+.col.span4 { width: 31.24999999%; }
+.col.span5 { width: 39.58333332%; }
+.col.span6 { width: 47.91666665%; }
+.col.span7 { width: 56.24999998%; }
+.col.span8 { width: 64.58333331%; }
+.col.span9 { width: 72.91666664%; }
+.col.span10 { width: 81.24999997%; }
+.col.span11 { width: 89.5833333%; }
+.col.span12 { width: 97.91666663%; }
+
+
+
+
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+
+      <div class="row">
+        <div class="col span1">Gas- Gathering</div>
+        <div class="col span1">Gas- Central Tx</div>
+        <div class="col span1">Gas- Western</div>
+	<div class="col span1">Gas- Channel</div>
+        <div class="col span1">Texas NGL</div>
+        <div class="col span1">Louidfsdfsdsiana</div>
+        <div class="col span1">Crude- Red River</div>
+        <div class="col span1">Eagle/Ford</div>
+        <div class="col span1">(Spare)</div>
+
+      </div>
+
+
+
+      <div class="row">
+        <div class="col span1">Gas- Louisiana</div>
+        <div class="col span1">Gas- North Tx</div>
+        <div class="col span1">Gas- Western</div>
+	<div class="col span1">Gas- Channel</div>
+        <div class="col span1">Texas NGL</div>
+        <div class="col span1">Louisiana</div>
+        <div class="col span1">Crude- Red River</div>
+        <div class="col span1">Eagle/Ford</div>
+        <div class="col span1">(Spare)</div>
+
+      </div>
+
+	<div class="row">
+		<div class="col span9">9</div>
+	</div>
+    </div>
+  </body>
+</html>

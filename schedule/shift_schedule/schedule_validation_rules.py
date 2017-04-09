@@ -2,6 +2,7 @@ from .models import Shift, UserProfile, Console, Master_schedule, Console_schedu
 import datetime
 from .schedule_calculations import DateItem, project_schedule
 from django.core.cache import cache
+import operator
 
 
 def one_shift_per_controller(controller, dateitem):
@@ -73,57 +74,63 @@ def find_connected_shifts(controller, date,forward, previous_shift_time = None,o
     if off_count <2: # check for exit condition
         #new_window = []
         # check the previous date, if controller is scheduled add it to list and check the next date
-        testdate = Console_schedule.objects.filter(date=date, controller=controller)
-        # create shift start and end times
+        testdate = project_schedule(date,date,controller)
+        #print(testdate)
 
-        if testdate.exists(): # Controller is scheduled for this test day
-            testdate = Console_schedule.objects.get(date=date, controller=controller)
-            #print(testdate.controller, testdate.date)
-
-            if testdate.is_day is True:  # if day shift set the start and end times
-                shift_start_time = date.replace(hour=6)
-                end_shift_time = date.replace(hour=18)
-            else:  # its a night shift, set the start and end time
-                shift_start_time = date.replace(hour=18)
-                end_shift_time = shift_start_time + datetime.timedelta(hours=12)
-
-            if forward is True:  # time off check for forward
-                try:
-                    timeoff = shift_start_time - previous_shift_time
-                    if timeoff.total_seconds() >= thirtysixhours*-1:
-                        off_count += 2 # exit the loop
-                        return find_connected_shifts(controller, date, forward, previous_shift_time, off_count, window,
-                                                     loop_count)
-                except: pass
-
-            elif forward is False:
-                try:
-                    timeoff = end_shift_time - previous_shift_time
-                    #print(timeoff.total_seconds())
-                    if timeoff.total_seconds() >= thirtysixhours:
-                        off_count += 2
-                        return find_connected_shifts(controller, date, forward, previous_shift_time, off_count, window,
-                                                     loop_count)
-                except:
-                    pass
-
-            if forward is True:  #pass appropriate previous_shift_time on to the next call
-                previous_shift_time = end_shift_time
+        if len(testdate)>0: # Controller is scheduled for this test day
+            dateobject = testdate[0]
+            #print("%s %s %s" % (dateobject.date, dateobject.controller, controller))
+            if dateobject.controller != controller:
+                print("%s %s %s" % (dateobject.date, dateobject.controller, controller))
+                off_count += 1
+                if forward is True:
+                    date += datetime.timedelta(days=1)
+                else:
+                    date -= datetime.timedelta(days=1)
+                loop_count += 1
+                return find_connected_shifts(controller, date, forward, previous_shift_time, off_count, window, loop_count)
             else:
-                previous_shift_time = shift_start_time
-            # call the next day base on the directions
-            if forward is True:
-                date += datetime.timedelta(days=1)
-            else:
-                date -= datetime.timedelta(days=1)
+                shift_start_time = dateobject.shift_start_time
+                end_shift_time = dateobject.shift_end_time
 
 
-            loop_count += 1
-            window.append(testdate)
-            return find_connected_shifts(controller,date, forward,previous_shift_time,off_count,window, loop_count)  # start the recursion
+                if forward is True:  # time off check for forward
+                    try:
+                        timeoff = shift_start_time - previous_shift_time
+                        if abs(timeoff.total_seconds()) >= abs(thirtysixhours):
+                            off_count += 2 # exit the loop
+                            return find_connected_shifts(controller, date, forward, previous_shift_time, off_count, window,
+                                                         loop_count)
+                    except: pass
+
+                elif forward is False:
+                    try:
+                        timeoff = end_shift_time - previous_shift_time
+                        #print(timeoff.total_seconds())
+                        if abs(timeoff.total_seconds()) >= abs(thirtysixhours):
+                            off_count += 2
+                            return find_connected_shifts(controller, date, forward, previous_shift_time, off_count, window,
+                                                         loop_count)
+                    except:
+                        pass
+
+                if forward is True:  #pass appropriate previous_shift_time on to the next call
+                    previous_shift_time = end_shift_time
+                else:
+                    previous_shift_time = shift_start_time
+                # call the next day base on the directions
+                if forward is True:
+                    date += datetime.timedelta(days=1)
+                else:
+                    date -= datetime.timedelta(days=1)
 
 
-        elif testdate.exists() is False: # if the controller was not scheduled, then increment off count and call the function again
+                loop_count += 1
+                window.append(dateobject)
+                return find_connected_shifts(controller,date, forward,previous_shift_time,off_count,window, loop_count)  # start the recursion
+
+
+        elif len(testdate)<1: # if the controller was not scheduled, then increment off count and call the function again
             off_count += 1
             if forward is True:
                 date += datetime.timedelta(days=1)
@@ -142,6 +149,7 @@ def find_connected_shifts(controller, date,forward, previous_shift_time = None,o
 
 def deviation_check(controller, date):
     string_of_shifts = set()
+
     forward_search = find_connected_shifts(controller,date, True)
     backward_search = find_connected_shifts(controller,date, False)
 
@@ -149,8 +157,10 @@ def deviation_check(controller, date):
         string_of_shifts.add(shift_object)
     for shift_object in forward_search:
         string_of_shifts.add(shift_object)
+    for shift in string_of_shifts:
+        print(shift.date)
+    return sorted(string_of_shifts, key=operator.attrgetter('date'))
 
-    return string_of_shifts
 
 
 

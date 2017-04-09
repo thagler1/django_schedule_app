@@ -24,6 +24,7 @@ class DateItem:
         self.console = self.set_console()
         self.is_on_pto = False
         self.pto = self.check_pto()
+        self.set_shift_times()
 
 
     def check_pto(self):
@@ -33,14 +34,16 @@ class DateItem:
         :return: binarry
         '''
 
-        if PTO_table.objects.filter(date_pto_taken=self.date, user=self.controller).exists():
-            pto_return = PTO_table.objects.filter(date_pto_taken=self.date, user=self.original_controller)
+        if PTO_table.objects.filter(date_pto_taken=self.date, user= self.original_controller).exists():
+            pto_return = PTO_table.objects.filter(date_pto_taken=self.date, user= self.original_controller)
             for pto_event in pto_return:
                 #print(pto_event)
+
                 if pto_event.supervisor_approval is True and pto_event.manager_approval is True:
                     self.is_on_pto = True
-
+                    self.controller = pto_event.coverage
                     self.pto = pto_event
+
         else:
             self.pto = None
         return self.pto
@@ -76,6 +79,25 @@ class DateItem:
                 self.console = oq.console
         return self.console
 
+    def set_shift_times(self):
+        if self.date_object.is_day:
+            start_time = datetime.datetime.combine(self.date, datetime.time())
+            self.shift_start_time= start_time.replace(hour=6)
+            self.shift_end_time = start_time.replace(hour=18)
+        else:
+            placeholder_time =datetime.datetime.combine(self.date, datetime.time())
+            self.shift_start_time= placeholder_time.replace(hour=18)
+            self.shift_end_time=self.shift_start_time+datetime.timedelta(hours=12)
+        return self.shift_start_time, self.shift_end_time
+
+
+
+    def __eq__(self, other):
+        return self.date == other.date
+
+    def __hash__(self):
+        return hash(self.date)
+
 
 def project_schedule(start_date, end_date, userprofile):
     #/todo currently does no handle non repeating events
@@ -87,6 +109,8 @@ def project_schedule(start_date, end_date, userprofile):
     :return: list of all scheduled events during time frame
     '''
     range_day_count = (end_date - start_date).days  # num days in query range
+    if range_day_count == 0:
+        range_day_count +=1
     recurring_event_list = Master_schedule.objects.filter(shift = userprofile.shift)  # gather all master schedule items for controller shift
     #print(recurring_event_list)
     event_calendar = []
