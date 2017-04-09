@@ -3,16 +3,55 @@ import datetime
 from collections import namedtuple
 
 
-class DateItem:
-    def __init__ (self, date_object):
-        self.date_object = date_object
 
-    def is_on_day(self, date):
-        day_delta = date - self.date_object.date
-        if day_delta.days % self.date_object.repeat_interval != 0:
-            return False
+def check_date(master_schedule_object,testdate):
+    day_delta = testdate - master_schedule_object.date
+    if day_delta.days % master_schedule_object.repeat_interval !=0:
+        return False
+    else: return True
+
+
+class DateItem:
+    #/todo possible logic problem with self.date
+    #/todo develope methof for assigning console
+    def __init__ (self, date_object, controller,date=None, console = None, pto = None):
+        # date object is master shift schedule object
+        self.date_object = date_object
+        self.date = date # optional allows access to date worked
+        self.controller = controller
+        self.shift = controller.shift
+        self.original_controller = controller
+        self.console = self.set_console()
+        self.is_on_pto = False
+        self.pto = self.check_pto()
+
+
+    def check_pto(self):
+        '''
+        whether the controller is on PTO or not
+        :param: date
+        :return: binarry
+        '''
+
+        if PTO_table.objects.filter(date_pto_taken=self.date, user=self.controller).exists():
+            pto_return = PTO_table.objects.filter(date_pto_taken=self.date, user=self.original_controller)
+            for pto_event in pto_return:
+                #print(pto_event)
+                if pto_event.supervisor_approval is True and pto_event.manager_approval is True:
+                    self.is_on_pto = True
+
+                    self.pto = pto_event
         else:
-            return True
+            self.pto = None
+        return self.pto
+
+
+    def check_on_pto(self):
+        if self.pto is not None:
+            self.is_on_pto = True
+        else: self.is_on_pto = False
+        return self.is_on_pto
+
 
     def model_object(self):
         #print(self.date_object)
@@ -21,53 +60,54 @@ class DateItem:
     def is_repeating(self):
         return self.date_object.is_repeating
 
+    def is_overtime(self):
+        if self.original_controller == self.controller:
+            return False
+        else:
+            return True
+    def change_controller(self, controller):
+        self.controller = controller
 
+    def set_console(self):
+
+        oqs = all_user_oqs = Console_oq.objects.filter(controller = self.original_controller)
+        for oq in oqs:
+            if oq.primary_console:
+                self.console = oq.console
+        return self.console
 
 
 def project_schedule(start_date, end_date, userprofile):
-    range_day_count = end_date - start_date  # num days in query range
+    #/todo currently does no handle non repeating events
+    '''
 
-    range_day_count = range_day_count.days
-    if range_day_count ==0:
-        range_day_count +=1
-    master_schedule = Master_schedule.objects.all()  # gather all master schedule items
-    recurring_event_list = []
-    for recuring_event in master_schedule:
-        if recuring_event.is_repeating is True:
-            recurring_event_list.append(DateItem(recuring_event))
+    :param start_date:
+    :param end_date:
+    :param userprofile:
+    :return: list of all scheduled events during time frame
+    '''
+    range_day_count = (end_date - start_date).days  # num days in query range
+    recurring_event_list = Master_schedule.objects.filter(shift = userprofile.shift)  # gather all master schedule items for controller shift
+    #print(recurring_event_list)
     event_calendar = []
-    Events = namedtuple('Event','model_object date pto original_controller') # Calendar of all recurring events. not controller specific
 
-    for i in range(range_day_count):
+    for i in range(range_day_count): # go through each day in requested range
         day = start_date + datetime.timedelta(days=i)
-        pto_events = PTO_table.objects.filter(date_pto_taken=day, user=userprofile)
-
-        is_off = False
-        overtime = False
-        if PTO_table.objects.filter(date_pto_taken=day, coverage=userprofile).exists():
-            coverage_events = PTO_table.objects.get(date_pto_taken=day, coverage=userprofile)
-            shift_object = project_schedule(day,day,coverage_events.user)
-            master_shift_object = shift_object[0] # this could cause problems if assigned to more than one shift for coverage
-
-            new_event = Events(master_shift_object.model_object,day,None, coverage_events.user )
-            print(new_event)
-            event_calendar.append(new_event)
+        is_off = False  # flipped if on PTO
+        #find PTO
         for current_shift in recurring_event_list:
+            if current_shift.is_repeating:
+                if check_date(current_shift, day):
+                    new_event = DateItem(current_shift, userprofile, day)
+                    event_calendar.append(new_event)
 
-            if current_shift.is_repeating() is True:  # found repeating shift start calculation
-                if current_shift.is_on_day(day) == True and current_shift.model_object().shift == userprofile.shift:
-                    for pto in pto_events:
-                        if pto.supervisor_approval and pto.manager_approval:
-                            is_off = True
-                        else:
-                            pass
-                        # Check for coverage
-
-                    if is_off:
-                        new_event = Events(current_shift.model_object(), day, pto, None)
-                        event_calendar.append(new_event)
-                    else:
-                        new_event = Events(current_shift.model_object(), day, None, None)
-                        event_calendar.append(new_event)
-    #print(event_calendar)
+        if PTO_table.objects.filter(date_pto_taken=day, coverage=userprofile).exists():
+            try:
+                coverage_event = PTO_table.objects.get(date_pto_taken=day, coverage=userprofile)
+                other_controller_schedule = project_schedule(day,day+datetime.timedelta(days=1),coverage_event.user)
+                shift_object = other_controller_schedule[0]
+                shift_object.change_controller(userprofile)
+                event_calendar.append(shift_object)
+            except:
+                pass
     return event_calendar

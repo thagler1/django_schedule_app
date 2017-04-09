@@ -111,7 +111,6 @@ def user_page(request, calyear = None,calmonth=None):
         'oqs':users_oqs,
         'user_profile': userprofile,
         'month': month,
-        'test':test,
         'all_unapproved_pto':all_unapproved_pto,
         'allshifts_console_schedule': allshifts_console_schedule
 

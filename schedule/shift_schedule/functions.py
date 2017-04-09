@@ -35,6 +35,8 @@ def calcdaterange(today): #used for calendar output
     return start_date, end_date, month
 
 def find_oq_controllers(consoles):
+    if isinstance(consoles,list) is False:
+        consoles = [consoles]
     controllers = set()
     for console in consoles:
         all_qualified_controllers = Console_oq.objects.filter(console=console, primary_console=True)
@@ -90,30 +92,23 @@ def user_console_schedules(user, users_oqs, calyear,calmonth):
         # for day in cal dates. if day is in recurring event calendar add to ascs, else add place holder
         for event in recurring_calendar:
 
-            if date in event:
+            if event.date == date:
                 found_event = True
-                if event.pto:
-                    pto_type = event.pto.get_type_display()
-                else:
-                    pto_type = None
-                if event.original_controller:
-                    original_controller = event.original_controller
-                else:
-                    original_controller = None
-                schedule_item = event.model_object  # the is the Master_schedule object itself
+                schedule_item = event  # the is the Master_schedule object itself
                 #print(schedule_item.which_shift())
                 '''
                 if event.model_object.shift == userprofile.shift:
                     user_calendar[rownum].append(
                         (schedule_item.which_shift(), display_date, primary_console,pto_type ))
                 '''
+                # (schedule_item.which_shift(), display_date, primary_console, pto_type, original_controller))
                 user_calendar[rownum].append(
-                    (schedule_item.which_shift(), display_date, primary_console, pto_type, original_controller))
+                    (schedule_item, display_date))
 
 
 
         if found_event is False:
-            user_calendar[rownum].append(("", display_date,None,None))
+            user_calendar[rownum].append(("", display_date))
     #print(user_calendar)
 
     #create allshift_console_schedule, run project schedule for each qualified controller
@@ -126,16 +121,10 @@ def user_console_schedules(user, users_oqs, calyear,calmonth):
             display_date= date.day #this is to pull just the date number
             found_event = False
             for event in recurring_calendar:
-
-                if date in event:
+                if event.date == date:
                     found_event = True
-                    if event.pto:
-                        pto_type = event.pto.type
-                    else:
-                        pto_type = None
-                    schedule_item = event.model_object  # the is the Master_schedule object itself
                     temp_cal.append(
-                        (controller[0],controller[1],schedule_item.which_shift(), display_date, primary_console, pto_type ))
+                        (controller[0],controller[1],event))
             if found_event is False:
                 temp_cal.append((controller[0],controller[1],"", display_date,None,None))
         allshifts_console_schedule.append(temp_cal)

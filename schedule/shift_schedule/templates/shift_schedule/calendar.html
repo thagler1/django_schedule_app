@@ -5,13 +5,6 @@
 </head>
 <body>
 
-    <div>
-
-    <ul class="cal">
-  <li><a class="cal active" href="#home">Home</a></li>
-
-</ul>
-</div>
 <table>
       <caption>{{month}}</caption>
 
@@ -32,38 +25,45 @@
   <tbody>
 {% for row in user_calendar %}
  <tr>
+
 {% for day in row %}
-     {% if day.0 == "D" and day.3 == None %}
-<td class="daybox tooltip"><div class="day">{{day.1}}</div>
-        <span class="tooltiptext">{{day.2}}
-        {% if day.4 != None %}
-            Covering for :{{day.4 }}
+        <!- Regular Day Shift ->
+     {% if day.0.date_object.which_shift == "D" and day.0.is_on_pto == False %}
+        <td class="daybox tooltip"><div class="day">{{day.1}}</div>
+        <span class="tooltiptext">{{day.0.console}}
+        {% if day.0.is_overtime == True %}
+            Covering for :{{day.0.original_controller }}
             {% endif %}
         </span>
-        <div class="notes dayshift">{{day.0}}</div></td>
-
-
-
+        <div class="notes dayshift">{{day.0.date_object.which_shift}}</div></td>
      {% endif %}
-     {% if day.0 == "N" and day.3 == None  %}
+        <!- Regular Night shift ->
+     {% if day.0.date_object.which_shift == "N" and day.0.is_on_pto == False  %}
      <td class="nightbox tooltip"><div class="day">{{day.1}}</div>
-         <span class="tooltiptext">{{day.2}}
-         {% if day.4 != None %}
-            Covering for :{{day.4 }}
-            {% endif %}
-        </span>
-         </span>
-        <div class="notes nightshift">{{day.0}}</div></td>
+        <div class="notes nightshift">{{day.0.date_object.which_shift}}</div></td>
      {% endif %}
+
+     <!- Regular Day off _>
      {% if day.0 == "" and day.3 == None %}
           <td><div class="day">{{day.1}}</div>
         <div class="notes nightshift">{{day.0}}</div></td>
      {% endif %}
-     {% if day.3 != None %}
+
+     <!- Day that controller takes PTO ->
+     {% if day.0.is_on_pto == True and day.0.original_controller == user_profile %}
                <td><div class="day">{{day.1}}</div>
-        <div class="notes pto">{{day.3}}</div></td>
+        <div class="notes pto">{{day.0.pto.get_type_display}}</div></td>
 
      {% endif %}
+    <!- covering overtime ->
+     {% if day.0.original_controller != day.0.controller and day.0.controller == user_profile %}
+                    <td class="day tooltip"><div class="day"> {{day.1}}</div>
+                        <span class="tooltiptext">{{day.0.console}}</span>
+        <div class="notes pto">{{day.0.date_object.which_shift}}</div></td>
+     {% endif %}
+
+
+
 
     {% endfor %}
  </tr>

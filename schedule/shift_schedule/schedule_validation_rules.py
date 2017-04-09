@@ -1,19 +1,23 @@
 from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq
 import datetime
+from .schedule_calculations import DateItem, project_schedule
 from django.core.cache import cache
 
 
-def one_shift_per_controller(controller, console_shift):
+def one_shift_per_controller(controller, dateitem):
     """
     this does not take into account PTO or availability just not schedule on more than one shift at a time, no nights to
     days
     :param controller: pass a controller object
-    :param console_shift: pass the console_shift object
+    :param console_shift: dateitem
     :return: boolean as to whether or not this controller is currently eligible to work
     """
-    date = console_shift.date
-    one_day_before = date - datetime.timedelta(days=1)
-    next_day = date + datetime.timedelta(days=1)
+    date = dateitem.date
+    start_date = date - datetime.timedelta(days=1)
+    end_date= date + datetime.timedelta(days=1)
+    controller_schedule = project_schedule(start_date,end_date,controller)
+    one_day_before = controller_schedule[0]
+    next_day = controller_schedule[2]
 
     testdates = Console_schedule.objects.filter(date__range=[one_day_before, next_day], controller=controller)
 
@@ -25,11 +29,11 @@ def one_shift_per_controller(controller, console_shift):
     # create cases
     for day in testdates:
         # this creates list for the switch below
-        if day.date < console_shift.date:
+        if day.date < dateitem.date:
             previous_day = day.is_day
-        elif day.date == console_shift.date:
+        elif day.date == dateitem.date:
             day_of = day.is_day
-        elif day.date > console_shift.date:
+        elif day.date > dateitem.date:
             day_after = day.is_day
 
     outcomes = [console_shift, previous_day, day_of, day_after]
@@ -58,21 +62,19 @@ def find_connected_shifts(controller, date,forward, previous_shift_time = None,o
     :param window: list of shifts worked with out reset period
     :return:
     '''
-    # CVFGBTYHNJMUKILO;P'[]
-    # =\]
+
     # variables
     thirtysixhours = (126000)*-1
 #/todo: does not work in a DOD where the target is O
 #/todo: returns a list that is out of order
 
     if len(window)> 0 and loop_count == 0:
-        window = []
-    if off_count <2:
+        window = [] # this is put in to garbage collect
+    if off_count <2: # check for exit condition
         #new_window = []
         # check the previous date, if controller is scheduled add it to list and check the next date
         testdate = Console_schedule.objects.filter(date=date, controller=controller)
         # create shift start and end times
-
 
         if testdate.exists(): # Controller is scheduled for this test day
             testdate = Console_schedule.objects.get(date=date, controller=controller)
@@ -84,21 +86,18 @@ def find_connected_shifts(controller, date,forward, previous_shift_time = None,o
             else:  # its a night shift, set the start and end time
                 shift_start_time = date.replace(hour=18)
                 end_shift_time = shift_start_time + datetime.timedelta(hours=12)
-            print(shift_start_time, end_shift_time)
+
             if forward is True:  # time off check for forward
                 try:
-                    print("forward")
                     timeoff = shift_start_time - previous_shift_time
                     if timeoff.total_seconds() >= thirtysixhours*-1:
-                        off_count += 2
-                        print("exited on forward")
+                        off_count += 2 # exit the loop
                         return find_connected_shifts(controller, date, forward, previous_shift_time, off_count, window,
                                                      loop_count)
                 except: pass
 
             elif forward is False:
                 try:
-                    print("Backward")
                     timeoff = end_shift_time - previous_shift_time
                     #print(timeoff.total_seconds())
                     if timeoff.total_seconds() >= thirtysixhours:
