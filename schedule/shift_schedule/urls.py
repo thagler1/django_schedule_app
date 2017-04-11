@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^pto', views.controller_pto_form, name ='pto'),
     url(r'^unapproved_pto', views.unnaproved_pto, name ='unapproved_pto'),
     url(r'^shift_supervisor_console', views.supervisors_console, name ='supervisor_console'),
+    url(r'^debug',views.debugpage,name='debug')
 
 
 

@@ -65,8 +65,12 @@
                         <span class="tooltiptext">{{day.0.console}}</span>
         <div class="notes pto">{{day.0.date_object.which_shift}}</div></td>
      {% endif %}
+    <!- DND ->
+     {% if day.0.dnd == True %}
+      <td class="day tooltip"><div class="day"> {{day.1}}</div>
 
-
+        <div class="notes pto">DND</div></td>
+        {% endif %}
 
 
     {% endfor %}

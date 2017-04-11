@@ -7,37 +7,26 @@
     <meta charset="UTF-8">
     <title>Welcome, {{ user.first_name }} {{ user.last_name }}</title>
 </head>
+<body>
 
-
-
-  <body>
-
-      <ul class="sidenav">
+    <ul class="sidenav">
         <li><img src={{user_profile.profile_image.url}}></li>
   <li><a href="#news">{{user.first_name}} {{user.last_name}}</a></li>
   <li><a href="#news">PTO Availabe: {{user_profile.pto}}</a></li>
   <li><a href="#contact">{{user.email}}</a></li>
-
+  <li><a href="#contact">Overtime Offered: {{oto}}</a></li>
+  <li><a href="http://127.0.0.1:8000/shift_schedule/pto">Reqeust PTO</a></li>
 </ul>
+    <div class="wrapper">
+{{testcontroller.controller}}<Br>
+        {% for oq in testcontroller.check_oqs %}
 
-<div class="wrapper">
-<div class="row"><div class="col span9"></div> </div>
-
-      {% for row in map %}
-      <div class="row">
-          {% if forloop.counter > 2%}
-          <div class="col span5"></div>
-          {% endif %}
-        {% for console in row %}
-        <div class="layoutcol span1">
-            {{console.console.console_name}}
-        {{console.console.address}}</div>
+{{oq.console}}, <Br>
         {% endfor %}
+        {% for date in testcontroller.shift_list %}
 
-	</div>
+        {{date.date}} - {{date.console}}
         {% endfor %}
-
     </div>
-
-  </body>
+</body>
 </html>

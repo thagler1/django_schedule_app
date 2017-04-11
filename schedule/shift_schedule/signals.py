@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from .models import Console, Manager, Console_schedule, Master_schedule, Shift, UserProfile, Console_oq, PTO_table
 import datetime
+from .schedule_calculations import check_date
 '''
 @receiver(post_save, sender=Console_oq)
 def initialize_desk_schedule(sender, instance, created, **kwargs):
@@ -77,16 +78,26 @@ def add_pto_to_schedule(sender, instance, created, **kwargs):
 
     once pto has been approved by supervisor remove controller from scheduled shift
     '''
+    pto_event = instance
+    pto_taker = UserProfile.objects.get(id=pto_event.user.id)
+    if pto_event.type != 'DND':
+        if created:
+            pto_taker.pto -=12
+            pto_taker.save()
 
-    if created:
-        pto_event = instance
-        pto_taker = UserProfile.objects.get(id = pto_event.user.id)
-        pto_taker.pto -=12
-        pto_taker.save()
+    elif PTO_table.objects.filter(user = pto_taker, date_pto_taken= instance.date_pto_taken).count()>1:
+        print(pto_taker)
+        print(pto_event)
+
+        pto_event.delete()
+
 
 @receiver(pre_delete, sender= PTO_table)
 def recredit_pto(sender, instance, **kwargs):
     pto_event = instance
-    pto_taker = UserProfile.objects.get(id = pto_event.user.id)
-    pto_taker.pto +=12
-    pto_taker.save()
+    if pto_event.type != 'DND':
+        pto_taker = UserProfile.objects.get(id = pto_event.user.id)
+        pto_taker.pto +=12
+        pto_taker.save()
+    else:
+        pass

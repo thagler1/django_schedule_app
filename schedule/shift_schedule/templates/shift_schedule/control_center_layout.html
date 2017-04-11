@@ -54,37 +54,13 @@ width: 6.25%;
 
   <body>
     <div class="wrapper">
-
+      {% for row in map %}
       <div class="row">
-        <div class="col span1">Gas- Gathering</div>
-        <div class="col span1">Gas- Central Tx</div>
-        <div class="col span1">Gas- Western</div>
-	<div class="col span1">Gas- Channel</div>
-        <div class="col span1">Texas NGL</div>
-        <div class="col span1">Louidfsdfsdsiana</div>
-        <div class="col span1">Crude- Red River</div>
-        <div class="col span1">Eagle/Ford</div>
-        <div class="col span1">(Spare)</div>
+        {% for console in row %}
+        <div class="col span1">{{console.console.console_name</div>
+        {% endfor %}
+        {% endfor %}
 
-      </div>
-
-
-
-      <div class="row">
-        <div class="col span1">Gas- Louisiana</div>
-        <div class="col span1">Gas- North Tx</div>
-        <div class="col span1">Gas- Western</div>
-	<div class="col span1">Gas- Channel</div>
-        <div class="col span1">Texas NGL</div>
-        <div class="col span1">Louisiana</div>
-        <div class="col span1">Crude- Red River</div>
-        <div class="col span1">Eagle/Ford</div>
-        <div class="col span1">(Spare)</div>
-
-      </div>
-
-	<div class="row">
-		<div class="col span9">9</div>
 	</div>
     </div>
   </body>

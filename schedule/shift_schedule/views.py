@@ -1,17 +1,17 @@
 from django.http import HttpResponse
 from django.template import loader
-from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq, PTO_table
+from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq, PTO_table, Console_Map
 import datetime
 from .forms import UserForm, PTOForm
 from .schedule_calculations import project_schedule
-from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor
+from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from .schedule_validation_rules import one_shift_per_controller, deviation_check
 from collections import namedtuple
-
+from .schedule_calculations import OqController
 
 
 def index(request):
@@ -100,11 +100,8 @@ def user_page(request, calyear = None,calmonth=None):
     #scroll through oq's and and get a list of consoles the user is oq'd on
     users_oqs = user_oqs(user)
     allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, month = user_console_schedules(user, users_oqs, calyear,calmonth)
+    #importcsv()
 
-    if userprofile.is_manager is True or userprofile.is_supervisor is True:
-        all_unapproved_pto = PTO_table.objects.filter(supervisor_approval=False)
-    else:
-        all_unapproved_pto = PTO_table.objects.filter(supervisor_approval=False, user=userprofile)
 
     context = {
         'consoles':consoles,
@@ -117,7 +114,6 @@ def user_page(request, calyear = None,calmonth=None):
         'oqs':users_oqs,
         'user_profile': userprofile,
         'month': month,
-        'all_unapproved_pto':all_unapproved_pto,
         'allshifts_console_schedule': allshifts_console_schedule
     }
 
@@ -163,12 +159,47 @@ def supervisors_console(request):
     user_object = User.objects.get(id = user.id)
     userprofile = UserProfile.objects.get(user= user_object)
     template = loader.get_template('shift_schedule/shift_supervisor_console.html')
+    console_rows = Console_Map.objects.values('row').distinct()
+    rows = []
+    for row in console_rows:
+        rows.append(row['row'])
+    rows = sorted(rows)
+    map = []
+    for row in rows:
+        print(row)
+        rowlist = []
+        columns = Console_Map.objects.filter(row=row).values('column').distinct()
+        columnlist = []
+        for column in columns:
+            columnlist.append(column['column'])
+        columnlist = sorted(columnlist)
+        for column in columnlist:
+            console = Console_Map.objects.get(row=row, column = column)
+            rowlist.append(console)
+        map.append(rowlist)
+
+
     #/todo create onshift console layout that links to sister console tables
 
     context = {
+        'map':map
 
     }
     return HttpResponse(template.render(context, request))
 
 
-
+def debugpage(request):
+    user = request.user
+    user_object = User.objects.get(id=user.id)
+    userprofile = UserProfile.objects.get(user=user_object)
+    template = loader.get_template('shift_schedule/debug.html')
+    testcontroller = OqController(userprofile)
+    testcontroller.build_schedule(datetime.date(2017,4,10))
+    ronny_user = User.objects.get(first_name ='Ronnie')
+    ronny = UserProfile.objects.get(user= ronny_user)
+    testshift = project_schedule(datetime.date(2017,4,11),datetime.date(2017,4,11),ronny)
+    testcontroller.contiguous_shifts(testshift[0])
+    context = {
+       'testcontroller': testcontroller
+    }
+    return HttpResponse(template.render(context, request))

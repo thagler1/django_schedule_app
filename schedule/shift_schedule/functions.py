@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
-from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq, PTO_table
+from .models import Shift, UserProfile, Console, Master_schedule, Console_Map, Console_oq, PTO_table
 import datetime
 from .schedule_calculations import project_schedule
 from .forms import UserForm
@@ -145,6 +145,23 @@ def check_supervisor(userprofile):
         return True
     else:
         return False
+def importcsv():
+    import csv
+
+    with open(r"C:\Users\Todd Hagler\Desktop\Book1.csv") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            try:
+                console = Console.objects.get(console_name = row[0])
+                print(row)
+                created = Console_Map.objects.get_or_create(
+                console = console,
+                row = row[1],
+                column = row[2],)
+            except:
+                print("error")
+
+
 
 
 

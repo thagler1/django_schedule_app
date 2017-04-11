@@ -86,6 +86,7 @@ class Console(models.Model):
     """
     console_name = models.CharField(max_length=100)
     manager = models.ForeignKey(UserProfile, limit_choices_to={'is_manager':True})
+    address = models.CharField(max_length=10, null=True)
 
     def __str__(self):
         return self.console_name
@@ -185,6 +186,7 @@ class PTO_table(models.Model):
     bereavement = 'B'
     shortterm_disability = 'STD'
     longterm_disability = 'LTD'
+    DoNotDisturb = 'DND'
 
     pto_choices = (
         (regularPTO, 'Regular PTO'),
@@ -193,6 +195,7 @@ class PTO_table(models.Model):
         (bereavement, "Bereavement"),
         (shortterm_disability, 'Short Term Disability'),
         (longterm_disability, 'Long Term Disability'),
+        (DoNotDisturb, 'Do Not Disurb')
     )
 
     date_requested = models.DateField()
@@ -214,6 +217,17 @@ class PTO_table(models.Model):
         controller_last_name = controller_object.last_name
 
         return "%s %s %s" % (controller_first_name, controller_last_name, self.date_pto_taken,)
+
+class Console_Map(models.Model):
+    console = models.ForeignKey(Console)
+    row = models.IntegerField()
+    column = models.IntegerField()
+
+
+    def __str__(self):
+        console_name = Console.objects.get(console_name = self.console)
+        return "%s at Row: %s, Column: %s" % (console_name, self.row, self.column)
+
 
 
 from .signals import add_pto_to_schedule

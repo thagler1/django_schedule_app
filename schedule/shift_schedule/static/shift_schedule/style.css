@@ -154,6 +154,8 @@ body {
    vertical-align: top;
    font-color: black;
    }
+
+
    .daybox {
 
    background: rgba(170,170,246, .3);
@@ -227,6 +229,24 @@ body {
    .adjusted-content {
     margin-left: 200px;
    }
+
+.full_console_schedule{}
+.full_console_schedule th{
+    background-color:rgb(86, 102, 247, .33);
+    width: 1em;
+    height: 1em;
+}
+.full_console_schedule tr{
+ height: 25px;
+}
+.full_console_schedule td{
+    width: 1em;
+
+}
+.full_console_schedule tr:nth-child(even) {
+    background-color: rgba(168, 168, 168, 0.33);
+}
+
 
 /* Tooltip container */
 .tooltip {
