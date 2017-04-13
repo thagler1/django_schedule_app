@@ -169,4 +169,3 @@ def deviation_check(controller, date):
 
 
 
-

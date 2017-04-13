@@ -23,10 +23,23 @@
 
 {{oq.console}}, <Br>
         {% endfor %}
-        {% for date in testcontroller.shift_list %}
 
-        {{date.date}} - {{date.console}}
+        {% for day in testcontroller.schedule.inOrder%}
+        {{day}}}<Br>
         {% endfor %}
+<Br>
+        <Br>
+                {% for day in testcontroller.deviations.inOrder%}
+
+        {{day}}<Br>
+
+        {% endfor %}
+        <Br>
+
+        {% for controller in qualified_coverage %}
+        {{controller.controller}} {{controller.contiguous_hours}}<Br>
+        {% endfor %}
+
     </div>
 </body>
 </html>

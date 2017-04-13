@@ -195,11 +195,25 @@ def debugpage(request):
     template = loader.get_template('shift_schedule/debug.html')
     testcontroller = OqController(userprofile)
     testcontroller.build_schedule(datetime.date(2017,4,10))
-    ronny_user = User.objects.get(first_name ='Ronnie')
-    ronny = UserProfile.objects.get(user= ronny_user)
-    testshift = project_schedule(datetime.date(2017,4,11),datetime.date(2017,4,11),ronny)
-    testcontroller.contiguous_shifts(testshift[0])
+
+    #############################################################
+    pto_events = PTO_table.objects.all()
+    for event in pto_events:
+        pto_dateItem = project_schedule(event.date_pto_taken,event.date_pto_taken, event.user) # gets date item for pto event
+        console = pto_dateItem[0].console
+        qualified_controllers = pto_dateItem[0].qualified_coverage()
+        test_coverage = []
+        for controller in qualified_controllers:
+            if controller.controller != pto_dateItem[0].controller:
+                new_controller = OqController(controller.controller)
+                new_controller.build_schedule(datetime.date(2017,4,10))
+                new_controller.coverage_check(pto_dateItem[0])
+                test_coverage.append(new_controller)
+
+
     context = {
+        'qualified_coverage': test_coverage,
+        'testdate': datetime.date(2017,4,7),
        'testcontroller': testcontroller
     }
     return HttpResponse(template.render(context, request))
