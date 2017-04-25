@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from .schedule_validation_rules import one_shift_per_controller, deviation_check
 from collections import namedtuple
-from .schedule_calculations import OqController
+from .schedule_calculations import OqController, assign_coverage
 
 
 def index(request):
@@ -178,11 +178,22 @@ def supervisors_console(request):
             rowlist.append(console)
         map.append(rowlist)
 
+    ############################
+    #pto repot
+    record = namedtuple('Record','controller pto'.split())
+    pto_events = PTO_table.objects.all()
+    pto_records = {}
+
+    for item in pto_events:
+        pto_item = project_schedule(item.date_pto_taken,item.date_pto_taken, item.user)
+        pto_records.setdefault(pto_item.console, []).append(pto_item)
+    print(pto_records)
 
     #/todo create onshift console layout that links to sister console tables
 
     context = {
-        'map':map
+        'map':map,
+        'pto_records':pto_records
 
     }
     return HttpResponse(template.render(context, request))
@@ -198,17 +209,11 @@ def debugpage(request):
 
     #############################################################
     pto_events = PTO_table.objects.all()
+    test_coverage = []
     for event in pto_events:
-        pto_dateItem = project_schedule(event.date_pto_taken,event.date_pto_taken, event.user) # gets date item for pto event
-        console = pto_dateItem[0].console
-        qualified_controllers = pto_dateItem[0].qualified_coverage()
-        test_coverage = []
-        for controller in qualified_controllers:
-            if controller.controller != pto_dateItem[0].controller:
-                new_controller = OqController(controller.controller)
-                new_controller.build_schedule(datetime.date(2017,4,10))
-                new_controller.coverage_check(pto_dateItem[0])
-                test_coverage.append(new_controller)
+        if event.coverage is None:
+            if event.type != 'DND':
+                test_coverage.append(assign_coverage(event))
 
 
     context = {

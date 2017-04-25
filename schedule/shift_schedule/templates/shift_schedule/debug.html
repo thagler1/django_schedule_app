@@ -37,7 +37,10 @@
         <Br>
 
         {% for controller in qualified_coverage %}
-        {{controller.controller}} {{controller.contiguous_hours}}<Br>
+        {% for item in controller %}
+
+        {{item.controller}} {{item.score}}<Br>
+        {% endfor %}
         {% endfor %}
 
     </div>

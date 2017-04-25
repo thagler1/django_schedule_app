@@ -36,7 +36,17 @@
 
 	</div>
         {% endfor %}
+<div>
+    {% for desk, records in pto_records.items %}
+<br>
+    {{desk}}
 
+    {% for record in records %}
+    <br>
+    {{  record.date}} - {{record.controller}}
+    {% endfor %}
+    {% endfor %}
+</div>
     </div>
 
   </body>

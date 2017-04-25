@@ -1,7 +1,5 @@
 from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq, PTO_table
 import datetime
-from collections import namedtuple
-import operator
 
 
 class Node(object):
@@ -10,11 +8,8 @@ class Node(object):
         self.right = None
         self.data = data
 
-
     def __repr__(self):
         return repr((self.data, self.left, self.right))
-
-
 
 
 class Tree(object):
@@ -88,15 +83,15 @@ class DateItem:
 
     def __init__ (self, date_object, controller,date=None, console = None, pto = None, dnd = False):
         # date object is master shift schedule object
-        self.date_object = date_object
+        self.date_object = date_object # this is the actual Master shift Model
         self.date = date # optional allows access to date worked
         self.controller = controller
         self.shift = controller.shift
-        self.original_controller = controller
+        self.original_controller = controller # this is meant to show who was supposed to work
         self.console = self.set_console()
         self.is_on_pto = False
         self.pto = self.check_pto()
-        self.dnd = dnd
+        self.dnd = dnd # flips if the controller is on PTO
         self.set_shift_times()
         self.time_off = 0
 
@@ -134,9 +129,6 @@ class DateItem:
         else: self.is_on_pto = False
         return self.is_on_pto
 
-
-    def model_object(self):
-        return self.date_object
 
     def qualified_coverage(self):
         oq_controller = Console_oq.objects.filter(console = self.console)
@@ -218,7 +210,8 @@ class OqController:
         self.controller = UserProfile
         self.score = 0
         self.oqs = self.check_oqs()
-        self.shift_list = set()
+        self.pto_days = Tree()
+
 
 
     def check_oqs(self):
@@ -235,6 +228,9 @@ class OqController:
         for day in scheduled_days:
             if day.controller == self.controller:
                 self.schedule.insert(day)
+            if day.original_controller == self.controller and day.is_on_pto: # not sure why i am adding pto days
+                self.pto_days.insert(day)
+
         self.calc_time_off()
     #def build_test_scheudle(self):
 
@@ -256,13 +252,28 @@ class OqController:
         :param date:
         :return:
         '''
-        if testdate:
-            testdate.set_controller(self.controller)
-            self.schedule.insert(testdate)
+        if testdate: # see if you were passed a testdate
+            for day in self.schedule.inOrder(): # scroll through schedule and look for start and end times that match testdate
+                if day.dnd is False or testdate.is_on_pto is False:
+                    if testdate.shift_start_time == day.shift_start_time:
+                        self.score +=5
+                        print("test 1")
+                    elif testdate.shift_start_time == day.shift_end_time:
+                        self.score +=5
+                        print("test 2")
+                    elif testdate.shift_end_time == day.shift_start_time:
+                        self.score +=5
+                        print("test 3")
+                    elif testdate.shift_end_time == day.shift_end_time:
+                        self.score +=5
+                        print("test 4")
+            testdate.set_controller(self.controller) # assign testdate to controller
+            self.schedule.insert(testdate) # insert into schedule
         else:
             testdate = date
+
+        self.deviations = Tree() #create tree to store contiguous objects
         self.calc_time_off()
-        self.deviations = Tree()
         check_list = []
         for day in self.schedule.inOrder():
             check_list.append(day)
@@ -271,7 +282,7 @@ class OqController:
                 if day.time_off < 35:
                     self.deviations.insert(day)
                 if day.time_off >= 35:
-                    print("shift: %s" % (day.date))
+
                     self.deviations.insert(day)
                     break
 
@@ -280,7 +291,6 @@ class OqController:
                 if day.time_off < 35:
                      self.deviations.insert(day)
                 if day.time_off >= 35:
-                    print("shift: %s end" % (day.date))
                     #self.deviations.insert(day)
                     break
     def is_available(self, testdate):
@@ -295,6 +305,41 @@ class OqController:
             self.contiguous_hours+=12
 
         return self.contiguous_hours
+
+    def score_coverage(self,pto_event, dateItem):
+        '''
+        this function will score pto coverage. This is the only function that needs to run in order to build, check and
+        score pto coverage
+        :param dateItem: this is the dateitem for the shift that needs to be covered
+        :return: score for coverage event
+        '''
+        testdate = pto_event.date_pto_taken
+        self.build_schedule(testdate)
+        self.coverage_check(dateItem)
+
+        MAX_HOURS = 65
+        DEVIATION_WEIGHT = 3
+        PTO_WEIGHT = 2
+        DND_WEIGHT = 1
+
+        # check for deviation
+        if self.contiguous_hours > MAX_HOURS:
+            self.score += DEVIATION_WEIGHT
+
+        # check for PTO, exclude DND
+        try:
+            for day in self.pto_days.inOrder():
+                if day.date == testdate:
+                    self.score += PTO_WEIGHT
+        except:
+            pass
+        # check for DND days
+        for day in self.schedule.inOrder():
+            if day.date == testdate and day.dnd is True:
+                self.score += DND_WEIGHT
+
+
+
 
 
 
@@ -330,7 +375,7 @@ def project_schedule(start_date, end_date, userprofile):
             try:
                 coverage_event = PTO_table.objects.get(date_pto_taken=day, coverage=userprofile)
                 other_controller_schedule = project_schedule(day,day+datetime.timedelta(days=1),coverage_event.user)
-                shift_object = other_controller_schedule[0]
+                shift_object = other_controller_schedule
                 shift_object.change_controller(userprofile)
                 event_calendar.append(shift_object)
             except:
@@ -340,5 +385,27 @@ def project_schedule(start_date, end_date, userprofile):
             new_event = DateItem(dnd, userprofile,day,dnd=True)
             event_calendar.append(new_event)
 
+    if len(event_calendar)<=1:
+        return event_calendar[0]
     return event_calendar
+
+def by_score_key(controller):
+    return controller.score
+
+
+def assign_coverage(pto_event):
+    controller_return = []
+    pto_dateItem = project_schedule(pto_event.date_pto_taken, pto_event.date_pto_taken, pto_event.user)
+    console = pto_dateItem.console
+    qualified_controllers = pto_dateItem.qualified_coverage()
+    for controller in qualified_controllers:
+        if controller.controller != pto_dateItem.original_controller:
+            new_controller = OqController(controller.controller)
+            new_controller.score_coverage(pto_event,pto_dateItem)
+            controller_return.append(new_controller)
+
+    pto_event.coverage = sorted(controller_return, key= by_score_key)[0].controller
+    pto_event.save()
+
+    return controller_return
 
