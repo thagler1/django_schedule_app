@@ -142,7 +142,6 @@ class Console_schedule(models.Model):
     date = models.DateField(default='2000-01-01')
     #is_deviation = models.BooleanField(default=False)
 
-
     def __str__(self):
         return "%s %s" % (self.date, self.deskname)
 

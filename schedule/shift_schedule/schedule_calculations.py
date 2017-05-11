@@ -373,6 +373,7 @@ def project_schedule(start_date, end_date, userprofile):
 
         if PTO_table.objects.filter(date_pto_taken=day, coverage=userprofile).exists():
             try:
+                # for day search for pto coverage. if schedule, create a dateItem with the control assigned to it
                 coverage_event = PTO_table.objects.get(date_pto_taken=day, coverage=userprofile)
                 other_controller_schedule = project_schedule(day,day+datetime.timedelta(days=1),coverage_event.user)
                 shift_object = other_controller_schedule
@@ -390,6 +391,7 @@ def project_schedule(start_date, end_date, userprofile):
     return event_calendar
 
 def by_score_key(controller):
+    # created for sorting purposes in assign_coverage
     return controller.score
 
 
@@ -408,4 +410,3 @@ def assign_coverage(pto_event):
     pto_event.save()
 
     return controller_return
-
