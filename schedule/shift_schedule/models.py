@@ -2,7 +2,22 @@ from django.db import models
 import PIL
 import os
 from django.contrib.auth.models import User #used fro user profiles
+from django.utils.deconstruct import deconstructible
 
+@deconstructible
+class PathAndRename(object):
+
+    def __init__(self, sub_path):
+        self.path = sub_path
+
+    def __call__(self, instance, filename):
+        ext = filename.split('.')[-1]
+        # set filename as random string
+        filename = '{}.{}'.format(instance.pk, ext)
+        # return the whole path to the file
+        return os.path.join(self.path, filename)
+
+path_and_rename = PathAndRename("")
 
 
 class Supervisor(models.Model):
@@ -34,8 +49,7 @@ class UserProfile(models.Model):
     shift, and scheduled for a primary console (found in employee oq)
     """
 
-    def get_image_path(instance, filename):
-        return os.path.join('documents', str(instance.id), filename)
+   
 
     hire_date = models.DateField(blank=True, default ="1950-01-01")
     pto = models.IntegerField(default=120, blank=True)
@@ -43,7 +57,7 @@ class UserProfile(models.Model):
     shift = models.ForeignKey('Shift', blank=True, null=True)
     user = models.OneToOneField(User)
     phone = models.CharField(max_length=20, blank=True, default="")
-    profile_image = models.ImageField(upload_to=get_image_path, blank=True, null=True)
+    profile_image = models.ImageField(upload_to=path_and_rename, blank=True, null=True)
     is_supervisor = models.BooleanField(default=False)
     is_manager = models.BooleanField(default=False)
 
