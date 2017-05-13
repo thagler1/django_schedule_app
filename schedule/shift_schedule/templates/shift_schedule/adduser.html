@@ -9,7 +9,7 @@
 <body>
 <form enctype="multipart/form-data" method="post" action="">
     {% csrf_token %}
-{{form.as_t}}
+{{form.as_p}}
     {{uform.as_p}}
     <input type="submit" value="Create new user account" />
 </form>
