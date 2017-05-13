@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
 from .models import PTO_table, UserProfile
+from django.contrib.admin import widgets
+
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -20,6 +22,7 @@ class UserprofileForm(ModelForm):
     class Meta:
         model = UserProfile
         fields = ['hire_date','pto', 'manager', 'shift', 'phone', 'profile_image', 'is_supervisor', 'is_manager']
-        widgets = {
-            'hire_date':forms.DateInput(attrs={'class':'datepicker'}),
-        }
+
+    def __init__(self, *args, **kwargs):
+        super(UserprofileForm, self).__init__(*args, **kwargs)
+        self.fields['hire_date'].widget = widgets.AdminDateWidget()
