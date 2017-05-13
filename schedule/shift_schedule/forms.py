@@ -21,7 +21,7 @@ class PTOForm(ModelForm):
 class UserprofileForm(ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['hire_date','pto', 'manager', 'shift', 'phone', 'profile_image', 'is_supervisor', 'is_manager']
+        #fields = ['hire_date','pto', 'manager', 'shift', 'phone', 'profile_image', 'is_supervisor', 'is_manager', 'user']
         widgets = {
             'hire_date':forms.DateInput(attrs={'class':'datepicker'}),
         }
