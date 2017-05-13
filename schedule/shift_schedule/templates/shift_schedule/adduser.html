@@ -6,17 +6,8 @@
 <body>
 <form method="post" action="">
     {% csrf_token %}
-    Username: {{form.username}}<br>
-    Password: {{form.password}}<br>
-    First Name:{{form.first_name}}<br>
-    Last Name: {{form.last_name}}<br>
-    Email Address: {{form.email}}<br>
-    Hire Date: {{uform.hire_date}}<br>
-    PTO: {{uform.pto}}<br>
-    Phone Number: {{uform.phone}} <br>
-    Profile Image: {{uform.profile_image}}
-    Manager : {{uform.manager}}<br>
-    Shift: {{uform.shift}}<br>
+{{form.as_p}}
+    {{uform.as_p}}
     <input type="submit" value="Create new user account" />
 </form>
 </body>
