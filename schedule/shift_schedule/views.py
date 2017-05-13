@@ -33,7 +33,7 @@ def create_user(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         uform = UserprofileForm(request.POST,  request.FILES)
-        image = ImageUploadForm(request.POST, request.FILES)
+        #image = ImageUploadForm(request.POST, request.FILES)
         new_up = uform.save(commit=False)
         #print(request.FILES)
 
