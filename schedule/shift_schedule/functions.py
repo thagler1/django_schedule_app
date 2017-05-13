@@ -162,7 +162,7 @@ def importcsv():
                     day = True
                 else:
                     day=False
-                created = Console_Map.objects.get_or_create(
+                created = Master_schedule.objects.get_or_create(
                 is_day = day,
                 shift = Shift.objects.get(shift_id=row[1]),
                 date= d,
