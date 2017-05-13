@@ -41,16 +41,27 @@ def create_user(request):
             new_user = User.objects.create_user(**form.cleaned_data)
             userobject = User.objects.get(username = request.POST['username'])
             userprofile = UserProfile.objects.get(user = userobject)
-            if request.POST['pto']:
+            try:
                 userprofile.pto = request.POST['pto']
-            if request.FILES['profile_image']:
+            except:
+                pass
+
+            try:
                 userprofile.profile_image = request.FILES['profile_image']
-            if request.POST['manager']:
+            except:
+                pass
+            try:
                 userprofile.manager = UserProfile.objects.get(id = request.POST['manager'])
-            if request.POST['shift']:
+            except:
+                pass
+            try:
                 userprofile.shift = Shift.objects.get(id = request.POST['shift'])
-            if request.POST['phone']:
+            except:
+                pass
+            try:
                 userprofile.phone = request.POST['phone']
+            except:
+                pass
             userprofile.save()
             # redirect, or however you want to get to the main view
             return HttpResponseRedirect('login.html')
