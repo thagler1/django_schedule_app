@@ -32,11 +32,7 @@ def create_user(request):
     #template = loader.get_template("shift_schedule/adduser.html")
     if request.method == "POST":
         form = UserForm(request.POST)
-        up_form = UserprofileForm(request.POST)
-        context = {
-            'form':form,
-            'up_form': up_form
-        }
+        uform = UserprofileForm(request.POST)
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
             login(new_user)
@@ -44,8 +40,9 @@ def create_user(request):
             return HttpResponseRedirect('login.html')
     else:
         form = UserForm()
+        uform = UserprofileForm()
 
-    return render(request, 'shift_schedule/adduser.html', {context})
+    return render(request, 'shift_schedule/adduser.html',{'form':form, 'uform':uform})
 
 
 
