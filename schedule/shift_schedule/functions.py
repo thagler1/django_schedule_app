@@ -153,7 +153,7 @@ def importcsv():
     with open(abs_file_path) as f:
         reader = csv.reader(f)
         for row in reader:
-            date = row.split("/")
+            date = row[2].split("/")
             d = (datetime.date(int(date[2]), int(date[0]), int(date[1])))
             print(d)
             try:
@@ -162,7 +162,7 @@ def importcsv():
                     day = True
                 else:
                     day=False
-                created = Console_Map.objects.get_or_create(
+                created = Master_schedule.objects.get_or_create(
                 is_day = day,
                 shift = Shift.objects.get(shift_id=row[1]),
                 date= d,
