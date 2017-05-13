@@ -57,7 +57,7 @@ class UserProfile(models.Model):
     shift = models.ForeignKey('Shift', blank=True, null=True)
     user = models.OneToOneField(User)
     phone = models.CharField(max_length=20, blank=True, default="")
-    profile_image = models.ImageField(upload_to=path_and_rename, blank=True, null=True, default="default.png")
+    profile_image = models.ImageField(upload_to=path_and_rename, blank=True, null=True)
     is_supervisor = models.BooleanField(default=False)
     is_manager = models.BooleanField(default=False)
 

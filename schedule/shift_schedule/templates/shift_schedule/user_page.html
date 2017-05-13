@@ -10,7 +10,9 @@
 <body>
 
     <ul class="sidenav">
+        {% if user_profile.profile_image %}
         <li><img src={{user_profile.profile_image.url}}></li>
+        {% endif %}
   <li><a href="#news">{{user.first_name}} {{user.last_name}}</a></li>
   <li><a href="#news">PTO Availabe: {{user_profile.pto}}</a></li>
   <li><a href="#contact">{{user.email}}</a></li>
