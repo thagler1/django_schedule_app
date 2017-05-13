@@ -6,16 +6,15 @@
 <body>
 <form method="post" action="">
     {% csrf_token %}
-    Username: <input type="text" name="user_name" value="" placeholder="Enter Username" size="50" /><br>
-    Password: <input type="password" name="password" value="" placeholder="Enter Password" size="50" /><br>
-    Re-enter Password: <input type="password" name="password2" value="" placeholder="Re-enter Password" size="50" /><br>
-    First Name: <input type="text" name="first_name" value="" placeholder="First Name" size="50" /><br>
-    Last Name: <input type="text" name="last_name" value="" placeholder="Last Name" size="50" /><br>
-    Email Address: <input type="text" name="email" value="" placeholder="username@eprod.com" size="50" /><br>
-    Hire Date: <input type='date' name="hire_date"/><br>
-    PTO: <input type="number" name="pto" value="" placeholder="120" size="3" /><br>
-    Phone Number: <input type='tel' name ="phone"pattern='[\(]\d{3}[\)]\d{3}[\-]\d{4}' title='Phone Number (Format: (999)9999-9999)'> <br>
-    Profile Image: <input type="file" name="profile_image"><br>
+    Username: {{form.username}}<br>
+    Password: {{form.password}}<br>
+    First Name:{{form.first_name}}<br>
+    Last Name: {{form.last_name}}<br>
+    Email Address: {{form.email}}<br>
+    Hire Date: {{uform.hire_date}}<br>
+    PTO: {{uform.pto}}<br>
+    Phone Number: {{uform.phone}} <br>
+    Profile Image: {{uform.profile_image}}
     Manager : {{uform.manager}}<br>
     Shift: {{uform.shift}}<br>
     <input type="submit" value="Create new user account" />
