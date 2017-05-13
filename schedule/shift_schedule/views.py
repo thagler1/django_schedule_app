@@ -36,9 +36,12 @@ def create_user(request):
         print(form.is_valid())
         print(uform.is_valid())
 
-        if form.is_valid() and uform.is_valid():
-            new_user = User.objects.create_user(**form.cleaned_data)
 
+        if form.is_valid():
+            new_user = User.objects.create_user(**form.cleaned_data)
+            uform['user'] = new_user
+        if uform.is_valid():
+            new_up = uform.save()
             # redirect, or however you want to get to the main view
             return HttpResponseRedirect('login.html')
     else:
