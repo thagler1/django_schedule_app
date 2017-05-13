@@ -33,16 +33,18 @@ def create_user(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         uform = UserprofileForm(request.POST)
-        print(form.is_valid())
-        print(uform.is_valid())
         new_up = uform.save(commit=False)
 
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
-            new_up.user = User.objects.get(username = request.POST['username'])
-            print(new_up)
-
-            new_up.save()
+            userobject = User.objects.get(username = request.POST['username'])
+            userprofile = UserProfile.objects.get(user = userobject)
+            userprofile.pto = uform.pto
+            userprofile.profile_image = uform.profile_image
+            userprofile.manager = uform.manager
+            userprofile.shift = uform.shift
+            userprofile.phone = uform.phone
+            userprofile.save()
             # redirect, or however you want to get to the main view
             return HttpResponseRedirect('login.html')
     else:
