@@ -39,7 +39,7 @@ def create_user(request):
 
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
-            uform.user = User.objects.get(username = form.username)
+            uform.user = User.objects.get(username = request.POST['username'])
         if uform.is_valid():
             new_up = uform.save()
             # redirect, or however you want to get to the main view
