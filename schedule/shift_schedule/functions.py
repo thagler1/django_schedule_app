@@ -148,7 +148,7 @@ def check_supervisor(userprofile):
 def importcsv():
     import csv
 
-    with open(r"/home/todd/django_schedule_app/schedule/shift_schedule") as f:
+    with open(r"/home/todd/django_schedule_app/schedule/shift_schedule/books.csv") as f:
         reader = csv.reader(f)
         for row in reader:
             try:
