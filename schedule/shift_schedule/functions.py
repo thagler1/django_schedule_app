@@ -153,10 +153,11 @@ def importcsv():
     with open(abs_file_path) as f:
         reader = csv.reader(f)
         for row in reader:
+            date = row.split("/")
+            d = (datetime.date(int(date[2]), int(date[0]), int(date[1])))
+            print(d)
             try:
-                date = row.split("/")
-                d = (datetime.date(int(date[2]),int(date[0]),int(date[1])))
-                print(d)
+
                 if row[0] == 't':
                     day = True
                 else:
