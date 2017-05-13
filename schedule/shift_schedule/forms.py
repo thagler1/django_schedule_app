@@ -22,7 +22,6 @@ class UserprofileForm(ModelForm):
     class Meta:
         model = UserProfile
         fields = ['hire_date','pto', 'manager', 'shift', 'phone', 'profile_image', 'is_supervisor', 'is_manager']
-
-    def __init__(self, *args, **kwargs):
-        super(UserprofileForm, self).__init__(*args, **kwargs)
-        self.fields['hire_date'].widget = widgets.AdminDateWidget()
+        widgets = {
+            'hire_date':forms.DateInput(attrs={'class':'datepicker'}),
+        }

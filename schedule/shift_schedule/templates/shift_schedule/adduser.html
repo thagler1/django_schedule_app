@@ -1,36 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-{% load widget_tweaks %}
-
-{% block extra_header %}
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css"/>
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/widgets.css"/>
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css"/>
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/global.css"/>
-{% endblock %}
-
-{% block content %}
-    <div class="form-group">
-        ...
-        <div class="form-group">
-            {{ uform.date.label_tag }}
-            {% render_field form.date class="vDateField" %}
-            {{ uform.date.errors }}
-        </div>
-
-    </div>
-{% endblock %}
-
-{% block footer_js %}
-<script>
-    var django = django || {};
-    django.jQuery = $;
-</script>
-<script type="text/javascript" src="/admin/jsi18n/"></script>
-{{ formset.media }}
-{% endblock %}
-
 
 </head>
 <body>
@@ -42,6 +12,8 @@
     Last Name: <input type="text" name="last_name" value="" placeholder="Last Name" size="50" /><br>
     Email Address: <input type="text" name="email" value="" placeholder="username@eprod.com" size="50" /><br>
     Hire Date: <input type='date' name="hire_date"/><br>
+    {{form.as_p}}
+    {{uform.as_p}}
     <input type="submit" value="Create new user account" />
 </form>
 </body>
