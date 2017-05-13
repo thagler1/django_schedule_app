@@ -148,7 +148,7 @@ def check_supervisor(userprofile):
 def importcsv():
     import csv, os
     script_dir = os.path.dirname(__file__)  # <-- absolute dir the script is in
-    rel_path = "shift_schedule/book1.csv"
+    rel_path = "book1.csv"
     abs_file_path = os.path.join(script_dir, rel_path)
     with open(abs_file_path) as f:
         reader = csv.reader(f)
