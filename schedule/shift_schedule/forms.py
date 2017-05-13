@@ -21,11 +21,7 @@ class PTOForm(ModelForm):
 class UserprofileForm(ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['hire_date','pto', 'manager', 'shift', 'phone']
+        fields = ['hire_date','pto', 'manager', 'shift', 'phone', 'profile_image']
         widgets = {
             'hire_date':forms.DateInput(attrs={'class':'datepicker'}),
         }
-
-class ImageUploadForm(forms.Form):
-    """Image upload form."""
-    image = forms.ImageField()

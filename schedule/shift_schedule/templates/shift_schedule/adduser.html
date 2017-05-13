@@ -4,11 +4,10 @@
 
 </head>
 <body>
-<form method="post" action="">
+<form enctype="multipart/form-data" method="post" action="">
     {% csrf_token %}
 {{form.as_p}}
     {{uform.as_p}}
-    {{image.image}}
     <input type="submit" value="Create new user account" />
 </form>
 </body>
