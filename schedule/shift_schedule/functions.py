@@ -153,7 +153,7 @@ def importcsv():
     with open(abs_file_path) as f:
         reader = csv.reader(f)
         for row in reader:
-            date = row.split("/")
+            date = row[2].split("/")
             d = (datetime.date(int(date[2]), int(date[0]), int(date[1])))
             print(d)
             try:
