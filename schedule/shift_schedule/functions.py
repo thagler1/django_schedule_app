@@ -155,7 +155,8 @@ def importcsv():
         for row in reader:
             try:
                 date = row[2].split("/")
-                print(row)
+                print(datetime.date(int(date[2]),int(date[1]),int(date[0])))
+                
                 if row[0] == 't':
                     day = True
                 else:
