@@ -25,3 +25,20 @@ class UserprofileForm(ModelForm):
         widgets = {
             'hire_date':forms.DateInput(attrs={'class':'datepicker'}),
         }
+
+        def __init__(self, *args, **kwargs):
+            super(UserprofileForm, self).__init__(*args, **kwargs)
+            self.fields['user'].required = False
+            data = kwargs.get('data')
+            # 'prefix' parameter required if in a modelFormset
+            self.user_form = UserForm(instance=self.instance and self.instance.user,
+                                        prefix=self.prefix, data=data)
+
+        def clean(self):
+            if not self.user_form.is_valid():
+                raise forms.ValidationError("User not valid")
+
+        def save(self, commit=True):
+            obj = super(UserprofileForm, self).save(commit=commit)
+            obj.user = self.user_form.save()
+            obj.save()
