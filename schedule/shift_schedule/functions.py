@@ -146,9 +146,11 @@ def check_supervisor(userprofile):
     else:
         return False
 def importcsv():
-    import csv
-
-    with open(r"book1.csv") as f:
+    import csv, os
+    script_dir = os.path.dirname(__file__)  # <-- absolute dir the script is in
+    rel_path = "book1.csv"
+    abs_file_path = os.path.join(script_dir, rel_path)
+    with open(abs_file_path) as f:
         reader = csv.reader(f)
         for row in reader:
             try:
