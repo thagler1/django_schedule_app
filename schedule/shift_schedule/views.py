@@ -33,8 +33,9 @@ def create_user(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         uform = UserprofileForm(request.POST)
-        print(request.POST)
-        
+        print(form.is_valid())
+        print(uform.is_valid())
+
         if form.is_valid() and uform.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
 
