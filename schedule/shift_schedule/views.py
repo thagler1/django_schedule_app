@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq, PTO_table, Console_Map
 import datetime
-from .forms import UserForm, PTOForm
+from .forms import UserForm, PTOForm, UserprofileForm
 from .schedule_calculations import project_schedule
 from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv
 from django.contrib.auth import login, authenticate
@@ -32,6 +32,7 @@ def create_user(request):
     #template = loader.get_template("shift_schedule/adduser.html")
     if request.method == "POST":
         form = UserForm(request.POST)
+        up_form = UserprofileForm(request.POST)
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
             login(new_user)
@@ -40,7 +41,7 @@ def create_user(request):
     else:
         form = UserForm()
 
-    return render(request, 'shift_schedule/adduser.html', {'form':form})
+    return render(request, 'shift_schedule/adduser.html', {'form':form, 'up_form':up_form})
 
 
 
