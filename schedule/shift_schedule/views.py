@@ -4,7 +4,7 @@ from .models import Shift, UserProfile, Console, Master_schedule, Console_schedu
 import datetime
 from .forms import UserForm, PTOForm, UserprofileForm
 from .schedule_calculations import project_schedule
-from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv
+from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv, handle_uploaded_file
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -32,15 +32,16 @@ def create_user(request):
     #template = loader.get_template("shift_schedule/adduser.html")
     if request.method == "POST":
         form = UserForm(request.POST)
-        uform = UserprofileForm(request.POST)
+        uform = UserprofileForm(request.POST,  request.FILES)
         new_up = uform.save(commit=False)
+
 
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
             userobject = User.objects.get(username = request.POST['username'])
             userprofile = UserProfile.objects.get(user = userobject)
             userprofile.pto = request.POST['pto']
-            userprofile.profile_image = request.POST['profile_image']
+            userprofile.profile_image = request.FILES['profile_image']
             userprofile.manager = UserProfile.objects.get(id = request.POST['manager'])
             userprofile.shift = Shift.objects.get(id = request.POST['shift'])
             userprofile.phone = request.POST['phone']
