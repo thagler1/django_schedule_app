@@ -148,16 +148,17 @@ def check_supervisor(userprofile):
 def importcsv():
     import csv
 
-    with open(r"C:\Users\Todd Hagler\Desktop\Book1.csv") as f:
+    with open(r"/home/todd/django_schedule_app/schedule/shift_schedule") as f:
         reader = csv.reader(f)
         for row in reader:
             try:
-                console = Console.objects.get(console_name = row[0])
+
                 print(row)
                 created = Console_Map.objects.get_or_create(
-                console = console,
-                row = row[1],
-                column = row[2],)
+                is_day = row[0],
+                shift = Shift.objects.get(shift_id=row[1]),
+                date= row[2],
+                repeat_start =row[3])
             except:
                 print("error")
 
