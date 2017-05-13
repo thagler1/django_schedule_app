@@ -154,8 +154,12 @@ def importcsv():
             try:
 
                 print(row)
+                if row[0] == 't':
+                    day = True
+                else:
+                    day=False
                 created = Console_Map.objects.get_or_create(
-                is_day = row[0],
+                is_day = day,
                 shift = Shift.objects.get(shift_id=row[1]),
                 date= row[2],
                 repeat_start =row[3])
