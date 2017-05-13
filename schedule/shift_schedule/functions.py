@@ -154,7 +154,7 @@ def importcsv():
         reader = csv.reader(f)
         for row in reader:
             try:
-
+                date = row[2].split("/")
                 print(row)
                 if row[0] == 't':
                     day = True
@@ -163,8 +163,8 @@ def importcsv():
                 created = Console_Map.objects.get_or_create(
                 is_day = day,
                 shift = Shift.objects.get(shift_id=row[1]),
-                date= row[2],
-                repeat_start =row[3])
+                date= datetime.date(int(date[2]),int(date[1]),int(date[0])),
+                repeat_start =datetime.date(int(date[2]),int(date[1]),int(date[0])))
             except:
                 print("error")
 
