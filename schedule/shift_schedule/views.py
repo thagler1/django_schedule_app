@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq, PTO_table, Console_Map
 import datetime
-from .forms import UserForm, PTOForm, UserprofileForm, ImageUploadForm
+from .forms import UserForm, PTOForm, UserprofileForm,
 from .schedule_calculations import project_schedule
 from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv, handle_uploaded_file
 from django.contrib.auth import login, authenticate
