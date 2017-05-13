@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq, PTO_table, Console_Map
 import datetime
-from .forms import UserForm, PTOForm, UserprofileForm
+from .forms import UserForm, PTOForm, UserprofileForm, ImageUploadForm
 from .schedule_calculations import project_schedule
 from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv, handle_uploaded_file
 from django.contrib.auth import login, authenticate
@@ -33,8 +33,9 @@ def create_user(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         uform = UserprofileForm(request.POST,  request.FILES)
+        image = ImageUploadForm(request.POST, request.FILES)
         new_up = uform.save(commit=False)
-        print(request.FILES)
+        #print(request.FILES)
 
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
