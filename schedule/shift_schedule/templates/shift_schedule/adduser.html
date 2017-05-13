@@ -6,7 +6,8 @@
 <body>
 <form method="post" action="">
     {% csrf_token %}
-    {{ form }}
+     Username: <input type="text" name="user_name" value="" placeholder="Enter Username" size="50" />
+
     <input type="submit" value="Create new user account" />
 </form>
 </body>

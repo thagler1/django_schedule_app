@@ -27,7 +27,7 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-def lexusadduser(request):
+def create_user(request):
 
     #template = loader.get_template("shift_schedule/adduser.html")
     if request.method == "POST":
@@ -36,7 +36,7 @@ def lexusadduser(request):
             new_user = User.objects.create_user(**form.cleaned_data)
             login(new_user)
             # redirect, or however you want to get to the main view
-            return HttpResponseRedirect('index.html')
+            return HttpResponseRedirect('login.html')
     else:
         form = UserForm()
 
@@ -222,3 +222,4 @@ def debugpage(request):
        'testcontroller': testcontroller
     }
     return HttpResponse(template.render(context, request))
+
