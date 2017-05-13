@@ -229,7 +229,7 @@ def supervisors_console(request):
 
 
 def debugpage(request):
-    importcsv()
+    #importcsv()
     user = request.user
     user_object = User.objects.get(id=user.id)
     userprofile = UserProfile.objects.get(user=user_object)
