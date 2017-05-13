@@ -7,11 +7,20 @@
 <link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
 </head>
 <body>
+{% include "shift_schedule/sidenav.html" %}
+<div class="wrapper">
+     <div class="row">
+<div class="col span2">
+
+
 <form enctype="multipart/form-data" method="post" action="">
     {% csrf_token %}
 {{form.as_p}}
     {{uform.as_p}}
     <input type="submit" value="Create new user account" />
 </form>
+</div>
+     </div>
+</div>
 </body>
 </html>
