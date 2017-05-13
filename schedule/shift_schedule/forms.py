@@ -21,5 +21,5 @@ class UserprofileForm(ModelForm):
         model = UserProfile
         fields = ['hire_date','pto', 'manager', 'shift', 'phone', 'profile_image', 'is_supervisor', 'is_manager']
         widgets = {
-            'hire_date': DateInput(),
+            'hire_date':forms.DateInput(attrs={'class':'datepicker'}),
         }
