@@ -41,8 +41,8 @@ def create_user(request):
             userprofile = UserProfile.objects.get(user = userobject)
             userprofile.pto = request.POST['pto']
             userprofile.profile_image = request.POST['profile_image']
-            userprofile.manager = request.POST['manager']
-            userprofile.shift = request.POST['shift']
+            userprofile.manager = UserProfile.objects.get(id = request.POST['manager'])
+            userprofile.shift = Shift.objects.get(id = request.POST['shift'])
             userprofile.phone = request.POST['phone']
             userprofile.save()
             # redirect, or however you want to get to the main view
