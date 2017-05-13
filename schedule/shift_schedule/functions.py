@@ -154,7 +154,7 @@ def importcsv():
         reader = csv.reader(f)
         for row in reader:
             try:
-                date = row[2].split("/")
+                date = row.split("/")
                 d = (datetime.date(int(date[2]),int(date[0]),int(date[1])))
 
                 if row[0] == 't':
