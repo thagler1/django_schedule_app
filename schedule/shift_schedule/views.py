@@ -34,7 +34,7 @@ def create_user(request):
         form = UserForm(request.POST)
         uform = UserprofileForm(request.POST,  request.FILES)
         new_up = uform.save(commit=False)
-
+        print(request.FILES)
 
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
