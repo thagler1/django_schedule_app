@@ -76,7 +76,8 @@ def add_pto_to_schedule(sender, instance, created, **kwargs):
 
             pto_event.delete()
         #adds console info to pto event
-    pto_event.save()
+
+        pto_event.save()
 
 
 @receiver(pre_delete, sender= PTO_table)
