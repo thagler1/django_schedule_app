@@ -24,8 +24,9 @@ class PTOForm(ModelForm):
 
 
     def __init__(self, *args, **kwargs):
-        super(PTOForm, self).__init__(*args, **kwargs)
         self.userprofile = kwargs.pop('userprofile', None)
+        super(PTOForm, self).__init__(*args, **kwargs)
+
 
 
     def clean_type(self, userprofile):
