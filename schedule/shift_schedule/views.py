@@ -161,7 +161,7 @@ def controller_pto_form(request):
 
 
         if form.is_valid():
-            form.clean_recipeants(userprofile)
+            #form.clean_recipeants(userprofile)
             post =form.save(commit=False)  # saves form and commits to DB
             post.date_requested=datetime.datetime.now()
             post.user = userprofile
