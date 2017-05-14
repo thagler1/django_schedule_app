@@ -50,7 +50,8 @@ class PTOForm(ModelForm):
         if scheduled is False:
             # reject pto taken on days not scheduled
             if self.cleaned_data['type'] == 'PTO' or self.cleaned_data['type'] == 'PTOS':
-                raise forms.ValidationError("You cannot take %(self.cleaned_data['type'])s on a day you are not scheduled")
+                raise forms.ValidationError("You cannot take %(value)s on a day you are not scheduled",
+                                            params={'value': self.cleaned_data['type']},)
         return self.cleaned_data['type']
 
 class UserprofileForm(ModelForm):
