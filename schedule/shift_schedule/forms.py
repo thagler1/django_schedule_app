@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django import forms
 from .models import PTO_table, UserProfile
 from django.contrib.admin import widgets
+from .schedule_calculations import project_schedule
 
 
 class DateInput(forms.DateInput):
@@ -20,6 +21,21 @@ class PTOForm(ModelForm):
     class Meta:
         model = PTO_table
         fields =  ['date_pto_taken', 'type', 'notes']
+
+    def clean(self):
+        # test the rate limit by passing in the cached user object
+        scheduled = False
+        #Check to see if controller is scheduled that day
+        schedule = project_schedule(self.date_pto_taken,self.date_pto_taken,self.user)
+        if schedule:
+            scheduled = True
+
+        if scheduled == True:
+            #Check if DND is set for scheduled day, if it is reject the form
+            if self.type == 'DND':
+                raise forms.ValidationError("You cannot mark a day you are scheduled to work with Do No Disturb.")
+
+        return self.cleaned_data
 
 class UserprofileForm(ModelForm):
     class Meta:

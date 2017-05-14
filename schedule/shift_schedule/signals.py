@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save, pre_delete
+from django.db.models.signals import post_save, pre_delete, pre_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from .models import Console, Manager, Console_schedule, Master_schedule, Shift, UserProfile, Console_oq, PTO_table
@@ -22,17 +22,9 @@ def initialize_desk_schedule(sender, instance, created, **kwargs):
                                                    date = date.date)
 '''
 
-#Build Master Schedule
-def addshift (sequence, instance, start_date):
-    for i, shift in enumerate(sequence):
-        date = (start_date + datetime.timedelta(days=i)).strftime('%Y-%m-%d')
-        if shift == "Day":
-            Master_schedule.objects.update_or_create(shift = instance, date = date, is_day = True)
-        elif shift == "Night":
-            Master_schedule.objects.update_or_create(shift=instance, date=date, is_day=False)
-        else:
-            pass
 
+
+@receiver(pre_save, sender = PTO_table)
 
 
 @receiver(post_save, sender = User)
