@@ -15,17 +15,7 @@
 
 <form enctype="multipart/form-data" method="post" action="">
     {% csrf_token %}
-{% for field in form.visible_fields %}
-    <div>
-        {{ field.errors }}
-        <span class="filter-label">{{ field.label_tag }}</span><br>
-        {{ field }}
-    </div>
- {% endfor %}
-
- {% for field in form.hidden_fields %}
-     <div style="display:none;">{{ field }}</div>
- {% endfor %}
+{{form.as_p}}
     {{uform.as_p}}
     <input type="submit" value="Create new user account" />
 </form>

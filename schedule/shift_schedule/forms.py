@@ -13,7 +13,7 @@ class UserForm(ModelForm):
         model = User
         fields = ['username', 'email', 'password', 'first_name', 'last_name']
         widgets = {
-            'password':forms.DateInput(attrs={'class':'password'}),
+            'password':forms.PasswordInput(attrs={'placeholder': ''}),
         }
 
 class PTOForm(ModelForm):
