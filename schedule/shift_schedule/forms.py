@@ -22,7 +22,7 @@ class PTOForm(ModelForm):
         model = PTO_table
         fields =  ['date_pto_taken', 'type', 'notes']
 
-    def clean_recipeants(self, userprofile):
+    def clean_type(self, userprofile):
         # test the rate limit by passing in the cached user object
         scheduled = False
         #Check to see if controller is scheduled that day
