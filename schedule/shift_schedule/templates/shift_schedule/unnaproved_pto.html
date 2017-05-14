@@ -5,11 +5,33 @@
 <link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
 <body>
 
-<ul>
-{% for pto_request in all_unapproved_pto %}
+<table>
+    <caption>Unnaproved PTO</caption>
+    <thead>
+    <tr>
+        <tr><th>
+        Date
+    </th>
+        <th>Controller</th>
 
-    <li>{{ pto_request.user.full_name }} {{ pto_request.console_date }}></li>
-{% endfor %}
+        <th>Type</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for pto_request in all_unapproved_pto %}
+        <td>{{pto_request.date_pto_taken}}</td>
+        <td>{{pto_request.user.full_name</td>
+        <td>{{pto_request.type}}</td>
+    </tr>
+    <% endfor %}
+    </tbody>
+</table>
+
+
+
+
 
 </body>
 </html>

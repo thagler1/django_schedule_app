@@ -178,7 +178,7 @@ def unnaproved_pto(request):
     userprofile = UserProfile.objects.get(user=user_object)
 
     template = loader.get_template('shift_schedule/unnaproved_pto.html')
-    all_unapproved_pto = PTO_table.objects.filter(supervisor_approval=True)
+    all_unapproved_pto = PTO_table.objects.filter(supervisor_approval=False)
     context = {
         'all_unapproved_pto': all_unapproved_pto
     }

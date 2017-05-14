@@ -216,7 +216,7 @@ class PTO_table(models.Model):
     user = models.ForeignKey(UserProfile)
     coverage = models.ForeignKey(UserProfile, default=None,blank=True,null=True, related_name="+")
     #console_date = models.ForeignKey(Console_schedule)
-    supervisor_approval = models.BooleanField(default=True)
+    supervisor_approval = models.BooleanField(default=False)
     manager_approval = models.BooleanField(default=True)
     notes = models.TextField(default="")
     type = models.CharField(max_length=4,
