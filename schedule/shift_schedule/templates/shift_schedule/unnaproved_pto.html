@@ -13,7 +13,7 @@
         Date
     </th>
         <th>Controller</th>
-
+        <th>Console</th>
         <th>Type</th>
 
     </tr>
@@ -24,6 +24,7 @@
         {{day|date:"n"}}/{{day|date:"d"}}<BR> {{day|date:"D"}}
         <td>{{pto_request.date_pto_taken|date:"n"}}/{{pto_request.date_pto_taken|date:"d"}}<Br>{{pto_request.date_pto_taken|date:"d"}}</td>
         <td>{{pto_request.user.full_name}}</td>
+        <td>{{pto_request.console}}</td>
         <td>{{pto_request.type}}</td>
     </tr>
     {% endfor %}

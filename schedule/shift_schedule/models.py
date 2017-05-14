@@ -230,7 +230,7 @@ class PTO_table(models.Model):
         controller_first_name = controller_object.first_name
         controller_last_name = controller_object.last_name
 
-        return "%s %s %s" % (controller_first_name, controller_last_name, self.date_pto_taken,)
+        return "%s %s %s %s" % (controller_first_name, controller_last_name, self.date_pto_taken,self.console)
 
 class Console_Map(models.Model):
     console = models.ForeignKey(Console)
