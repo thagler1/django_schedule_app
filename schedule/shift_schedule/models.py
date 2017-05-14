@@ -218,6 +218,7 @@ class PTO_table(models.Model):
     #console_date = models.ForeignKey(Console_schedule)
     supervisor_approval = models.BooleanField(default=False)
     manager_approval = models.BooleanField(default=True)
+    shift_type = models.CharField(max_length=20, null=True)
     notes = models.TextField(default="")
     type = models.CharField(max_length=4,
                             choices=pto_choices,

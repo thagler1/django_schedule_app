@@ -22,7 +22,9 @@
     <tr>
         {% for pto_request in all_unapproved_pto %}
 
-        <td>{{pto_request.date_pto_taken|date:"n"}}/{{pto_request.date_pto_taken|date:"d"}}<Br>{{pto_request.date_pto_taken|date:"D"}}</td>
+        <td>{{pto_request.date_pto_taken|date:"n"}}/{{pto_request.date_pto_taken|date:"d"}}<Br>{{pto_request.date_pto_taken|date:"D"}}
+        <Br>
+            {{pto_request.shift_type}}</td>
         <td>{{pto_request.date_requested|date:"n"}}/{{pto_request.requested|date:"d"}}</td>
         <td>{{pto_request.user.full_name}}</td>
         <td>{{pto_request.console}}</td>

@@ -46,8 +46,14 @@ def assign_console_to_pto(sender, instance, **kwargs):
         schedule = project_schedule(pto_event.date_pto_taken,pto_event.date_pto_taken, pto_event.user)
         print(schedule)
         pto_event.console = schedule.console
-        pto_event.save()
 
+
+    if pto_event.shift_type is None:
+        if schedule.is_day:
+            pto_event.shift_type = "DAY"
+        else:
+            pto_event.shift_type = "Night"
+    pto_event.save()
 
 
 @receiver(post_save, sender = PTO_table)
