@@ -237,7 +237,6 @@ class OqController:
     def calc_time_off(self):
         prev_shift = None
         for shift in self.schedule.inOrder():
-            print(shift)
             if prev_shift is None:
                 prev_shift = shift
             else:
@@ -257,16 +256,16 @@ class OqController:
                 if day.dnd is False or testdate.is_on_pto is False:
                     if testdate.shift_start_time == day.shift_start_time:
                         self.score +=5
-                        print("test 1")
+
                     elif testdate.shift_start_time == day.shift_end_time:
                         self.score +=5
-                        print("test 2")
+
                     elif testdate.shift_end_time == day.shift_start_time:
                         self.score +=5
-                        print("test 3")
+
                     elif testdate.shift_end_time == day.shift_end_time:
                         self.score +=5
-                        print("test 4")
+
             testdate.set_controller(self.controller) # assign testdate to controller
             self.schedule.insert(testdate) # insert into schedule
         else:

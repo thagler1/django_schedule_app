@@ -59,7 +59,7 @@ def add_pto_to_schedule(sender, instance, created, **kwargs):
     elif pto_event.console is None:
 
         schedule = project_schedule(pto_event.date_pto_taken,pto_event.date_pto_taken, pto_event.user)
-        print(schedule.console)
+        print(schedule)
         pto_event.console = schedule.console
         pto_event.save()
 
