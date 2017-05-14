@@ -10,7 +10,7 @@
 <body>
 
     <ul class="sidenav">
-        {% if user_profile.profile_image.url != 'None' %}
+        {% if user_profile.profile_image.url != None %}
         <li><img src={{user_profile.profile_image.url}}></li>
         {% endif %}
   <li><a href="#news">{{user.first_name}} {{user.last_name}}</a></li>
