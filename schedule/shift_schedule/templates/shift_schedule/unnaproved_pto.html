@@ -9,9 +9,9 @@
     <caption>Unnaproved PTO</caption>
     <thead>
     <tr>
-        <tr><th>
-        Date
-    </th>
+        <tr>
+        <th>Date</th>
+        <th>Date Requested</th>
         <th>Controller</th>
         <th>Console</th>
         <th>Type</th>
@@ -23,6 +23,7 @@
         {% for pto_request in all_unapproved_pto %}
 
         <td>{{pto_request.date_pto_taken|date:"n"}}/{{pto_request.date_pto_taken|date:"d"}}<Br>{{pto_request.date_pto_taken|date:"D"}}</td>
+        <td>{{pto_request.date_requested|date:"n"}}/{{pto_request.requested|date:"d"}}</td>
         <td>{{pto_request.user.full_name}}</td>
         <td>{{pto_request.console}}</td>
         <td>{{pto_request.type}}</td>
