@@ -62,19 +62,20 @@ def add_pto_to_schedule(sender, instance, created, **kwargs):
 
     once pto has been approved by supervisor remove controller from scheduled shift
     '''
-    pto_event = instance
-    pto_taker = UserProfile.objects.get(id=pto_event.user.id)
-    # subtract pto hours if not DND
-    if pto_event.type != 'DND':
-        if created:
-            pto_taker.pto -=12
-            pto_taker.save()
+    if created:
+        pto_event = instance
+        pto_taker = UserProfile.objects.get(id=pto_event.user.id)
+        # subtract pto hours if not DND
+        if pto_event.type != 'DND':
+            if created:
+                pto_taker.pto -=12
+                pto_taker.save()
 
-    #if on PTO cant take PTO again
-    elif PTO_table.objects.filter(user = pto_taker, date_pto_taken= instance.date_pto_taken).count()>=1:
+        #if on PTO cant take PTO again
+        elif PTO_table.objects.filter(user = pto_taker, date_pto_taken= instance.date_pto_taken).count()>=1:
 
-        pto_event.delete()
-    #adds console info to pto event
+            pto_event.delete()
+        #adds console info to pto event
 
 
 
