@@ -45,14 +45,14 @@ def add_pto_to_schedule(sender, instance, created, **kwargs):
     '''
     pto_event = instance
     pto_taker = UserProfile.objects.get(id=pto_event.user.id)
+    # subtract pto hours if not DND
     if pto_event.type != 'DND':
         if created:
             pto_taker.pto -=12
             pto_taker.save()
 
+    #if on PTO cant take PTO again
     elif PTO_table.objects.filter(user = pto_taker, date_pto_taken= instance.date_pto_taken).count()>1:
-        print(pto_taker)
-        print(pto_event)
 
         pto_event.delete()
 
