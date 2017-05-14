@@ -53,7 +53,7 @@ def assign_console_to_pto(sender, instance, **kwargs):
             pto_event.shift_type = "DAY"
         else:
             pto_event.shift_type = "Night"
-    pto_event.save()
+
 
 
 @receiver(post_save, sender = PTO_table)
@@ -76,7 +76,7 @@ def add_pto_to_schedule(sender, instance, created, **kwargs):
 
             pto_event.delete()
         #adds console info to pto event
-
+    pto_event.save()
 
 
 @receiver(pre_delete, sender= PTO_table)
