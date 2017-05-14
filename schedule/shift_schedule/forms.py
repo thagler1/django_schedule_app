@@ -26,13 +26,14 @@ class PTOForm(ModelForm):
         # test the rate limit by passing in the cached user object
         scheduled = False
         #Check to see if controller is scheduled that day
-        schedule = project_schedule(self.date_pto_taken,self.date_pto_taken,self.user)
+        schedule = project_schedule(self.cleaned_data['date_pto_taken']
+            ,self.cleaned_data['date_pto_taken'],self.cleaned_data['user'])
         if schedule:
             scheduled = True
 
         if scheduled == True:
             #Check if DND is set for scheduled day, if it is reject the form
-            if self.type == 'DND':
+            if self.cleaned_data['type'] == 'DND':
                 raise forms.ValidationError("You cannot mark a day you are scheduled to work with Do No Disturb.")
 
         return self.cleaned_data
