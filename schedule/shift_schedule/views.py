@@ -169,7 +169,7 @@ def controller_pto_form(request):
             post.save()
             return HttpResponseRedirect('/shift_schedule/user')
     else:
-        form = PTOForm()
+        form = PTOForm(request.Post, userprofile)
     return render(request, 'shift_schedule/controller_pto_form.html', {'form': form})
 
 def unnaproved_pto(request):
