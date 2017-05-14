@@ -250,10 +250,10 @@ class Schedule_Record(models.Model):
     controller = models.ForeignKey(UserProfile, default=None, null=True)
     shift_start_time = models.DateTimeField(default=None, null=True)
     shift_end_time = models.DateTimeField(default = None, null=True)
-    original_controller = models.ForeignKey(UserProfile,default=None, null=True)
+    original_controller = models.ForeignKey(UserProfile,default=None, null=True, related_name="+")
     pto_event = models.ForeignKey(PTO_table,default=None, null=True)
-    is_day = models.BooleanField(null=True, default=True)
-    is_overtime = models.BooleanField(null=True)
+    is_day = models.BooleanField(default=True)
+    is_overtime = models.BooleanField(default = True)
     console = models.ForeignKey(Console,null=True)
     def __str__(self):
         console_name = Console.objects.get(console_name=self.console)
