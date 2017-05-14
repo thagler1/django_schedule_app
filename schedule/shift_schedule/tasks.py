@@ -9,7 +9,7 @@ from django.contrib.auth.models import User #used fro user profiles
 app = Celery()
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
-    sender.add_periodic_task(10.0, test.s('hello'), name='add every 10')
+    sender.add_periodic_task(10.0, test(), name='add every 10')
 
 @app.task
 def test(arg):
