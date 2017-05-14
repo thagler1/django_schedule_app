@@ -387,7 +387,7 @@ def project_schedule(start_date, end_date, userprofile):
             event_calendar.append(new_event)
 
 
-    if len(event_calendar)<=1:
+    if len(event_calendar)==1:
         return event_calendar[0]
     return event_calendar
 
