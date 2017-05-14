@@ -45,7 +45,7 @@ class PTOForm(ModelForm):
             if self.cleaned_data['type'] == 'DND':
                 raise forms.ValidationError("You cannot mark a day you are scheduled to work with Do No Disturb.")
 
-        return self.cleaned_data
+        return self.cleaned_data['type']
 
 class UserprofileForm(ModelForm):
     class Meta:
