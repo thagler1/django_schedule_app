@@ -243,6 +243,25 @@ class Console_Map(models.Model):
         console_name = Console.objects.get(console_name = self.console)
         return "%s at Row: %s, Column: %s" % (console_name, self.row, self.column)
 
-
-
+class Schedule_Record(models.Model):
+    date = models.DateField(default=None, null=True)
+    shift = models.ForeignKey(Shift,default=None, null=True)
+    #this is meant to be the controller that worked the shift
+    controller = models.ForeignKey(UserProfile, default=None, null=True)
+    shift_start_time = models.DateTimeField(default=None, null=True)
+    shift_end_time = models.DateTimeField(default = None, null=True)
+    original_controller = models.ForeignKey(UserProfile,default=None, null=True)
+    pto_event = models.ForeignKey(PTO_table,default=None, null=True)
+    is_day = models.BooleanField(null=True, default=True)
+    is_overtime = models.BooleanField(null=True)
+    console = models.ForeignKey(Console,null=True)
+    def __str__(self):
+        console_name = Console.objects.get(console_name=self.console)
+        date = self.date
+        controller = self.controller
+        if self.is_day:
+            shift_type = "Day"
+        else:
+            shift_type = "Night"
+        return "%s %s %s %s"%(date,shift_type, console_name,controller)
 from .signals import add_pto_to_schedule
