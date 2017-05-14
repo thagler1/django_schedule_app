@@ -222,6 +222,7 @@ class PTO_table(models.Model):
     type = models.CharField(max_length=4,
                             choices=pto_choices,
                             default=regularPTO)
+    console = models.ForeignKey(Console, default=None, null=True)
 
 
     def __str__(self):

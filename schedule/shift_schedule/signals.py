@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from .models import Console, Manager, Console_schedule, Master_schedule, Shift, UserProfile, Console_oq, PTO_table
 import datetime
-from .schedule_calculations import check_date
+from .schedule_calculations import check_date, project_schedule
 '''
 @receiver(post_save, sender=Console_oq)
 def initialize_desk_schedule(sender, instance, created, **kwargs):
@@ -52,9 +52,15 @@ def add_pto_to_schedule(sender, instance, created, **kwargs):
             pto_taker.save()
 
     #if on PTO cant take PTO again
-    elif PTO_table.objects.filter(user = pto_taker, date_pto_taken= instance.date_pto_taken).count()>1:
+    elif PTO_table.objects.filter(user = pto_taker, date_pto_taken= instance.date_pto_taken).count()>=1:
 
         pto_event.delete()
+    #adds console info to pto event
+    elif pto_event.console is None:
+
+        schedule = project_schedule(pto_event.date_pto_taken,pto_event.date_pto_taken, pto_event.user)
+        pto_event.console = schedule.console
+        pto_event.save()
 
 
 @receiver(pre_delete, sender= PTO_table)
