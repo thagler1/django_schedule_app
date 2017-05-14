@@ -41,7 +41,7 @@ def create_new_user_profife(sender, instance, created, **kwargs):
 def assign_console_to_pto(sender, instance, created, **kwargs):
     pto_event = instance
     pto_taker = UserProfile.objects.get(id=pto_event.user.id)
-    elif pto_event.console is None:
+    if pto_event.console is None:
 
         schedule = project_schedule(pto_event.date_pto_taken,pto_event.date_pto_taken, pto_event.user)
         print(schedule)
