@@ -35,7 +35,7 @@ class PTOForm(ModelForm):
         #Check to see if controller is scheduled that day
         print(self.cleaned_data)
         schedule = project_schedule(self.cleaned_data['date_pto_taken']
-            ,self.cleaned_data['date_pto_taken'],self.userprofile['userprofile'])
+            ,self.cleaned_data['date_pto_taken'],self.userprofile)
         print(schedule)
         if schedule:
             scheduled = True
