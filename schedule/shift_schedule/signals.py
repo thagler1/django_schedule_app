@@ -37,6 +37,19 @@ def create_new_user_profife(sender, instance, created, **kwargs):
         user_profile = UserProfile(user = user)
         user_profile.save()
 
+@receiver(pre_save, sender = PTO_table)
+def assign_console_to_pto(sender, instance, created, **kwargs):
+    pto_event = instance
+    pto_taker = UserProfile.objects.get(id=pto_event.user.id)
+    elif pto_event.console is None:
+
+        schedule = project_schedule(pto_event.date_pto_taken,pto_event.date_pto_taken, pto_event.user)
+        print(schedule)
+        pto_event.console = schedule.console
+        pto_event.save()
+
+
+
 @receiver(post_save, sender = PTO_table)
 def add_pto_to_schedule(sender, instance, created, **kwargs):
     '''
@@ -56,12 +69,7 @@ def add_pto_to_schedule(sender, instance, created, **kwargs):
 
         pto_event.delete()
     #adds console info to pto event
-    elif pto_event.console is None:
 
-        schedule = project_schedule(pto_event.date_pto_taken,pto_event.date_pto_taken, pto_event.user)
-        print(schedule)
-        pto_event.console = schedule.console
-        pto_event.save()
 
 
 @receiver(pre_delete, sender= PTO_table)
