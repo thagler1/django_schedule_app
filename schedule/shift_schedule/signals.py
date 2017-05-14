@@ -49,8 +49,8 @@ def assign_console_to_pto(sender, instance, **kwargs):
 
 
     if pto_event.shift_type is None:
-        if schedule.is_day:
-            pto_event.shift_type = "DAY"
+        if schedule.date_object.is_day:
+            pto_event.date_object.shift_type = "DAY"
         else:
             pto_event.shift_type = "Night"
     pto_event.save()
