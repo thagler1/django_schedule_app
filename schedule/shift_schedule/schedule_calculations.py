@@ -386,6 +386,8 @@ def project_schedule(start_date, end_date, userprofile):
             new_event = DateItem(dnd, userprofile,day,dnd=True)
             event_calendar.append(new_event)
 
+    if len(event_calendar) ==0:
+        return event_calendar
     if len(event_calendar)<=1:
         return event_calendar[0]
     return event_calendar
