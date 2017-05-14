@@ -29,7 +29,7 @@ class PTOForm(ModelForm):
 
 
 
-    def clean_type(self, userprofile):
+    def clean_type(self):
         # test the rate limit by passing in the cached user object
         scheduled = False
         #Check to see if controller is scheduled that day
