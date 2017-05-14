@@ -38,7 +38,7 @@ def create_new_user_profife(sender, instance, created, **kwargs):
         user_profile.save()
 
 @receiver(pre_save, sender = PTO_table)
-def assign_console_to_pto(sender, instance, created, **kwargs):
+def assign_console_to_pto(sender, instance, **kwargs):
     pto_event = instance
     pto_taker = UserProfile.objects.get(id=pto_event.user.id)
     if pto_event.console is None:
