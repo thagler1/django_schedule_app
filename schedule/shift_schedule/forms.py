@@ -23,9 +23,10 @@ class PTOForm(ModelForm):
         fields =  ['date_pto_taken', 'type', 'notes']
 
 
-    def __init__(self, userprofile, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(PTOForm, self).__init__(*args, **kwargs)
-        self.userprofile = userprofile
+        self.userprofile = kwargs.pop('userprofile', None)
+
 
     def clean_type(self, userprofile):
         # test the rate limit by passing in the cached user object
