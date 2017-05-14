@@ -26,6 +26,7 @@ class PTOForm(ModelForm):
         # test the rate limit by passing in the cached user object
         scheduled = False
         #Check to see if controller is scheduled that day
+        print(self.cleaned_data)
         schedule = project_schedule(self.cleaned_data['date_pto_taken']
             ,self.cleaned_data['date_pto_taken'],self.cleaned_data['user'])
         print(schedule)
