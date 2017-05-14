@@ -22,13 +22,18 @@ class PTOForm(ModelForm):
         model = PTO_table
         fields =  ['date_pto_taken', 'type', 'notes']
 
+
+    def __init__(self, userprofile, *args, **kwargs):
+        super(PTOForm, self).__init__(*args, **kwargs)
+        self.fields['userprofile'] = userprofile
+
     def clean_type(self, userprofile):
         # test the rate limit by passing in the cached user object
         scheduled = False
         #Check to see if controller is scheduled that day
         print(self.cleaned_data)
         schedule = project_schedule(self.cleaned_data['date_pto_taken']
-            ,self.cleaned_data['date_pto_taken'],userprofile)
+            ,self.cleaned_data['date_pto_taken'],self.cleaned_data['userprofile'])
         print(schedule)
         if schedule:
             scheduled = True
