@@ -24,7 +24,7 @@ def initialize_desk_schedule(sender, instance, created, **kwargs):
 
 
 
-@receiver(pre_save, sender = PTO_table)
+#@receiver(pre_save, sender = PTO_table)
 
 
 @receiver(post_save, sender = User)
