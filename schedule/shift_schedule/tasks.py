@@ -16,5 +16,5 @@ def setup_periodic_tasks(sender,**kawrgs):
     increase_my_pto.add_periodic_task(10.0, test(), name='add every 10')
 
 @app.task
-def test(arg):
+def test():
     increase_my_pto()
