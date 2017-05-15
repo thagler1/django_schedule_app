@@ -13,7 +13,7 @@ celery.config_from_object(__name__)
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender,**kawrgs):
     # Calls test('hello') every 10 seconds.
-    increase_my_pto.add_periodic_task(10.0, test(), name='add every 10')
+    sender.add_periodic_task(10.0, test(), name='add every 10')
 
 @app.task
 def test():
