@@ -29,7 +29,7 @@ def index(request):
 
 
 def create_user(request):
-    celery_is_awful()
+    add()
     #template = loader.get_template("shift_schedule/adduser.html")
     if request.method == "POST":
         form = UserForm(request.POST)
