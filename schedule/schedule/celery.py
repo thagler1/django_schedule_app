@@ -14,9 +14,3 @@ app = Celery('schedule')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
-
-app.conf.beat_schedule = {
-    'add_pto_test':{
-        'task':'test',
-        'schedule':crontab(),}
-}

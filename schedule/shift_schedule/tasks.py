@@ -1,6 +1,7 @@
 from celery import Celery
 from celery.schedules import crontab
-from .functions import increase_my_pto
+
+from schedule.shift_schedule.functions import increase_my_pto
 
 app = Celery()
 
