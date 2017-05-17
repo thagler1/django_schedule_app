@@ -8,6 +8,7 @@ celery = Celery(__name__)
 celery.config_from_object(__name__)
 
 app = Celery()
+@shared_task
 def add_pto():
     increase_my_pto()
     increase_my_pto()
