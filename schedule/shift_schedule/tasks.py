@@ -1,10 +1,10 @@
-from .models import UserProfile
-from django.contrib.auth.models import User #used fro user profiles
+from __future__ import absolute_import, unicode_literals
+from celery import shared_task
 
-@app.task(ignore_result=True)
-def addpto():
-    user = User.objects.get(first_name = 'Todd')
-    up = UserProfile.objects.get(id = user.id)
 
-    up.pto +=10
-    up.save()
+
+
+
+@shared_task
+def add(x, y):
+    return x + y
