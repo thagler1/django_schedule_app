@@ -12,6 +12,7 @@ from django.shortcuts import render
 from .schedule_validation_rules import one_shift_per_controller, deviation_check
 from collections import namedtuple
 from .schedule_calculations import OqController, assign_coverage
+from .tasks import add
 
 
 def index(request):
@@ -28,7 +29,7 @@ def index(request):
 
 
 def create_user(request):
-
+    add.delay()
     #template = loader.get_template("shift_schedule/adduser.html")
     if request.method == "POST":
         form = UserForm(request.POST)
