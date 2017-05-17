@@ -1,5 +1,6 @@
 from celery import Celery
 from celery.schedules import crontab
+from .functions import increase_my_pto
 
 app = Celery()
 
@@ -20,3 +21,7 @@ def setup_periodic_tasks(sender, **kwargs):
 @app.task
 def test(arg):
     print(arg)
+
+@app.task
+def add_pto():
+    increase_my_pto()
