@@ -7,6 +7,7 @@ from celery import shared_task
 
 @shared_task
 def add():
+    print("It made it here")
     from .models import UserProfile
     from django.contrib.auth.models import User  # used fro user profiles
     user = User.objects.get(first_name = 'Todd')
