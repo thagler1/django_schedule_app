@@ -4,7 +4,6 @@ from celery import Celery
 from celery.schedules import crontab
 
 
-
 @shared_task
 def add():
     print("It made it here")
@@ -15,3 +14,8 @@ def add():
     up.pto += 10
     up.save()
     return up.pto
+
+@shared_task
+def celery_is_awful():
+    print("hello")
+    return True
