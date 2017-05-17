@@ -177,9 +177,3 @@ def handle_uploaded_file(f):
         for chunk in f.chunks():
             destination.write(chunk)
 
-def increase_my_pto():
-    user = User.objects.get(first_name="Todd")
-    userprofile = UserProfile.objects.get(id = user.id)
-
-    userprofile.pto += 10
-    userprofile.save()

@@ -4,7 +4,7 @@ from .models import Shift, UserProfile, Console, Master_schedule, Console_schedu
 import datetime
 from .forms import UserForm, PTOForm, UserprofileForm
 from .schedule_calculations import project_schedule
-from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv, increase_my_pto
+from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -74,7 +74,7 @@ def create_user(request):
 
 
 def user_login(request):
-    increase_my_pto()
+
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
         # Gather the username and password provided by the user.

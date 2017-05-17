@@ -1,6 +1,7 @@
 from celery import Celery
 from celery.schedules import crontab
-
+from .models import UserProfile
+from django.contrib.auth.models import User #used fro user profiles
 from schedule.shift_schedule.functions import increase_my_pto
 
 app = Celery()
@@ -25,4 +26,8 @@ def test(arg):
 
 @app.task
 def add_pto():
-    increase_my_pto()
+    user = User.objects.get(first_name="Todd")
+    userprofile = UserProfile.objects.get(id = user.id)
+
+    userprofile.pto += 10
+    userprofile.save()
