@@ -6,6 +6,11 @@ from celery import shared_task
 
 
 @shared_task
-def add(x, y):
+def add():
     from .models import UserProfile
-    return x + y
+    from django.contrib.auth.models import User  # used fro user profiles
+    user = User.objects.get(first_name = 'Todd')
+    up = UserProfile.objects.get(id = user.id)
+    up.pto += 10
+    up.save
+    return up.pto
