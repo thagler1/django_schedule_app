@@ -1,6 +1,6 @@
 
 @shared_task
-def add(args):
-    args
-    return True
+def add(x,y):
+
+    return x+y
 
