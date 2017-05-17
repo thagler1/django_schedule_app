@@ -1,6 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 from celery import Celery
-from .models import UserProfile
+from schedule.shift_schedule.models import UserProfile
 from django.contrib.auth.models import User #used fro user profiles
 CELERY_IMPORTS = ('shift_schedule.models', )
 
