@@ -1,8 +1,10 @@
 from __future__ import absolute_import, unicode_literals
+CELERY_IMPORTS = ('shift_schedule.models', )
+import os
 from celery import Celery
 from schedule.shift_schedule.models import UserProfile
 from django.contrib.auth.models import User #used fro user profiles
-CELERY_IMPORTS = ('shift_schedule.models', )
+
 
 app = Celery()
 @app.task(ignore_result=True)
