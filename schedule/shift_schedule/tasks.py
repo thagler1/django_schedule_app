@@ -1,4 +1,4 @@
-from schedule.shift_schedule.models import UserProfile
+from .models import UserProfile
 from django.contrib.auth.models import User #used fro user profiles
 
 @app.task(ignore_result=True)
