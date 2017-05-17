@@ -7,8 +7,8 @@ from celery import shared_task
 celery = Celery(__name__)
 celery.config_from_object(__name__)
 
-
-@shared_task
+app - Celery()
+@
 def add_pto():
     increase_my_pto()
     increase_my_pto()
