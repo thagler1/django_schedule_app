@@ -262,8 +262,8 @@ def add_console(request):
         form = ConsoleForm(request.POST)
         form.address = "n/a"
         if form.is_valid():
-
-            form.save()
+            new_console = Console(**form.cleaned_data)
+            new_console.save()
 
             return HttpResponseRedirect('/shift_schedule/user')
     else:
