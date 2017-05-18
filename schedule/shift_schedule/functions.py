@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
-from .models import Shift, UserProfile, Console, Master_schedule, Console_Map, Console_oq, PTO_table
+from .models import Shift, UserProfile, Console, Master_schedule, Console_Map, Console_oq, PTO_table, Schedule_Record
 import datetime
 from .schedule_calculations import project_schedule
 from .forms import UserForm
@@ -182,3 +182,32 @@ def addpto():
     up = UserProfile.objects.get(id = user.id)
     up.pto += 10
     up.save()
+
+def build_schedule_record():
+    '''
+    create a schedule record for each worked shift
+    :return: 
+    '''
+    START = datetime.date.today()
+    RANGE = 1
+    #END = START + datetime.timedelta(days = RANGE)
+
+    for day in range(RANGE):
+        date = START + datetime.timedelta(days = day)
+        for desk in Console.objects.all():
+            all_oq_controller = find_oq_controllers(desk)
+            for controller in all_oq_controller:
+                di = project_schedule(date,date,controller)
+                if di:
+                    new_record = Schedule_Record(
+                        date = di.date,
+                        shift = di.shift,
+                        controller = di.controller,
+                        shift_start_time= di.shift_start_time,
+                        shift_end_time=di.shift_end_time,
+                        original_controller=di.original_controller,
+                        is_day=di.date_object.is_day,
+                        console=di.console)
+                    new_record.save()
+
+

@@ -29,7 +29,8 @@ def index(request):
 
 
 def create_user(request):
-    add.delay()
+    from .functions import build_schedule_record
+    build_schedule_record()
     #template = loader.get_template("shift_schedule/adduser.html")
     if request.method == "POST":
         form = UserForm(request.POST)
