@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
-from .models import PTO_table, UserProfile
+from .models import PTO_table, UserProfile, Console
 from django.contrib.admin import widgets
 from .schedule_calculations import project_schedule
 
@@ -65,3 +65,8 @@ class UserprofileForm(ModelForm):
         widgets = {
             'hire_date':forms.DateInput(attrs={'class':'datepicker'}),
         }
+
+class ConsoleForm(ModelForm):
+    class Meta:
+        model = Console
+        fields = ['console_name', 'manager']

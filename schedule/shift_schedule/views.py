@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq, PTO_table, Console_Map
 import datetime
-from .forms import UserForm, PTOForm, UserprofileForm
+from .forms import UserForm, PTOForm, UserprofileForm, ConsoleForm
 from .schedule_calculations import project_schedule
 from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv
 from django.contrib.auth import login, authenticate
@@ -172,7 +172,7 @@ def controller_pto_form(request):
             return HttpResponseRedirect('/shift_schedule/user')
     else:
         form = PTOForm()
-    return render(request, 'shift_schedule/pto_form.html', {'form': form})
+    return render(request, 'shift_schedule/controller_pto_form.html', {'form': form})
 
 def unnaproved_pto(request):
     user = request.user
@@ -256,3 +256,15 @@ def debugpage(request):
     }
     return HttpResponse(template.render(context, request))
 
+def add_console(request):
+
+    if request.method =='POST':
+        form = ConsoleForm
+
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect('/shift_schedule/user')
+    else:
+        form = PTOForm()
+    return render(request, 'shift_schedule/new_console.html', {'form': form})
