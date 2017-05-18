@@ -259,7 +259,7 @@ def debugpage(request):
 def add_console(request):
 
     if request.method =='POST':
-        form = ConsoleForm(request)
+        form = ConsoleForm(request.POST)
         if form.is_valid():
             form.save()
 
