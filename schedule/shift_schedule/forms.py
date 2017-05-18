@@ -4,7 +4,7 @@ from django import forms
 from .models import PTO_table, UserProfile, Console, Console_oq
 from django.contrib.admin import widgets
 from .schedule_calculations import project_schedule
-from .functions import oq_controllers
+
 
 
 class DateInput(forms.DateInput):
@@ -71,6 +71,9 @@ class ConsoleForm(ModelForm):
     class Meta:
         model = Console
         fields = ['console_name', 'manager']
+
+def oq_controllers(console):
+    return Console_oq.objects.filter(console=console)
 
 class schedule_pto(ModelForm):
 
