@@ -210,7 +210,7 @@ def build_schedule_record():
                         console=di.console,
                     )
                     if di.pto:
-                        new_record(pto_event= di.pto)
+                        new_record.pto_event = di.pto
                     new_record.save()
 
 
