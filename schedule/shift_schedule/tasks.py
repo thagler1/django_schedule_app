@@ -12,9 +12,8 @@ def add_schedule_record(dateitem):
     from django.contrib.auth.models import User  # used fro user profiles
 
 
-    return up.pto
+    return
 
-    return 3
 
 @shared_task
 def celery_is_awful():
