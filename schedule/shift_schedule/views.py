@@ -260,7 +260,6 @@ def add_console(request):
 
     if request.method =='POST':
         form = ConsoleForm()
-
         if form.is_valid():
             form.save()
 
