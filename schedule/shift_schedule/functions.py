@@ -197,7 +197,7 @@ def build_schedule_record():
         for desk in Console.objects.all():
             all_oq_controller = find_oq_controllers(desk)
             for controller in all_oq_controller:
-                di = project_schedule(date,date,controller)
+                di = project_schedule(date,date,controller[0])
                 if di:
                     new_record = Schedule_Record(
                         date = di.date,
