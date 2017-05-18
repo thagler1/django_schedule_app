@@ -6,12 +6,8 @@ from celery.schedules import crontab
 
 @shared_task
 def add_schedule_record(dateitem):
-    from .models import UserProfile, PTO_table,Console_oq,Console
-    from.schedule_calculations import project_schedule
-    from.functions import find_oq_controllers
-    from django.contrib.auth.models import User  # used fro user profiles
-
-
+    from .functions import build_schedule_record()
+    build_schedule_record()
     return
 
 
