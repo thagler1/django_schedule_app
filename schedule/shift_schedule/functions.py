@@ -145,31 +145,28 @@ def check_supervisor(userprofile):
         return True
     else:
         return False
-def importcsv():
+
+def get_model_fields(model):
+    return model._meta.get_fields()
+
+def importcsv(model):
     import csv, os
     script_dir = os.path.dirname(__file__)  # <-- absolute dir the script is in
     rel_path = "Book1.csv"
     abs_file_path = os.path.join(script_dir, rel_path)
+    model_fields = get_model_fields(model)
+
     with open(abs_file_path) as f:
         reader = csv.reader(f)
-        for row in reader:
-            date = row[2].split("/")
-            d = (datetime.date(int(date[2]), int(date[0]), int(date[1])))
-            print(d)
-            try:
-
-                if row[0] == 't':
-                    day = True
-                else:
-                    day=False
-                created = Master_schedule.objects.get_or_create(
-                is_day = day,
-                shift = Shift.objects.get(shift_id=row[1]),
-                date= d,
-                repeat_start =d)
-            except:
-                print("error")
-
+        for i, row in enumerate(reader):
+            # strip field names
+            if i == 0:
+                fields = {key:index for index, key in enumerate(row)}
+            new_model = model()
+            for field in model_fields:
+                if field in fields:
+                    new_model.field = fields[field]
+            new_model.save()
 
 
 def handle_uploaded_file(f):
@@ -177,11 +174,7 @@ def handle_uploaded_file(f):
         for chunk in f.chunks():
             destination.write(chunk)
 
-def addpto():
-    user = User.objects.get(first_name = 'Todd')
-    up = UserProfile.objects.get(id = user.id)
-    up.pto += 10
-    up.save()
+
 
 def build_schedule_record():
     '''

@@ -265,7 +265,7 @@ def add_console(request):
             new_console = Console(**form.cleaned_data)
             new_console.save()
 
-            return HttpResponseRedirect('/shift_schedule/test')
+            return HttpResponseRedirect('/shift_schedule/add_console')
     else:
         form = ConsoleForm()
     return render(request, 'shift_schedule/new_console.html', {'form': form, 'consoles':all_consoles})
