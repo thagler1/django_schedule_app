@@ -207,7 +207,10 @@ def build_schedule_record():
                         shift_end_time=di.shift_end_time,
                         original_controller=di.original_controller,
                         is_day=di.date_object.is_day,
-                        console=di.console)
+                        console=di.console,
+                    )
+                    if di.pto:
+                        new_record(pto_event= di.pto)
                     new_record.save()
 
 
