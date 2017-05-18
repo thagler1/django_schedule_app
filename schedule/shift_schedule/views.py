@@ -259,12 +259,12 @@ def debugpage(request):
 def add_console(request):
 
     if request.method =='POST':
-        form = ConsoleForm
+        form = ConsoleForm()
 
         if form.is_valid():
             form.save()
 
             return HttpResponseRedirect('/shift_schedule/user')
     else:
-        form = PTOForm()
+        form = ConsoleForm()
     return render(request, 'shift_schedule/new_console.html', {'form': form})
