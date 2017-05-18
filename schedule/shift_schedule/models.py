@@ -3,6 +3,7 @@ import PIL
 import os
 from django.contrib.auth.models import User #used fro user profiles
 from django.utils.deconstruct import deconstructible
+from .functions import find_oq_controllers
 
 @deconstructible
 class PathAndRename(object):
@@ -188,6 +189,10 @@ class Master_schedule(models.Model):
             return 'D'
         else:
             return 'N'
+def qualified_coverage(console):
+    all_qualified_controllers = Console_oq.objects.filter(console=console)
+    return {'entry':all_qualified_controllers}
+
 
 class PTO_table(models.Model):
     """

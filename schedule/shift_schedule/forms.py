@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
-from .models import PTO_table, UserProfile, Console
+from .models import PTO_table, UserProfile, Console, Console_oq
 from django.contrib.admin import widgets
 from .schedule_calculations import project_schedule
+from .functions import oq_controllers
 
 
 class DateInput(forms.DateInput):
@@ -70,3 +71,16 @@ class ConsoleForm(ModelForm):
     class Meta:
         model = Console
         fields = ['console_name', 'manager']
+
+class schedule_pto(ModelForm):
+
+
+    def __init__(self, *args, **kwargs):
+        self.console = kwargs.pop('console', None) # strip console argunment and assign to form, then pass it as arg to fields
+        super(schedule_pto, self).__init__(*args, **kwargs)
+        self.fields['coverage'].choices = oq_controllers(self.console)
+
+    class Meta:
+
+        model = PTO_table
+        fields = ['supervisor_approval', 'notes', 'type', 'coverage']

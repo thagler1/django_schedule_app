@@ -44,6 +44,8 @@ def find_oq_controllers(consoles):
             controllers.add((controller.controller, console))
     return controllers
 
+def oq_controllers(console):
+    return Console_oq.objects.filter(console=console)
 
 
 def user_console_schedules(user, users_oqs, calyear,calmonth):
