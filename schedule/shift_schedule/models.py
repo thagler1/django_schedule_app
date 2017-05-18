@@ -3,7 +3,7 @@ import PIL
 import os
 from django.contrib.auth.models import User #used fro user profiles
 from django.utils.deconstruct import deconstructible
-from .functions import find_oq_controllers
+
 
 @deconstructible
 class PathAndRename(object):
