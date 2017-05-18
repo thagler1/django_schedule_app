@@ -257,7 +257,7 @@ def debugpage(request):
     return HttpResponse(template.render(context, request))
 
 def add_console(request):
-
+    all_consoles = Console.objects.all()
     if request.method =='POST':
         form = ConsoleForm(request.POST)
         form.address = "n/a"
@@ -268,4 +268,4 @@ def add_console(request):
             return HttpResponseRedirect('/shift_schedule/test')
     else:
         form = ConsoleForm()
-    return render(request, 'shift_schedule/new_console.html', {'form': form})
+    return render(request, 'shift_schedule/new_console.html', {'form': form, 'consoles':all_consoles})

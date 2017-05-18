@@ -5,6 +5,9 @@
     <title>Add Console</title></title>
 </head>
 <body>
+{% for desk in consoles %}
+{{desk}}
+{% endfor %}
 <form action="/shift_schedule/test" method="post">
 
    {% csrf_token %}
