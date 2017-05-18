@@ -189,7 +189,7 @@ def build_schedule_record():
     :return: 
     '''
     START = datetime.date.today()
-    RANGE = 1
+    RANGE = 30
     #END = START + datetime.timedelta(days = RANGE)
 
     for day in range(RANGE):
