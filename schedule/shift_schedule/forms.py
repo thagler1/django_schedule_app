@@ -73,7 +73,11 @@ class ConsoleForm(ModelForm):
         fields = ['console_name', 'manager']
 
 def oq_controllers(console):
-    return Console_oq.objects.filter(console=console).only('controller')
+    oqs = Console_oq.objects.filter(console=console).only('controller')
+    choices = {}
+    for oq in oqs:
+        choices[oq.controller] = oq.controller
+    return choices
 
 class schedule_pto(ModelForm):
     class Meta:
