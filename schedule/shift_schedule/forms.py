@@ -83,7 +83,7 @@ class schedule_pto(ModelForm):
 
     def __init__(self, *args, **kwargs):
         #console = kwargs.pop('instance')
-        console = kwargs['intance'].console
+        console = kwargs['instance'].console
         super(schedule_pto, self).__init__(*args, **kwargs)
         self.fields['coverage'].queryset = oq_controllers(console)
 
