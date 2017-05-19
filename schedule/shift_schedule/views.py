@@ -270,3 +270,16 @@ def add_console(request):
     else:
         form = ConsoleForm()
     return render(request, 'shift_schedule/new_console.html', {'form': form, 'consoles':all_consoles})
+
+def schedule_coverage(request, pto_id):
+    pto_data = PTO_table.object.get(id = pto_id)
+    if request.method=="POST":
+        form = schedule_coverage(request.POST, instance = pto_id)
+
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect('/shift_schedule/unnaproved_pto')
+    else:
+        form  = schedule_coverage(pto_id=pto_id)
+    return render(request,'shift_schedule/schedule_coverage.html', {'form':form})
