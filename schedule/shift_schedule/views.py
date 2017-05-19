@@ -293,6 +293,7 @@ def console_approval(request, console):
     month = datetime.date.today().month
     calendar, allshifts_console_schedule, shifts, desks = console_schedule(console, month)
     upto = {desk:PTO_table.objects.filter(console = desk, supervisor_approval = False) for desk in desks}
+
     context = {
         'calendar': calendar,
         'allshifts_console_schedule':allshifts_console_schedule,
