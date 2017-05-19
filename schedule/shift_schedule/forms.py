@@ -73,9 +73,15 @@ class ConsoleForm(ModelForm):
         fields = ['console_name', 'manager']
 
 def oq_controllers(console):
-    return Console_oq.objects.filter(console=console)
+    return Console_oq.objects.filter(console=console).only('controller')
 
 class schedule_pto(ModelForm):
     class Meta:
         model = PTO_table
-        fields = ['supervisor_approval', 'notes', 'type', 'coverage']
+        fields = ['supervisor_approval', 'notes', 'type', 'coverage', 'console']
+
+
+    def __init__(self, *args, **kwargs):
+        console = kwargs.pop('console')
+        super(schedule_pto, self).__init__(*args, **kwargs)
+        self.fields['coverage'].queryset = oq_controllers(console)
