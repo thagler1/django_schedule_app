@@ -46,7 +46,41 @@
   </tbody>
 </table>
 {% endfor %}
-{% include "shift_schedule/unnaproved_pto.html" %}
+
+
+
+{% for desk in desks %}
+<table>
+    <caption>Unnaproved PTO</caption>
+    <thead>
+    <tr>
+        <tr>
+        <th>Date</th>
+        <th>Date Requested</th>
+        <th>Controller</th>
+        <th>Console</th>
+        <th>Type</th>
+        <th>id</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for pto_request in desk.pto_requests %}
+
+        <td>{{pto_request.date_pto_taken|date:"n"}}/{{pto_request.date_pto_taken|date:"d"}}<Br>{{pto_request.date_pto_taken|date:"D"}}
+        <Br>
+            {{pto_request.shift_type}}</td>
+        <td>{{pto_request.date_requested|date:"n"}}/{{pto_request.date_requested|date:"d"}}</td>
+        <td>{{pto_request.user.full_name}}</td>
+        <td>{{pto_request.console}}</td>
+        <td>{{pto_request.type}}</td>
+        <td><a href="/shift_schedule/schedule_coverage/{{pto_request.id}}" >Schedule</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
 
 </body>
 </html>
