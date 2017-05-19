@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^debug',views.debugpage,name='debug'),
     url(r'^add_console', views.add_console,name='test'),
     url(r'^schedule_coverage/(?P<pto_id>[0-9]+)', views.schedule_coverage, name=''),
-    url(r'^unapproved/(?P<console>)[A-z]+\s[A-z]+', views.console_approval, name=''),
+    url(r'^unapproved/(?P<console>[A-z]+\s[A-z]+)', views.console_approval, name=''),
 
 
 
