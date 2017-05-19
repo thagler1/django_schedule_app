@@ -216,7 +216,7 @@ def console_schedule(console, month, year = datetime.date.today().year):
     end_date = last_day_of_month(start_date)
     drange = end_date-start_date
 
-    calender = [start_date+ datetime.timedelta(days = 1) for i in range(drange.days +1)]
+    calender = [start_date+ datetime.timedelta(days = i) for i in range(drange.days +1)]
 
     #create list of qualified controllers, and list of all consoles these controllers are qualified on
     oq_controllers = UserProfile.objects.filter(console_oq__console = console)
@@ -229,7 +229,7 @@ def console_schedule(console, month, year = datetime.date.today().year):
             desks.add(oq.console)
 
 
-    all_qualified_controllers = find_oq_controllers(desks)
+    all_qualified_controllers = find_oq_controllers(list(desks))
     allshifts_console_schedule = []
 
     for controller in all_qualified_controllers:
