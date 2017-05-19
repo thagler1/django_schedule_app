@@ -183,8 +183,10 @@ def unnaproved_pto(request):
 
     template = loader.get_template('shift_schedule/unnaproved_pto.html')
     all_unapproved_pto = PTO_table.objects.filter(supervisor_approval=False)
+    pto_by_desk = {pto.console:PTO_table.objects.filter(supervisor_approval=False, console=pto.console) for pto in all_unapproved_pto}
     context = {
-        'all_unapproved_pto': all_unapproved_pto
+        'all_unapproved_pto': all_unapproved_pto,
+        'pto_by_desk':pto_by_desk
     }
     return HttpResponse(template.render(context, request))
 
