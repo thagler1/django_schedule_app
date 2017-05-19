@@ -4,7 +4,7 @@ from .models import Shift, UserProfile, Console, Master_schedule, Console_schedu
 import datetime
 from .forms import UserForm, PTOForm, UserprofileForm, ConsoleForm, schedule_pto
 from .schedule_calculations import project_schedule
-from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv
+from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv, console_schedule
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -287,3 +287,16 @@ def schedule_coverage(request, pto_id):
     else:
         form  = schedule_pto(instance=pto_data)
     return render(request,'shift_schedule/schedule_coverage.html', {'form':form, 'pto_id':pto_id})
+
+def console_approval(request, console):
+    calendar, allshifts_console_schedule, shifts, desks = console_schedule(console)
+    upto = {desk:PTO_table.objects.filter(console = desk, supervisor_approval = False) for desk in desks}
+    context = {
+        'calendar': calendar,
+        'allshifts_console_schedule':allshifts_console_schedule,
+        'shifts':shifts,
+        'desks': desks,
+        'upto': upto
+    }
+    template = loader.get_template('shift_schedule/console_approval_page.html')
+    return HttpResponse(template.render(context, request))

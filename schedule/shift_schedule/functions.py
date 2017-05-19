@@ -175,7 +175,9 @@ def handle_uploaded_file(f):
         for chunk in f.chunks():
             destination.write(chunk)
 
-
+def last_day_of_month(any_day):
+    next_month = any_day.replace(day=28) + datetime.timedelta(days=4)  # this will never fail
+    return next_month - datetime.timedelta(days=next_month.day)
 
 def build_schedule_record():
     '''
@@ -208,3 +210,43 @@ def build_schedule_record():
                     new_record.save()
 
 
+
+def console_schedule(console, month, year = datetime.date.today().year):
+    start_date = datetime.date(year, month, 1)
+    end_date = last_day_of_month(start_date)
+    drange = end_date-start_date
+
+    calender = [start_date+ datetime.timedelta(days = 1) for i in range(drange.days +1)]
+
+    #create list of qualified controllers, and list of all consoles these controllers are qualified on
+    oq_controllers = UserProfile.objects.filter(console_oq__console = console)
+
+    #all desk for qualified controller
+    desks = set()
+    for controller in oq_controllers:
+        controller_oqs = Console_oq.objects.filter(controller=controller).distinct()
+        for oq in controller_oqs:
+            desks.add(oq.console)
+
+
+    all_qualified_controllers = find_oq_controllers(desks)
+    allshifts_console_schedule = []
+
+    for controller in all_qualified_controllers:
+        found_event = False
+        temp_cal = []  # this is a temp calendar to move the dates through
+        recurring_calendar = project_schedule(start_date,end_date,controller[0]) # get controller specific event calendar
+        for i, date in enumerate(calender): # scroll through requested date range
+
+            display_date= date.day #this is to pull just the date number
+            found_event = False
+            for event in recurring_calendar:
+                if event.date == date:
+                    found_event = True
+                    temp_cal.append(
+                        (controller[0],controller[1],event))
+            if found_event is False:
+                temp_cal.append((controller[0],controller[1],"", display_date,None,None))
+        allshifts_console_schedule.append(temp_cal)
+    shifts = Shift.objects.all()
+    return calender, allshifts_console_schedule, shifts, desks

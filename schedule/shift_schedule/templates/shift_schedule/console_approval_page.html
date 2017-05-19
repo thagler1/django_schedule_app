@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+{% for console in consoles %}
+<table class="full_console_schedule">
+  <thead>
+    <tr  class="full_console_schedule th">
+    <th class="full_console_schedule th">{{console}}</th>
+{% for day in cal_dates %}
+<th class="full_console_schedule th">{{day|date:"n"}}/{{day|date:"d"}}<BR> {{day|date:"D"}}</th>
+
+
+        {% endfor %}
+    </tr>
+
+  </thead>
+  <tbody>
+  {% for controller in allshifts_console_schedule %}
+  {% if controller.0.1 == console %}
+  <tr class="full_console_schedule tr">
+      <td class="full_console_schedule td">{{controller.0.0}}</td>
+
+      {% for day in controller %}
+
+      {% if day.2.controller != controller.0.0 %}
+<td class="full_console_schedule td"></td>
+
+      {% endif %}
+
+      {% if day.2.controller == controller.0.0 %}
+      <td class="full_console_schedule td"> {{day.2.date_object.which_shift}}</td>
+      {% endif %}
+      {% endfor %}
+  </tr>
+
+  {% endif %}
+  {% endfor %}
+
+  </tbody>
+</table>
+{% endfor %}
+</body>
+</html>
