@@ -51,7 +51,7 @@
     <tr>
         {% for desk, count in pto_by_desk.items %}
         <td>{{desk}}</td>
-        <td><a href="/shift_schedule/schedule_coverage/{{pto_request.id}}" >{{count}}</a></td>
+        <td><a href="/shift_schedule/unapproved/{{desk}}" >{{count}}</a></td>
     </tr>
     {% endfor %}
     </tbody>
