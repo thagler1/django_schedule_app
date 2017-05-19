@@ -73,7 +73,7 @@ class ConsoleForm(ModelForm):
         fields = ['console_name', 'manager']
 
 def oq_controllers(console):
-    UserProfile.objects.filter(Console_oq__console=console).only('controller')
+    Console_oq.objects.select_related('controller').filter(console=console)
 
 
 class schedule_pto(ModelForm):
