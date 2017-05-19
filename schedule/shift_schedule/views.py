@@ -281,5 +281,5 @@ def schedule_coverage(request, pto_id):
 
             return HttpResponseRedirect('/shift_schedule/unnaproved_pto')
     else:
-        form  = schedule_coverage(instance=pto_date)
+        form  = schedule_coverage(instance=pto_data)
     return render(request,'shift_schedule/schedule_coverage.html', {'form':form})
