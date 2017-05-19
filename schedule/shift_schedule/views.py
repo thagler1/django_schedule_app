@@ -276,8 +276,8 @@ def schedule_coverage(request, pto_id):
     pto_data = PTO_table.objects.get(id = pto_id)
 
     if request.method=="POST":
-        form = schedule_pto(instance = pto_data)
-
+        form = schedule_pto(request.POST,instance = pto_data)
+        print(form)
         if form.is_valid():
             form.save()
 
