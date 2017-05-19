@@ -273,8 +273,9 @@ def add_console(request):
 
 def schedule_coverage(request, pto_id):
     pto_data = PTO_table.objects.get(id = pto_id)
+
     if request.method=="POST":
-        form = schedule_coverage(request.POST, instance = pto_data)
+        form = schedule_coverage(instance = pto_data)
 
         if form.is_valid():
             form.save()
@@ -282,4 +283,4 @@ def schedule_coverage(request, pto_id):
             return HttpResponseRedirect('/shift_schedule/unnaproved_pto')
     else:
         form  = schedule_coverage(instance=pto_data)
-    return render(request,'shift_schedule/schedule_coverage.html', {'form':form})
+    return render(request,'shift_schedule/schedule_coverage.html', {'form':form},context_instance=RequestContext(request))
