@@ -289,7 +289,9 @@ def schedule_coverage(request, pto_id):
     return render(request,'shift_schedule/schedule_coverage.html', {'form':form, 'pto_id':pto_id})
 
 def console_approval(request, console):
-    calendar, allshifts_console_schedule, shifts, desks = console_schedule(console)
+    console= Console.objects.get(console_name = console)
+    month = datetime.date.today().month
+    calendar, allshifts_console_schedule, shifts, desks = console_schedule(console, month)
     upto = {desk:PTO_table.objects.filter(console = desk, supervisor_approval = False) for desk in desks}
     context = {
         'calendar': calendar,
