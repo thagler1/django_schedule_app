@@ -66,8 +66,8 @@
     </thead>
     <tbody>
     <tr>
-        {% for pto_request in desk.pto_requests %}
-        {{ pto_request}}
+        {% for pto_request in desk%}
+
 
         <td>{{pto_request.date_pto_taken|date:"n"}}/{{pto_request.date_pto_taken|date:"d"}}<Br>{{pto_request.date_pto_taken|date:"D"}}
         <Br>
