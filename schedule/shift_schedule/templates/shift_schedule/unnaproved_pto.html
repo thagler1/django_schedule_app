@@ -37,6 +37,24 @@
 </table>
 
 {{pto_by_desk}}
+<table>
+    <caption>Unnaproved PTO By Desk</caption>
+    <thead>
+    <tr>
+        <tr>
+        <th>Console</th>
+        <th>PTO Request Count</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for desk, count in pto_by_desk.items() %}
+        <td>{{desk}}</td>
+        <td><a href="/shift_schedule/schedule_coverage/{{pto_request.id}}" >{{count}}</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
 
 
 
