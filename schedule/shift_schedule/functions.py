@@ -246,7 +246,7 @@ def console_schedule(console, month, year = datetime.date.today().year):
                     temp_cal.append(
                         (controller[0],controller[1],event))
             if found_event is False:
-                temp_cal.append((controller[0],controller[1],"", display_date,None,None))
+                temp_cal.append((controller[0],controller[1],""))
         allshifts_console_schedule.append(temp_cal)
     shifts = Shift.objects.all()
     return calender, allshifts_console_schedule, shifts, desks
