@@ -77,13 +77,13 @@ def oq_controllers(console):
 
 class schedule_pto(ModelForm):
 
-
+'''
     def __init__(self, *args, **kwargs):
         console = kwargs.pop('instance')
         console = console.console
         super(schedule_pto, self).__init__(*args, **kwargs)
         self.fields['coverage'].queryset = oq_controllers(console)
-
+'''
     class Meta:
         model = PTO_table
         fields = ['supervisor_approval', 'notes', 'type', 'coverage', 'console']
