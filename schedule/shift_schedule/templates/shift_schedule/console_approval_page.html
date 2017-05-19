@@ -29,9 +29,10 @@
       {% for day in controller %}
 
       {% if day.2.controller != controller.0.0 %}
-<td class="full_console_schedule td">*</td>
+        <td class="full_console_schedule td">{{controller.0.0}}</td>
 
       {% endif %}
+
 
        {% if day.2.controller == controller.0.0 %}
       <td class="full_console_schedule td"> {{day.2.date_object.which_shift}}</td>
