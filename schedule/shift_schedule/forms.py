@@ -73,11 +73,8 @@ class ConsoleForm(ModelForm):
         fields = ['console_name', 'manager']
 
 def oq_controllers(console):
-    oqs = Console_oq.objects.filter(console=console).only('controller')
-    choices = {}
-    for oq in oqs:
-        choices[oq.controller] = oq.controller
-    return choices
+    UserProfile.objects.filter(Console_oq__console=console).only('controller')
+
 
 class schedule_pto(ModelForm):
     class Meta:
@@ -89,7 +86,7 @@ class schedule_pto(ModelForm):
         #console = kwargs.pop('instance')
         console = kwargs['instance'].console
         super(schedule_pto, self).__init__(*args, **kwargs)
-        self.fields['coverage'] = oq_controllers(console)
+        self.fields['coverage'].queryset = oq_controllers(console)
 
 
 
