@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq, PTO_table, Console_Map
 import datetime
-from .forms import UserForm, PTOForm, UserprofileForm, ConsoleForm
+from .forms import UserForm, PTOForm, UserprofileForm, ConsoleForm, schedule_pto
 from .schedule_calculations import project_schedule
 from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv
 from django.contrib.auth import login, authenticate
@@ -13,6 +13,7 @@ from .schedule_validation_rules import one_shift_per_controller, deviation_check
 from collections import namedtuple
 from .schedule_calculations import OqController, assign_coverage
 from .tasks import celery_is_awful
+
 
 
 def index(request):
@@ -275,12 +276,12 @@ def schedule_coverage(request, pto_id):
     pto_data = PTO_table.objects.get(id = pto_id)
 
     if request.method=="POST":
-        form = schedule_coverage(instance = pto_data)
+        form = schedule_pto(instance = pto_data)
 
         if form.is_valid():
             form.save()
 
             return HttpResponseRedirect('/shift_schedule/unnaproved_pto')
     else:
-        form  = schedule_coverage(instance=pto_data)
+        form  = schedule_pto(instance=pto_data)
     return render(request,'shift_schedule/schedule_coverage.html', {'form':form})

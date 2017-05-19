@@ -76,8 +76,6 @@ def oq_controllers(console):
     return Console_oq.objects.filter(console=console)
 
 class schedule_pto(ModelForm):
-
     class Meta:
-
         model = PTO_table
         fields = ['supervisor_approval', 'notes', 'type', 'coverage']
