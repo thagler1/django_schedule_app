@@ -27,12 +27,12 @@
       <td class="full_console_schedule td">{{controller.0.0}}</td>
 
       {% for day in controller %}
-        {% if day.2 is not None%}
+
       {% if day.2.controller != controller.0.0 %}
 <td class="full_console_schedule td">*</td>
 
       {% endif %}
-        {% endif %}
+
       {% if day.2.controller != controller.0.0 %}
 
 <td class="full_console_schedule td"></td>
