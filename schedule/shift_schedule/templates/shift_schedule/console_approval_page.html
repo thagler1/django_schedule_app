@@ -66,7 +66,7 @@
     </thead>
     <tbody>
     <tr>
-        {% for pto_request in desk %}
+        {% for pto_request in upto.desk.requests %}
 
 
         <td>{{pto_request.date_pto_taken|date:"n"}}/{{pto_request.date_pto_taken|date:"d"}}<Br>{{pto_request.date_pto_taken|date:"D"}}
