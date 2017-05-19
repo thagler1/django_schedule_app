@@ -77,12 +77,6 @@ def oq_controllers(console):
 
 class schedule_pto(ModelForm):
 
-
-    def __init__(self, *args, **kwargs):
-        self.console = kwargs.pop('console', None) # strip console argunment and assign to form, then pass it as arg to fields
-        super(schedule_pto, self).__init__(*args, **kwargs)
-        self.fields['coverage'].choices = oq_controllers(self.console)
-
     class Meta:
 
         model = PTO_table
