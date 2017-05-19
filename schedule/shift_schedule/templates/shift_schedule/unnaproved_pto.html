@@ -4,7 +4,7 @@
 {% load static %}
 <link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
 <body>
-
+{% for desk in desks %}
 <table>
     <caption>Unnaproved PTO</caption>
     <thead>
@@ -21,7 +21,7 @@
     </thead>
     <tbody>
     <tr>
-        {% for pto_request in all_unapproved_pto %}
+        {% for pto_request in desk.pto_requests %}
 
         <td>{{pto_request.date_pto_taken|date:"n"}}/{{pto_request.date_pto_taken|date:"d"}}<Br>{{pto_request.date_pto_taken|date:"D"}}
         <Br>
