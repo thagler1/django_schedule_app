@@ -272,7 +272,7 @@ def add_console(request):
     return render(request, 'shift_schedule/new_console.html', {'form': form, 'consoles':all_consoles})
 
 def schedule_coverage(request, pto_id):
-    pto_data = PTO_table.object.get(id = pto_id)
+    pto_data = PTO_table.objects.get(id = pto_id)
     if request.method=="POST":
         form = schedule_coverage(request.POST, instance = pto_data)
 
