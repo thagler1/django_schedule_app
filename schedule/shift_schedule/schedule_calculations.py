@@ -317,9 +317,12 @@ class OqController:
         self.coverage_check(dateItem)
 
         MAX_HOURS = 65
-        DEVIATION_WEIGHT = 3
-        PTO_WEIGHT = 2
-        DND_WEIGHT = 1
+        DEVIATION_WEIGHT = 300
+        PTO_WEIGHT = 200
+        DND_WEIGHT = 100
+
+        overtime_assigned  = PTO_table.objects.filter(coverage = self.controller).count()
+        self.score += overtime_assigned
 
         # check for deviation
         if self.contiguous_hours > MAX_HOURS:
