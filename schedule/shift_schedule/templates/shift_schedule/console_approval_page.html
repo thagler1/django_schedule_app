@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    {% load static %}
+{% csrf_token %}
+<link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
 </head>
 <body>
 {% for console in desks %}
