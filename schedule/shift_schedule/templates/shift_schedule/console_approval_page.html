@@ -69,7 +69,7 @@
     </thead>
     <tbody>
     {% for key, value in requests.items %}
-    {% for item, pto_request in value.items %}
+    {% pto_request in value %}
     {{pto_request}}
     <tr>
 
