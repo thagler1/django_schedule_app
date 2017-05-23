@@ -87,11 +87,10 @@
 
 {% for desk, requests in upto.items %}
 
-{{desk}} - {{requests}}
 {% for desk, dkeys in requests.items %}
 {{dkeys}}<Br>
-{% for item in requests %}
-< --{{item}}<Br>
+{% for item, ikey in requests.items %}
+< --{{ikey}}<Br>
 {% endfor %}
 {% endfor %}
 {% endfor %}
