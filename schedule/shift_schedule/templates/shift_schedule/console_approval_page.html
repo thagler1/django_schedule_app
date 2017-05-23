@@ -49,8 +49,9 @@
 
 
 
-{% for desk in upto %}
-{{desk.items}}
+
+{% for desk, requests in upto.items %}
+
 
 <table>
     <caption>Unnaproved PTO</caption>
@@ -68,8 +69,9 @@
     </thead>
     <tbody>
     <tr>
-        {% for pto_request in upto.desk.requests %}
-        {{pto_request}}
+        {% for desk, pto_r in requests.items %}
+       {% for desk, dkeys in pto_r.items %}
+{% for pto_request in dkeys %}
 
         <td>{{pto_request.date_pto_taken|date:"n"}}/{{pto_request.date_pto_taken|date:"d"}}<Br>{{pto_request.date_pto_taken|date:"D"}}
         <Br>
@@ -81,19 +83,13 @@
         <td><a href="/shift_schedule/schedule_coverage/{{pto_request.id}}" >Schedule</a></td>
     </tr>
     {% endfor %}
+    {% endfor %}
+    {% endfor %}
     </tbody>
 </table>
 {% endfor %}
 
-{% for desk, requests in upto.items %}
 
-{% for desk, dkeys in requests.items %}
-{{dkeys}}<Br>
-{% for item in dkeys %}
-< --{{item}}<Br>
-{% endfor %}
-{% endfor %}
-{% endfor %}
 
 </body>
 </html>
