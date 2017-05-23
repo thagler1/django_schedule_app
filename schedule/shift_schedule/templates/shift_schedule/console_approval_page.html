@@ -89,8 +89,8 @@
 
 {% for desk, dkeys in requests.items %}
 {{dkeys}}<Br>
-{% for item, ikey in dkeys.items %}
-< --{{ikey}}<Br>
+{% for item in dkeys %}
+< --{{item}}<Br>
 {% endfor %}
 {% endfor %}
 {% endfor %}
