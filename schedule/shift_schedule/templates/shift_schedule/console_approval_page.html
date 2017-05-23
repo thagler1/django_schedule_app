@@ -68,10 +68,10 @@
     </tr>
     </thead>
     <tbody>
+    {% for key, value in requests.items %}
+    {% for item, pto_request in value.items %}
     <tr>
-        {% for desk, pto_r in requests.items %}
-       {% for desk, dkeys in pto_r.items %}
-{% for pto_request in dkeys %}
+}
 
         <td>{{pto_request.date_pto_taken|date:"n"}}/{{pto_request.date_pto_taken|date:"d"}}<Br>{{pto_request.date_pto_taken|date:"D"}}
         <Br>
@@ -83,19 +83,12 @@
         <td><a href="/shift_schedule/schedule_coverage/{{pto_request.id}}" >Schedule</a></td>
     </tr>
     {% endfor %}
+    {% endfor %}
     </tbody>
 </table>
 {% endfor %}
 
-{% for desk, requests in upto.items %}
 
-{% for desk, dkeys in requests.items %}
-{{dkeys}}<Br>
-{% for item in dkeys %}
-< --{{item}}<Br>
-{% endfor %}
-{% endfor %}
-{% endfor %}
 
 </body>
 </html>
