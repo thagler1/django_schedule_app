@@ -83,13 +83,19 @@
         <td><a href="/shift_schedule/schedule_coverage/{{pto_request.id}}" >Schedule</a></td>
     </tr>
     {% endfor %}
-    {% endfor %}
-    {% endfor %}
     </tbody>
 </table>
 {% endfor %}
 
+{% for desk, requests in upto.items %}
 
+{% for desk, dkeys in requests.items %}
+{{dkeys}}<Br>
+{% for item in dkeys %}
+< --{{item}}<Br>
+{% endfor %}
+{% endfor %}
+{% endfor %}
 
 </body>
 </html>
