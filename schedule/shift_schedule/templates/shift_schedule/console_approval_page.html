@@ -85,9 +85,9 @@
 </table>
 {% endfor %}
 
-{% for desk in upto.items %}
+{% for desk, requests in upto.items %}
 
-{{desk.items}}
+{{desk.items.requests}}
 {% endfor %}
 
 </body>
