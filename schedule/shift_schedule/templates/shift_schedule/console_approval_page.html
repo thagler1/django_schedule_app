@@ -84,7 +84,10 @@
     </tbody>
 </table>
 {% endfor %}
-{{upto}}
+{% for desk in upto %}
+
+{{upto.desk.requests}}
+{% endfor %}
 
 </body>
 </html>
