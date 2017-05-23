@@ -70,8 +70,9 @@
     <tbody>
     {% for key, value in requests.items %}
     {% for item, pto_request in value.items %}
+    {{pto_request}}
     <tr>
-}
+
 
         <td>{{pto_request.date_pto_taken|date:"n"}}/{{pto_request.date_pto_taken|date:"d"}}<Br>{{pto_request.date_pto_taken|date:"D"}}
         <Br>
