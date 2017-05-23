@@ -88,8 +88,11 @@
 {% for desk, requests in upto.items %}
 
 {{desk}} - {{requests}}
-{% for pto in requests %}
-{{pto}}<Br>
+{% for desk in requests %}
+{{desk}}<Br>
+{% for item in requests %}
+< --{{item}}<Br>
+{% endfor %}
 {% endfor %}
 {% endfor %}
 
