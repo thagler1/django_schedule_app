@@ -134,20 +134,20 @@ body {
 }
 
 /* Calendar style sheet */
-  table {
+  table.calendar {
    border: 1px solid #999;
    border-collapse: collapse;
    border-color:black;
    font-family: Arial;
    }
-   th {
+   th.calendar {
    border: 1px solid #999;
    font-color: black;
    font-size: 70%;
    font-family: Arial;
    text-transform: uppercase;
    }
-   td {
+   td.calendar {
    border: 1px solid #999;
    height: 5em;
    width:5em;
@@ -303,3 +303,29 @@ body {
 
 .ca .active {
     background-color: #4CAF50;
+}
+/* Calendar style sheet */
+  table{
+   border: 1px solid #999;
+   border-collapse: collapse;
+   border-color:black;
+   font-family: Arial;
+   }
+   th {
+   border: 1px solid #999;
+   font-color: black;
+   font-size: 70%;
+   font-family: Arial;
+   text-transform: uppercase;
+   }
+   td {
+   border: 1px solid #999;
+   height: 2.5em;
+   width:5em;
+   padding: 5px;
+   vertical-align: top;
+   font-color: black;
+   }
+   .nth tr:nth-child(even) {
+       background-color: rgba(168, 168, 168, 0.33)
+   }

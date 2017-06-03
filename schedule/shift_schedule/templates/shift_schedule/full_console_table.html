@@ -20,7 +20,7 @@
   <tbody>
   {% for controller in allshifts_console_schedule %}
   {% if controller.0.1 == console %}
-  <tr class="full_console_schedule tr">
+  <tr style="height: 2.5em" class="full_console_schedule tr">
       <td class="full_console_schedule td">{{controller.0.0}}</td>
 
       {% for day in controller %}

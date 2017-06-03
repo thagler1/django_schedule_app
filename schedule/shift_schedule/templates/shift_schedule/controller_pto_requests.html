@@ -26,7 +26,7 @@
 {% endif %}
 
 {% if approved_pto|length > 0 %}
-<table class="pending_pto_table">
+<table class="pending_pto_table nth">
 <thead>
     <caption style="margin: 0px; font-size: medium; font-style: normal">Upcoming PTO</caption>
     <th>Date</th>
@@ -34,7 +34,7 @@
 
 </thead>
     {% for request in approved_pto %}
-    <tr>
+    <tr class="nth">
     <td style="height: auto">{{request.date_pto_taken}}</td>
         <td style="height: auto">{{request.type}}</td>
     </tr>

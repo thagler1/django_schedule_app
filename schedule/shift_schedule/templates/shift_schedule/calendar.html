@@ -5,31 +5,31 @@
 </head>
 <body>
 
-<table>
+<table class="calendar">
       <caption style="font-style: normal">{{request_range.month}} {{request_range.year}}</caption>
 
   <col class="weekday" span="7">
   <col class="weekend" span="0">
   <thead>
-    <tr style="font-size: large">
+    <tr class="calendar" style="font-size: large">
 
-      <th>Mon</th>
-      <th>Tue</th>
-      <th>Wed</th>
-      <th>Thu</th>
-      <th>Fri</th>
-      <th>Sat</th>
-      <th>Sun</th>
+      <th class="calendar">Mon</th>
+      <th class="calendar">Tue</th>
+      <th class="calendar">Wed</th>
+      <th class="calendar">Thu</th>
+      <th class="calendar">Fri</th>
+      <th class="calendar">Sat</th>
+      <th class="calendar">Sun</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="calendar">
 {% for row in user_calendar %}
- <tr>
+ <tr class="calendar">
 
 {% for day in row %}
         <!- Regular Day Shift ->
      {% if day.0.date_object.which_shift == "D" and day.0.is_on_pto == False %}
-        <td class="daybox tooltip"><div class="day">{{day.1}}</div>
+        <td class="calendar daybox tooltip"><div class="day">{{day.1}}</div>
         <span class="tooltiptext">{{day.0.console}}
         {% if day.0.is_overtime == True %}
             Covering for :{{day.0.original_controller }}
@@ -39,7 +39,7 @@
      {% endif %}
         <!- Regular Night shift ->
      {% if day.0.date_object.which_shift == "N" and day.0.is_on_pto == False  %}
-     <td class="nightbox tooltip"><div class="day">{{day.1}}</div><span class="tooltiptext">{{day.0.console}}
+     <td class="calendar nightbox tooltip"><div class="day">{{day.1}}</div><span class="tooltiptext">{{day.0.console}}
         {% if day.0.is_overtime == True %}
             Covering for :{{day.0.original_controller }}
             {% endif %}
@@ -49,27 +49,27 @@
 
      <!- Regular Day off _>
      {% if day.0 == "" and day.3 == None %}
-          <td><div class="day">{{day.1}}</div>
-        <div class="notes nightshift">{{day.0}}</div></td>
+          <td class="calendar"><div class="day">{{day.1}}</div>
+        <div class="calendar notes nightshift">{{day.0}}</div></td>
      {% endif %}
 
      <!- Day that controller takes PTO ->
      {% if day.0.is_on_pto == True and day.0.original_controller == user_profile %}
-               <td><div class="day">{{day.1}}</div>
-        <div class="notes pto">{{day.0.pto.get_type_display}}</div></td>
+               <td class="calendar"><div class="day">{{day.1}}</div>
+        <div class="calendar notes pto">{{day.0.pto.get_type_display}}</div></td>
 
      {% endif %}
     <!- covering overtime ->
      {% if day.0.original_controller != day.0.controller and day.0.controller == user_profile %}
-                    <td class="day tooltip"><div class="day"> {{day.1}}</div>
+                    <td class="calendar day tooltip"><div class="day"> {{day.1}}</div>
                         <span class="tooltiptext">{{day.0.console}}</span>
         <div class="notes pto">{{day.0.date_object.which_shift}}</div></td>
      {% endif %}
     <!- DND ->
      {% if day.0.dnd == True %}
-      <td class="day tooltip"><div class="day"> {{day.1}}</div>
+      <td class="calendar day tooltip"><div class="day"> {{day.1}}</div>
 
-        <div class="notes pto">DND</div></td>
+        <div class="calendar notes pto">DND</div></td>
         {% endif %}
 
 
