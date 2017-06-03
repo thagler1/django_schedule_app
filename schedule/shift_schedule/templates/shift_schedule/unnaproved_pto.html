@@ -4,6 +4,10 @@
 {% load static %}
 <link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
 <body>
+{% include "shift_schedule/sidenav.html" %}
+         <div class="wrapper">
+     <div class="row">
+
 {% for desk in desks %}
 <table>
     <caption>Unnaproved PTO</caption>
@@ -36,9 +40,9 @@
     </tbody>
 </table>
 {% endfor %}
-{{pto_by_desk}}
-<table>
-    <caption>Unnaproved PTO By Desk</caption>
+</div>
+<table style="margin-left: 50px">
+    <caption style="font-size: medium">Unnaproved PTO By Desk</caption>
     <thead>
     <tr>
         <tr>
@@ -50,12 +54,14 @@
     <tbody>
     <tr>
         {% for desk, count in pto_by_desk.items %}
-        <td>{{desk}}</td>
-        <td><a href="/shift_schedule/unapproved/{{desk}}" >{{count}}</a></td>
+        <td style="height: auto">{{desk}}</td>
+        <td style="height: auto"><a href="/shift_schedule/unapproved/{{desk}}" >{{count}}</a></td>
     </tr>
     {% endfor %}
     </tbody>
 
+</table>
 
+         </div>
 </body>
 </html>

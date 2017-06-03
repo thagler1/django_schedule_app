@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
->
+{% csrf_token %}
 {% load static %}
 
 <link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
@@ -13,7 +13,7 @@
 <div class="col span2">
 
 
-<form enctype="multipart/form-data" method="post" action="">
+<form style="text-align: left" enctype="multipart/form-data" method="post" action="">
     {% csrf_token %}
 {{form.as_p}}
     {{uform.as_p}}

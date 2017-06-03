@@ -15,13 +15,13 @@
         <li><img src={{user_profile.profile_image.url}}></li>
         {% endif %}
 
-  <li><a href="#news">{{user.first_name}} {{user.last_name}}</a></li>
-  <li><a href="#news">PTO Availabe: {{user_profile.pto}}</a></li>
-  <li><a href="#contact">{{user.email}}</a></li>
-  <li><a href="#contact">Overtime Offered: {{oto}}</a></li>
+  <li><a style="text-align: center">{{user.first_name}} {{user.last_name}}</a></li>
+  <li><a >PTO Availabe: {{user_profile.pto}}</a></li>
+  <li><a >{{user.email}}</a></li>
+  <li><a >Overtime Offered: {{oto}}</a></li>
   <li><a href="/shift_schedule/pto">Reqeust PTO</a></li>
   <li><a href="/shift_schedule/debug">Run Scheduling Service</a></li>
-  <li><a href="/admin">Admin</a></li>
+  <li><a href="/admin">Admin Console</a></li>
   <li><a href="/shift_schedule/adduser">Add User</a> </li>
   <li><a href="/shift_schedule/login">login</a></li>
     </ul>

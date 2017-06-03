@@ -5,20 +5,37 @@
     <head>
         <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
         <title>Login</title>
+        <style>
+            body{
+                background-color: #0a1336;
+                font-family: Arial;
+            }
+            input{
+                width:100%;
+                height: 50px;
+                margin-top: 20px;
+                border-radius: 4px;
+                font-size: large;
+                #border: 3px solid rgba(60, 63, 65, 0.88);.
+                            }
+            input:focus {
+                border: 3px solid #010108;
+            }
+        </style>
     </head>
 <topnav class="topnav"></topnav>
     <body>
     <div id="mainbox" class="small-form">
-        <h1>Login to Shift Schedule</h1>
+        <h1 style="color: white" >Shift Schedule</h1>
 
         <form id="login_form" method="post">
             {% csrf_token %}
-            Username: <input type="text" name="username" value="" placeholder="Enter Username" size="50" />
+            <input type="text" name="username" value="" placeholder="Enter Username" size="50" />
             <br />
-            Password :   <input type="password" name="password" value="" placeholder="Enter Password" size="50" />
+            <input type="password" name="password" value="" placeholder="Enter Password"/>
             <br />
 
-            <input type="submit" value="submit" />
+            <input type="submit" value="Login" />
         </form>
         </div>
     </body>

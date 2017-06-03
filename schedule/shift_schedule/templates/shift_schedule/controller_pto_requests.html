@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% csrf_token %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Controller Pto Requests</title>
+</head>
+<body>
+{% if pending_pto|length > 0 %}
+<table class="pending_pto_table">
+<thead>
+    <caption style="margin: 0px; font-size: medium; font-style: normal">Pending PTO</caption>
+    <th>Date</th>
+    <th>Type</th>
+
+</thead>
+    {% for request in pending_pto %}
+    <tr>
+    <td style="height: auto">{{request.date_pto_taken}}</td>
+        <td style="height: auto">{{request.type}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% if approved_pto|length > 0 %}
+<table class="pending_pto_table">
+<thead>
+    <caption style="margin: 0px; font-size: medium; font-style: normal">Upcoming PTO</caption>
+    <th>Date</th>
+    <th>Type</th>
+
+</thead>
+    {% for request in approved_pto %}
+    <tr>
+    <td style="height: auto">{{request.date_pto_taken}}</td>
+        <td style="height: auto">{{request.type}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+</body>
+</html>
+

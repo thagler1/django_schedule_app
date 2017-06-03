@@ -25,14 +25,14 @@ def user_oqs(user):
 
 def calcdaterange(today): #used for calendar output
 
-    month = today.strftime("%B") #returns just the month value
+    request_range = {'month':today.strftime("%B"),'year':today.year} #returns just the month value
 
     first_day_of_month = datetime.date(today.year, today.month,1)
     fdom_weekday = first_day_of_month.weekday()
     start_date = first_day_of_month + datetime.timedelta(days = 0-fdom_weekday) # starts the calendar on a monday
     end_date = start_date + datetime.timedelta(days = 42)
 
-    return start_date, end_date, month
+    return start_date, end_date, request_range
 
 def find_oq_controllers(consoles):
     if isinstance(consoles,list) is False:
@@ -76,7 +76,7 @@ def user_console_schedules(user, users_oqs, calyear,calmonth):
         except:
             pass
 
-    start_date, end_date, month = calcdaterange(todaysdate)
+    start_date, end_date, request_range = calcdaterange(todaysdate)
     timeframe = (end_date - start_date).days
 
     cal_dates = [start_date + datetime.timedelta(days=x) for x in range(timeframe)] # generates list of datetime objects
@@ -132,7 +132,7 @@ def user_console_schedules(user, users_oqs, calyear,calmonth):
 
 
 
-    return (allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, month)
+    return (allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, request_range)
 
 
 def OTO_calc(userprofile, year):
@@ -250,3 +250,16 @@ def console_schedule(console, month, year = datetime.date.today().year):
         allshifts_console_schedule.append(temp_cal)
     shifts = Shift.objects.all()
     return calender, allshifts_console_schedule, shifts, desks
+
+
+def controller_pto_request(request):
+    user = request.user
+    user_object = User.objects.get(id=user.id)  # returns userprofile for logged in user
+    userprofile = UserProfile.objects.get(user=user_object)
+
+    template = loader.get_template('shift_schedule/controller_pto_requests.html')
+    pending_pto = PTO_table.objects.filter(user = userprofile, date_pto_taken__gte = datetime.date.today(),
+                                           supervisor_approval = False).order_by('date_pto_taken')
+    approved_pto = PTO_table.objects.filter(user=userprofile, date_pto_taken__gte=datetime.date.today(),
+                                           supervisor_approval=True).order_by('date_pto_taken')
+    return pending_pto, approved_pto

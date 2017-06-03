@@ -88,7 +88,6 @@ body {
 
 .sidenav {
     font-color: white;
-    font: Arial, sans-serif;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -110,6 +109,7 @@ body {
 }
 
 .sidenav li a {
+    font-family: Arial;
     display: block;
     color: white;
     padding: 8px 16px;
@@ -124,6 +124,7 @@ body {
 
 */
 .sidenav li a:hover:not(.active) {
+
     background-color: #555;
     color: white;
 }
@@ -143,7 +144,7 @@ body {
    border: 1px solid #999;
    font-color: black;
    font-size: 70%;
-   font: Arial;
+   font-family: Arial;
    text-transform: uppercase;
    }
    td {
@@ -218,8 +219,8 @@ body {
         left: 0;
         right: 0;
         margin: auto;
-        border: solid;
-        border-radius: 25px;
+
+
         padding: 20px;
    }
    .small-form h1{

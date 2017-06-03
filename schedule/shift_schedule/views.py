@@ -4,7 +4,7 @@ from .models import Shift, UserProfile, Console, Master_schedule, Console_schedu
 import datetime
 from .forms import UserForm, PTOForm, UserprofileForm, ConsoleForm, schedule_pto
 from .schedule_calculations import project_schedule
-from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv, console_schedule
+from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv, console_schedule, controller_pto_request
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -131,9 +131,9 @@ def user_page(request, calyear = None,calmonth=None):
     oto = OTO_calc(userprofile,2017)
     #scroll through oq's and and get a list of consoles the user is oq'd on
     users_oqs = user_oqs(user)
-    allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, month = user_console_schedules(user, users_oqs, calyear,calmonth)
+    allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, request_range = user_console_schedules(user, users_oqs, calyear,calmonth)
     #importcsv()
-
+    pending_pto, approved_pto = controller_pto_request(request)
 
     context = {
         'consoles':consoles,
@@ -145,8 +145,10 @@ def user_page(request, calyear = None,calmonth=None):
         'desk_shift_name':desk_shift_name,
         'oqs':users_oqs,
         'user_profile': userprofile,
-        'month': month,
-        'allshifts_console_schedule': allshifts_console_schedule
+        'request_range': request_range,
+        'allshifts_console_schedule': allshifts_console_schedule,
+        'pending_pto':pending_pto,
+        'approved_pto': approved_pto,
     }
 
     template = loader.get_template('shift_schedule/user_page.html')
@@ -303,3 +305,4 @@ def console_approval(request, console):
     }
     template = loader.get_template('shift_schedule/console_approval_page.html')
     return HttpResponse(template.render(context, request))
+
