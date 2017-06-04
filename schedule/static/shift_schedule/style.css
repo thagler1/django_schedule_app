@@ -1,0 +1,367 @@
+* {
+
+}
+
+   #main_cal caption{
+
+   }
+   #main_cal ul {
+
+       list-style-type: none;
+       margin: 0;
+       padding: 0;
+       overflow: hidden;
+
+       display: inline-block;
+   }
+
+   #main_cal li {
+       background-color: #0a1336;
+       float: left;
+       border: white solid;
+
+   }
+
+    #main_cal li a {
+
+       display: block;
+       color: white;
+       text-align: center;
+       padding: 5px;
+       text-decoration: none;
+        font-size: small;
+   }
+    #main_cal li:hover {
+        background-color: #224acc;
+
+    }
+
+body {
+  width: 90%
+  max-width: 980px;
+  margin: 0 auto;
+  margin-left: 200px;
+  background-color: white;
+  font: Arial;
+
+}
+.layoutwrapper {
+    margin-left:200px;
+    margin-top: 75px;
+
+}
+.wrapper {
+  margin-left: 200px;
+}
+.row {
+  display: flex;
+}
+.col {
+  text-align: center;
+  margin-left: 2.08333333%;
+
+  margin-bottom: 1em;
+  width: 6.25%;
+  flex: 1 1 auto;
+
+}
+
+.layoutcol {
+  text-align: center;
+  margin-left: 2.08333333%;
+
+  margin-bottom: 1em;
+  width: 6.25%;
+  flex: 1 1 auto;
+  border: solid;
+  background-color:dimgray;
+
+}
+/* Two column widths (12.5%) plus one gutter width (2.08333333%) */
+.outcol.span2 { width: 14.58333333%; }
+/* Three column widths (18.75%) plus two gutter widths (4.1666666) */
+.col.span3 { width: 22.91666666%; }
+/* And so on... */
+.layoutcol.span4 { width: 31.24999999%; }
+.layoutcol.span5 { width: 39.58333332%; }
+.layoutcol.span6 { width: 47.91666665%; }
+.layoutcol.span7 { width: 56.24999998%; }
+.layoutcol.span8 { width: 64.58333331%; }
+.layoutcol.span9 { width: 72.91666664%; }
+.layoutcol.span10 { width: 81.24999997%; }
+.layoutcol.span11 { width: 89.5833333%; }
+.layoutcol.span12 { width: 97.91666663%; }
+
+
+/* Two column widths (12.5%) plus one gutter width (2.08333333%) */
+.outcol.span2 { width: 14.58333333%; }
+/* Three column widths (18.75%) plus two gutter widths (4.1666666) */
+.col.span3 { width: 22.91666666%; }
+/* And so on... */
+.col.span4 { width: 31.24999999%; }
+.col.span5 { width: 39.58333332%; }
+.col.span6 { width: 47.91666665%; }
+.col.span7 { width: 56.24999998%; }
+.col.span8 { width: 64.58333331%; }
+.col.span9 { width: 72.91666664%; }
+.col.span10 { width: 81.24999997%; }
+.col.span11 { width: 89.5833333%; }
+.col.span12 { width: 97.91666663%; }
+
+
+
+
+
+
+body {
+    margin: 0;
+    background-color: white;
+
+}
+
+.sidenav {
+    font-color: white;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: rgb(28,45,86);
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+.sidenav li img {
+
+    height: 150px;
+    display: block;
+    margin: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    width: 150px;
+}
+
+.sidenav li a {
+    font-family: Arial;
+    display: block;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+
+}
+
+/*
+.sidenav li a.active {
+    background-color: blue;
+    color: white;
+
+*/
+.sidenav li a:hover:not(.active) {
+
+    background-color: #555;
+    color: white;
+}
+
+.section {
+    margin-left: 200px;
+}
+
+/* Calendar style sheet */
+  table.calendar {
+   border: 1px solid #999;
+   border-collapse: collapse;
+   border-color:black;
+   font-family: Arial;
+   }
+   th.calendar {
+   border: 1px solid #999;
+   font-color: black;
+   font-size: 70%;
+   font-family: Arial;
+   text-transform: uppercase;
+   }
+   td.calendar {
+   border: 1px solid #999;
+   height: 5em;
+   width:5em;
+   padding: 5px;
+   vertical-align: top;
+   font-color: black;
+   }
+
+
+   .daybox {
+
+   background: rgba(170,170,246, .3);
+   }
+   .nightbox {
+
+   background: rgba(19,88,168, .3)
+   }
+
+   caption {
+   font-size: 300%;
+   font-style: italic;
+   margin-top: 50px;
+   }
+   .day {
+   text-align: right;
+   }
+   .notes {
+   font-family: Arial, Helvetica, sans-serif;
+   font-weight: 900;
+   font-size: 80%;
+   text-align: center;
+   padding-left: 20px;
+   opacity: 1;
+   }
+   .dayshift {
+   color: blue;
+   }
+   .nightshift{
+   color: darkblue;
+   }
+   .pto {
+   background-color:yellow;
+   }
+
+   .birthday {
+   background-color: #ECE;
+   }
+   .weekend {
+
+   }
+
+   .topnav {
+        height: 25px;
+        width: 100%;
+        background-color: rgb(28,45,86);
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        position: fixed;
+        overflow: auto;
+   }
+
+   .small-form{
+        width: 500px;
+        height:300px;
+        position: absolute;
+        top:0;
+        bottom:0;
+        left: 0;
+        right: 0;
+        margin: auto;
+
+
+        padding: 20px;
+   }
+   .small-form h1{
+        text-align: center;
+   }
+
+   .adjusted-content {
+    margin-left: 200px;
+   }
+
+.full_console_schedule{}
+.full_console_schedule th{
+    background-color:rgb(86, 102, 247, .33);
+    width: 1em;
+    height: 1em;
+}
+.full_console_schedule tr{
+ height: 25px;
+}
+.full_console_schedule td{
+    width: 1em;
+
+}
+.full_console_schedule tr:nth-child(even) {
+    background-color: rgba(168, 168, 168, 0.33);
+}
+
+
+/* Tooltip container */
+.tooltip {
+
+
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+.cal{
+}
+}
+.cal ul {
+    list-style-type: none;
+    margin-top: 150 ;
+    padding: 50;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.cal li {
+    float: left;
+}
+
+.cal li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.cal li a:hover:not(.active) {
+    background-color: #111;
+}
+
+.ca .active {
+    background-color: #4CAF50;
+}
+/* Calendar style sheet */
+  table{
+   border: 1px solid #999;
+   border-collapse: collapse;
+   border-color:black;
+   font-family: Arial;
+   }
+   th {
+   border: 1px solid #999;
+   font-color: black;
+   font-size: 70%;
+   font-family: Arial;
+   text-transform: uppercase;
+   }
+   td {
+   border: 1px solid #999;
+   height: 2.5em;
+   width:5em;
+   padding: 5px;
+   vertical-align: top;
+   font-color: black;
+   }
+   .nth tr:nth-child(even) {
+       background-color: rgba(168, 168, 168, 0.33)
+   }
+
+
+
