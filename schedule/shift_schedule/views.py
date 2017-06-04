@@ -31,7 +31,7 @@ def index(request):
 
 def create_user(request):
     from .tasks import add_schedule_record
-    add_schedule_record()
+    add_schedule_record().delay()
 
 
     #template = loader.get_template("shift_schedule/adduser.html")
