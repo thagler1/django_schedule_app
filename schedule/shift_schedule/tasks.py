@@ -4,7 +4,7 @@ from celery import Celery
 from celery.schedules import crontab
 
 
-@shared_task
+@app.task
 def add_schedule_record():
     from .functions import build_schedule_record
     build_schedule_record()
