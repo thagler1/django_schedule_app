@@ -24,9 +24,10 @@ def user_oqs(user):
     return all_user_oqs
 
 def calcdaterange(today): #used for calendar output
+    nmonth =str(today.month).zfill(2)
 
-    request_range = {'month':today.strftime("%B"),'year':today.year} #returns just the month value
-
+    request_range = {'month':today.strftime("%B"),'year':today.year,'num_month':nmonth} #returns just the month value
+#
     first_day_of_month = datetime.date(today.year, today.month,1)
     fdom_weekday = first_day_of_month.weekday()
     start_date = first_day_of_month + datetime.timedelta(days = 0-fdom_weekday) # starts the calendar on a monday
