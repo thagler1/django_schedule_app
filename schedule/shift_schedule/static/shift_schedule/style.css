@@ -2,6 +2,39 @@
 
 }
 
+   #main_cal caption{
+
+   }
+   #main_cal ul {
+
+       list-style-type: none;
+       margin: 0;
+       padding: 0;
+       overflow: hidden;
+
+       display: inline-block;
+   }
+
+   #main_cal li {
+       background-color: #0a1336;
+       float: left;
+       border: white solid;
+
+   }
+
+    #main_cal li a {
+
+       display: block;
+       color: white;
+       text-align: center;
+       padding: 5px;
+       text-decoration: none;
+        font-size: small;
+   }
+    #main_cal li:hover {
+        background-color: #224acc;
+
+    }
 
 body {
   width: 90%
@@ -329,3 +362,6 @@ body {
    .nth tr:nth-child(even) {
        background-color: rgba(168, 168, 168, 0.33)
    }
+
+
+

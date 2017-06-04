@@ -4,10 +4,29 @@
     <meta charset="UTF-8">
 </head>
 <body>
-
+<div id="main_cal">
 <table class="calendar">
-      <caption style="font-style: normal">{{request_range.month}} {{request_range.year}}
-      <a href="{{request_range.num_month}}">{{request_range.num_month}}</a>
+      <caption>
+          <ul>
+              <li><a href="01" id="01" >Jan</a> </li>
+              <li><a href="02"id="02" >Feb</a> </li>
+              <li><a href="03" id="03">Mar</a> </li>
+              <li><a href="04" id="04">Apr</a> </li>
+              <li><a href="05"id="05" >May</a> </li>
+              <li><a href="06" id="06" >Jun</a> </li>
+              <li><a href="07"id="07" >Jul</a> </li>
+              <li><a href="08" id="08" >Aug</a> </li>
+              <li><a href="09" id="09" >Sep</a> </li>
+              <li><a href="10" id="10" >Oct</a> </li>
+              <li><a href="11" id="11" >Nov</a> </li>
+              <li><a href="12" id="12" >Dec</a> </li>
+
+    <script>
+        document.getElementById("{{request_range.num_month}}").style.backgroundColor = "#224acc"
+        document.getElementById("{{request_range.num_month}}").style.fontSize = "medium"
+    </script>
+
+          </ul>
       </caption>
 
   <col class="weekday" span="7">
@@ -82,7 +101,7 @@
 
   </tbody>
 </table>
-
+</div>
 
 </body>
 </html>
