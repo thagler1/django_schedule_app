@@ -12,6 +12,11 @@ def add_schedule_record():
 
 
 @shared_task
-def does_it_change():
+def celery_is_awful():
+    print("hello")
+    return True
+
+@shared_task
+def this_might_work():
     print("hello")
     return True
