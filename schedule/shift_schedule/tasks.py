@@ -12,6 +12,6 @@ def add_schedule_record():
 
 
 @shared_task
-def celery_is_awful():
+def does_it_change():
     print("hello")
     return True
