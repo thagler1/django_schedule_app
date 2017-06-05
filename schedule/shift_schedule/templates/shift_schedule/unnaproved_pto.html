@@ -4,9 +4,7 @@
 {% load static %}
 <link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
 <body>
-{% include "shift_schedule/sidenav.html" %}
-         <div class="wrapper">
-     <div class="row">
+
 
 {% for desk in desks %}
 <table>
@@ -62,6 +60,5 @@
 
 </table>
 
-         </div>
 </body>
 </html>

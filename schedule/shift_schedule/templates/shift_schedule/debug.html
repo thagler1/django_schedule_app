@@ -6,42 +6,71 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome, {{ user.first_name }} {{ user.last_name }}</title>
+
+                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["calendar"]});
+      google.charts.setOnLoadCallback(drawChart);
+
+
+      var data = [];
+
+
+
+      {% for key, values in pto_days.items %}
+      var newdate = {year:{{values.year|escapejs}},
+      thatday:{{values.thatday|escapejs}},
+      month:{{values.month|escapejs}}
+
+      };
+      data.push(newdate);
+
+       {% endfor %}
+
+   function drawChart() {
+
+       var dataTable = new google.visualization.DataTable();
+       dataTable.addColumn({ type: 'date', id: 'Date' });
+       dataTable.addColumn({ type: 'number', id: 'Won/Loss' });
+       for (i = 0; i < data.length; i++) {
+           dataTable.addRows([
+
+               // Many rows omitted for brevity.
+               //[new Date(l[i][0],l[i][1],l[i][2]), 1],
+                [new Date(data[i].year,data[i].month, data[i].thatday), 2],
+
+           ]);
+       }
+
+
+       var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
+
+       var options = {
+         title: "PTO Days",
+         height: 350,
+       };
+
+       chart.draw(dataTable, options);
+   }
+    </script>
+  </head>
+
+
 </head>
 <body>
 
-    <ul class="sidenav">
-        <li><img src={{user_profile.profile_image.url}}></li>
-  <li><a href="#news">{{user.first_name}} {{user.last_name}}</a></li>
-  <li><a href="#news">PTO Availabe: {{user_profile.pto}}</a></li>
-  <li><a href="#contact">{{user.email}}</a></li>
-  <li><a href="#contact">Overtime Offered: {{oto}}</a></li>
-  <li><a href="/shift_schedule/pto">Reqeust PTO</a></li>
+{% include 'shift_schedule/sidenav.html' %}
 </ul>
     <div class="wrapper">
-{{testcontroller.controller}}<Br>
-        {% for oq in testcontroller.check_oqs %}
 
-{{oq.console}}, <Br>
-        {% endfor %}
+<script>document.write.getFullYear(l[1]);</script>
 
-        {% for day in testcontroller.schedule.inOrder%}
-        {{day}}}<Br>
-        {% endfor %}
-<Br>
-        <Br>
-                {% for day in testcontroller.deviations.inOrder%}
+  <body>
+    <div id="calendar_basic" style="width: 1000px; height: 350px;"></div>
 
-        {{day}}<Br>
-
-        {% endfor %}
-        <Br>
-
-        {% for controller in qualified_coverage %}
-        {% for item in controller %}
-
-        {{item.controller}} {{item.score}}<Br>
-        {% endfor %}
-        {% endfor %}
+{% for item in pto_days %}
+{{item.day}}
+  {% endfor %}
 
     </div>
 </body>

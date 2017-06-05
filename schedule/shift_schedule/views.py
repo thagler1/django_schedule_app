@@ -198,6 +198,10 @@ def supervisors_console(request):
     user = request.user
     user_object = User.objects.get(id = user.id)
     userprofile = UserProfile.objects.get(user= user_object)
+    all_unapproved_pto = PTO_table.objects.filter(supervisor_approval=False)
+    pto_by_desk = {pto.console: PTO_table.objects.filter(supervisor_approval=False, console=pto.console).count() for pto
+                   in all_unapproved_pto}
+
     template = loader.get_template('shift_schedule/shift_supervisor_console.html')
     console_rows = Console_Map.objects.values('row').distinct()
     rows = []
@@ -233,34 +237,46 @@ def supervisors_console(request):
 
     context = {
         'map':map,
-        'pto_records':pto_records
+        'pto_records':pto_records,
+        'user_profile':userprofile,
+        'pto_by_desk': pto_by_desk,
+        'all_unapproved_pto': all_unapproved_pto
+
 
     }
     return HttpResponse(template.render(context, request))
 
 
 def debugpage(request):
+
     #importcsv()
     user = request.user
     user_object = User.objects.get(id=user.id)
     userprofile = UserProfile.objects.get(user=user_object)
     template = loader.get_template('shift_schedule/debug.html')
-    testcontroller = OqController(userprofile)
-    testcontroller.build_schedule(datetime.date(2017,4,10))
 
-    #############################################################
-    pto_events = PTO_table.objects.all()
-    test_coverage = []
-    for event in pto_events:
-        if event.coverage is None:
-            if event.type != 'DND':
-                test_coverage.append(assign_coverage(event))
+    pto_days = PTO_table.objects.all()
+
+    r = {}
+    #dlist = [[] for i in range(pto_days.count())]
+    for day in pto_days:
+        year = day.date_pto_taken.year
+        month = day.date_pto_taken.month - 1
+        thatday = day.date_pto_taken.day
+        print(type(year))
+
+        r.setdefault(day.date_pto_taken, {'year':year, 'month':month, 'thatday':thatday, 'count':0})
+        r[day.date_pto_taken]['count'] +=1
+    print(r)
+
+
+
 
 
     context = {
-        'qualified_coverage': test_coverage,
-        'testdate': datetime.date(2017,4,7),
-       'testcontroller': testcontroller
+        'pto_days': r,
+        'user_profile':userprofile,
+
     }
     return HttpResponse(template.render(context, request))
 

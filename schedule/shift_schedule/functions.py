@@ -264,3 +264,14 @@ def controller_pto_request(request):
     approved_pto = PTO_table.objects.filter(user=userprofile, date_pto_taken__gte=datetime.date.today(),
                                            supervisor_approval=True).order_by('date_pto_taken')
     return pending_pto, approved_pto
+
+def scheduleing_service():
+    from .schedule_calculations import assign_coverage
+    pto_events = PTO_table.objects.all()
+    test_coverage = []
+    for event in pto_events:
+        if event.coverage is None:
+            if event.type != 'DND':
+                test_coverage.append(assign_coverage(event))
+
+    return test_coverage

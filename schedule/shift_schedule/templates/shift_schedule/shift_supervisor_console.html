@@ -12,14 +12,7 @@
 
   <body>
 
-      <ul class="sidenav">
-        <li><img src={{user_profile.profile_image.url}}></li>
-  <li><a href="#news">{{user.first_name}} {{user.last_name}}</a></li>
-  <li><a href="#news">PTO Availabe: {{user_profile.pto}}</a></li>
-  <li><a href="#contact">{{user.email}}</a></li>
-
-</ul>
-
+{% include "shift_schedule/sidenav.html" %}
 <div class="wrapper">
 <div class="row"><div class="col span9"></div> </div>
 
@@ -37,15 +30,8 @@
 	</div>
         {% endfor %}
 <div>
-    {% for desk, records in pto_records.items %}
-<br>
-    {{desk}}
+{% include "shift_schedule/unnaproved_pto.html" %}
 
-    {% for record in records %}
-    <br>
-    {{  record.date}} - {{record.controller}}
-    {% endfor %}
-    {% endfor %}
 </div>
     </div>
 
