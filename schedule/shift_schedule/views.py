@@ -174,7 +174,12 @@ def controller_pto_form(request):
             post.date_requested=datetime.datetime.now()
             post.user = userprofile
             #post.coverage = userprofile
+
+            if post.type == 'DND':
+                post.supervisor_approval = True
+
             post.save()
+
             return HttpResponseRedirect('/shift_schedule/user')
     else:
         form = PTOForm()

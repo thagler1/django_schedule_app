@@ -3,6 +3,14 @@
 {% load static %}
 {% csrf_token %}
 <link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <head>
     <meta charset="UTF-8">
     <title>Welcome, {{ user.first_name }} {{ user.last_name }}</title>
@@ -68,9 +76,32 @@
   <body>
     <div id="calendar_basic" style="width: 1000px; height: 350px;"></div>
 
-{% for item in pto_days %}
-{{item.day}}
-  {% endfor %}
+<div class="Table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Controller</th>
+            <th>PTO type</th>
+            <th>Best Fit Controller</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr >
+            <td >Todd Hagler</td>
+            <td >PTOS</td>
+            <td >Jimmy Maris</td>
+        </tr>
+        <tr>
+            <td>Luke Phelps</td>
+            <td>PTO</td>
+            <td>Todd Hagler</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
 
     </div>
 </body>

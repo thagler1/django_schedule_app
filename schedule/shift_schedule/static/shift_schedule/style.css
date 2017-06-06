@@ -338,20 +338,20 @@ body {
     background-color: #4CAF50;
 }
 /* Calendar style sheet */
-  table{
+  table.standard{
    border: 1px solid #999;
    border-collapse: collapse;
    border-color:black;
    font-family: Arial;
    }
-   th {
+   th.standard {
    border: 1px solid #999;
    font-color: black;
    font-size: 70%;
    font-family: Arial;
    text-transform: uppercase;
    }
-   td {
+   td.standard {
    border: 1px solid #999;
    height: 2.5em;
    width:5em;

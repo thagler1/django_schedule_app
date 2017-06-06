@@ -7,9 +7,10 @@
     <meta charset="UTF-8">
     <title>Controller Pto Requests</title>
 </head>
+<div class="col span4">
 <body>
 {% if pending_pto|length > 0 %}
-<table class="pending_pto_table">
+<table class="table table-bordered">
 <thead>
     <caption style="margin: 0px; font-size: medium; font-style: normal">Pending PTO</caption>
     <th>Date</th>
@@ -26,7 +27,7 @@
 {% endif %}
 
 {% if approved_pto|length > 0 %}
-<table class="pending_pto_table nth">
+<table class="table table-bordered">
 <thead>
     <caption style="margin: 0px; font-size: medium; font-style: normal">Upcoming PTO</caption>
     <th>Date</th>
@@ -35,13 +36,14 @@
 </thead>
     {% for request in approved_pto %}
     <tr class="nth">
-    <td style="height: auto">{{request.date_pto_taken}}</td>
-        <td style="height: auto">{{request.type}}</td>
+    <td>{{request.date_pto_taken}}</td>
+        <td>{{request.type}}</td>
     </tr>
     {% endfor %}
 </table>
 {% endif %}
 
 </body>
+</div>
 </html>
 

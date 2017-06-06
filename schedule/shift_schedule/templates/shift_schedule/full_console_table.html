@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
 </head>
 <body>
+<div class="col span9">
 {% for console in consoles %}
-<table class="full_console_schedule">
+<table class="full_console_schedule table table-bordered">
   <thead>
     <tr  class="full_console_schedule th">
     <th class="full_console_schedule th">{{console}}</th>
@@ -43,5 +44,6 @@
   </tbody>
 </table>
 {% endfor %}
+</div>
 </body>
 </html>

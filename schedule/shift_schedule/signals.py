@@ -41,18 +41,20 @@ def create_new_user_profife(sender, instance, created, **kwargs):
 def assign_console_to_pto(sender, instance, **kwargs):
     pto_event = instance
     pto_taker = UserProfile.objects.get(id=pto_event.user.id)
-    if pto_event.console is None:
 
-        schedule = project_schedule(pto_event.date_pto_taken,pto_event.date_pto_taken, pto_event.user)
-        print(schedule)
-        pto_event.console = schedule.console
+    if pto_event.type != 'DND': # if type is DND do not set console name
+        if pto_event.console is None:
+
+            schedule = project_schedule(pto_event.date_pto_taken,pto_event.date_pto_taken, pto_event.user)
+            pto_event.console = schedule.console
 
 
-    if pto_event.shift_type is None:
-        if schedule.date_object.is_day:
-            pto_event.shift_type = "DAY"
-        else:
-            pto_event.shift_type = "Night"
+        if pto_event.shift_type is None:
+            if schedule.date_object.is_day:
+                pto_event.shift_type = "DAY"
+            else:
+                pto_event.shift_type = "Night"
+
 
 
 
@@ -62,6 +64,7 @@ def add_pto_to_schedule(sender, instance, created, **kwargs):
 
     once pto has been approved by supervisor remove controller from scheduled shift
     '''
+
     if created:
         pto_event = instance
         pto_taker = UserProfile.objects.get(id=pto_event.user.id)
@@ -72,12 +75,12 @@ def add_pto_to_schedule(sender, instance, created, **kwargs):
                 pto_taker.save()
 
         #if on PTO cant take PTO again
-        elif PTO_table.objects.filter(user = pto_taker, date_pto_taken= instance.date_pto_taken).count()>=1:
-
+        elif PTO_table.objects.filter(user = pto_taker, date_pto_taken= instance.date_pto_taken).count()>=1 and pto_event.type != 'DND':
+            print("Deleted in add_pto_to_schedule")
             pto_event.delete()
         #adds console info to pto event
 
-        pto_event.save()
+
 
 
 @receiver(pre_delete, sender= PTO_table)
