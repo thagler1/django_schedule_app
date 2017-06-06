@@ -322,6 +322,9 @@ def schedule_coverage(request, pto_id):
     return render(request,'shift_schedule/schedule_coverage.html', {'form':form, 'pto_id':pto_id})
 
 def console_approval(request, console):
+    user = request.user
+    user_object = User.objects.get(id = user.id)
+    userprofile = UserProfile.objects.get(user= user_object)
     console= Console.objects.get(console_name = console)
     month = datetime.date.today().month
     calendar, allshifts_console_schedule, shifts, desks = console_schedule(console, month)
@@ -332,7 +335,8 @@ def console_approval(request, console):
         'allshifts_console_schedule':allshifts_console_schedule,
         'shifts':shifts,
         'desks': desks,
-        'upto': upto
+        'upto': upto,
+        'user_profile':userprofile,
     }
     template = loader.get_template('shift_schedule/console_approval_page.html')
     return HttpResponse(template.render(context, request))
