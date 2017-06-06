@@ -32,12 +32,13 @@
        var dataTable = new google.visualization.DataTable();
        dataTable.addColumn({ type: 'date', id: 'Date' });
        dataTable.addColumn({ type: 'number', id: 'Won/Loss' });
+       //dataTable.addColumn({ type: 'number', id:'comment'});
        for (i = 0; i < data.length; i++) {
            dataTable.addRows([
 
                // Many rows omitted for brevity.
                //[new Date(l[i][0],l[i][1],l[i][2]), 1],
-                [new Date(data[i].year,data[i].month, data[i].thatday), data[i].count],
+                [new Date(data[i].year,data[i].month, data[i].thatday), data[i].count]
 
            ]);
        }

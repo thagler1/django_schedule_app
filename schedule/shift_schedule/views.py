@@ -125,6 +125,7 @@ def user_login(request):
         return render(request, 'shift_schedule/login.html', {})
 
 def user_page(request, calyear = None,calmonth=None):
+    from .functions import pto_calandar
 
     user = request.user
     user_object = User.objects.get(id=user.id)
@@ -133,10 +134,10 @@ def user_page(request, calyear = None,calmonth=None):
     oto = OTO_calc(userprofile,2017)
     #scroll through oq's and and get a list of consoles the user is oq'd on
     users_oqs = user_oqs(user)
-    allshifts_console_schedule, user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, request_range = user_console_schedules(user, users_oqs, calyear,calmonth)
+    user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, request_range = user_console_schedules(user, users_oqs, calyear,calmonth)
     #importcsv()
     pending_pto, approved_pto = controller_pto_request(request)
-
+    pto_events = pto_calandar(userprofile, 2017)
     context = {
         'consoles':consoles,
         'daterange':daterange,
@@ -148,7 +149,8 @@ def user_page(request, calyear = None,calmonth=None):
         'oqs':users_oqs,
         'user_profile': userprofile,
         'request_range': request_range,
-        'allshifts_console_schedule': allshifts_console_schedule,
+        'pto_days': pto_events,
+
         'pending_pto':pending_pto,
         'approved_pto': approved_pto,
     }
@@ -274,24 +276,13 @@ def debugpage(request):
     #importcsv()
     user = request.user
     user_object = User.objects.get(id=user.id)
+    from .functions import pto_calandar
+
     userprofile = UserProfile.objects.get(user=user_object)
+    r = pto_calandar(userprofile, 2017)
     template = loader.get_template('shift_schedule/debug.html')
 
     pto_days = PTO_table.objects.all()
-
-    r = {}
-    #dlist = [[] for i in range(pto_days.count())]
-    for day in pto_days:
-        year = day.date_pto_taken.year
-        month = day.date_pto_taken.month - 1
-        thatday = day.date_pto_taken.day
-        print(type(year))
-
-        r.setdefault(day.date_pto_taken, {'year':year, 'month':month, 'thatday':thatday, 'count':0})
-        r[day.date_pto_taken]['count'] +=1
-    print(r)
-
-
 
 
 

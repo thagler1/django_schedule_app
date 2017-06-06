@@ -26,10 +26,10 @@
 
 
       {% for key, values in pto_days.items %}
-      var newdate = {year:{{values.year|escapejs}},
-      thatday:{{values.thatday|escapejs}},
-      month:{{values.month|escapejs}},
-      count:{{values.count}},
+      var newdate = {year:{{key.year|escapejs}},
+      thatday:{{key.day|escapejs}},
+      month:{{key.month|escapejs}}-1,
+      count:{{values}},
 
       };
       data.push(newdate);
