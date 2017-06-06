@@ -53,17 +53,14 @@
         <!- Regular Day Shift ->
      {% if day.0.date_object.which_shift == "D" and day.0.is_on_pto == False %}
         <td class="calendar daybox"><div class="day">{{day.1}}</div>
-        <div><a >test</a></div>
-        <div class="notes dayshift">{{day.0.date_object.which_shift}}</div></td>
+
+            <div class="notes dayshift"><a href="#" data-toggle="tooltip" title="{{day.0.console}}">{{day.0.date_object.which_shift}}</a></div></td>
      {% endif %}
         <!- Regular Night shift ->
      {% if day.0.date_object.which_shift == "N" and day.0.is_on_pto == False  %}
-     <td class="calendar nightbox"><div class="day">{{day.1}}</div><span class="tooltiptext">{{day.0.console}}
-        {% if day.0.is_overtime == True %}
-            Covering for :{{day.0.original_controller }}
-            {% endif %}
-        </span>
-        <div class="notes nightshift">{{day.0.date_object.which_shift}}</div></td>
+     <td class="calendar nightbox"><div class="day">{{day.1}}</div>
+         <div class="notes nightshift"><a href="#" data-toggle="tooltip" title="{{day.0.console}}">{{day.0.date_object.which_shift}}</a></div></td>
+
      {% endif %}
 
      <!- Regular Day off _>
