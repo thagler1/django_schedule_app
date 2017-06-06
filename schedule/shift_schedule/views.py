@@ -200,6 +200,8 @@ def unnaproved_pto(request):
     return HttpResponse(template.render(context, request))
 
 def supervisors_console(request):
+    from .tasks import run_schedule_service
+    run_schedule_service.delay()
     user = request.user
     user_object = User.objects.get(id = user.id)
     userprofile = UserProfile.objects.get(user= user_object)
@@ -227,6 +229,20 @@ def supervisors_console(request):
             rowlist.append(console)
         map.append(rowlist)
 
+    #PTO map
+    pto_days = PTO_table.objects.all()
+
+    ptodata = {}
+    #dlist = [[] for i in range(pto_days.count())]
+    for day in pto_days:
+        year = day.date_pto_taken.year
+        month = day.date_pto_taken.month - 1
+        thatday = day.date_pto_taken.day
+        print(type(year))
+
+        ptodata.setdefault(day.date_pto_taken, {'year':year, 'month':month, 'thatday':thatday, 'count':0})
+        ptodata[day.date_pto_taken]['count'] +=1
+
     ############################
     #pto repot
     record = namedtuple('Record','controller pto'.split())
@@ -245,7 +261,8 @@ def supervisors_console(request):
         'pto_records':pto_records,
         'user_profile':userprofile,
         'pto_by_desk': pto_by_desk,
-        'all_unapproved_pto': all_unapproved_pto
+        'all_unapproved_pto': all_unapproved_pto,
+        'pto_days':ptodata
 
 
     }

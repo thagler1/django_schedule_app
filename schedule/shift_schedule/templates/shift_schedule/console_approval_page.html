@@ -5,15 +5,23 @@
     {% load static %}
 {% csrf_token %}
 <link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
 {% for console in desks %}
-<table class="full_console_schedule">
+<table class="table table-bordered full_console_schedule">
   <thead>
-    <tr  class="full_console_schedule th">
-    <th class="full_console_schedule th">{{console}}</th>
+    <tr>
+    <th>{{console}}</th>
 {% for day in calendar %}
-<th class="full_console_schedule th">{{day|date:"n"}}/{{day|date:"d"}}<BR> {{day|date:"D"}}</th>
+<th>{{day|date:"n"}}/{{day|date:"d"}}<BR> {{day|date:"D"}}</th>
 
 
         {% endfor %}
@@ -23,19 +31,19 @@
   <tbody>
   {% for controller in allshifts_console_schedule %}
   {% if controller.0.1 == console %}
-  <tr class="full_console_schedule tr">
-      <td class="full_console_schedule td">{{controller.0.0}}</td>
+  <tr>
+      <td>{{controller.0.0}}</td>
 
       {% for day in controller %}
 
       {% if day.2.controller != controller.0.0 %}
-        <td class="full_console_schedule td">{{day.2.pto.type}}</td>
+        <td>{{day.2.pto.type}}</td>
 
       {% endif %}
 
 
        {% if day.2.controller == controller.0.0 %}
-      <td class="full_console_schedule td"> {{day.2.date_object.which_shift}}</td>
+      <td> {{day.2.date_object.which_shift}}</td>
       {% endif %}
       {% endfor %}
   </tr>
@@ -51,9 +59,10 @@
 
 
 {% for desk, requests in upto.items %}
+<div class="row">
+    <div class="col span5">
 
-
-<table>
+<table class="table table-bordered">
     <caption>Unnaproved PTO</caption>
     <thead>
     <tr>
@@ -70,7 +79,7 @@
     <tbody>
     {% for key, value in requests.items %}
     {% for pto_request in value %}
-    {{pto_request}}
+
     <tr>
 
 
@@ -87,9 +96,12 @@
     {% endfor %}
     </tbody>
 </table>
+
+    </div>
+        <div class="col span5"></div>
+
+</div>
+
 {% endfor %}
-
-
-
 </body>
 </html>

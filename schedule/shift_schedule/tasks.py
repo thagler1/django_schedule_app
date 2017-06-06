@@ -20,3 +20,9 @@ def celery_is_awful():
 def this_might_work():
     print("hello")
     return True
+
+@app.task
+def run_schedule_service():
+    from .functions import scheduleing_service
+    scheduleing_service()
+    return 0

@@ -28,7 +28,8 @@
       {% for key, values in pto_days.items %}
       var newdate = {year:{{values.year|escapejs}},
       thatday:{{values.thatday|escapejs}},
-      month:{{values.month|escapejs}}
+      month:{{values.month|escapejs}},
+      count:{{values.count}},
 
       };
       data.push(newdate);
@@ -45,7 +46,7 @@
 
                // Many rows omitted for brevity.
                //[new Date(l[i][0],l[i][1],l[i][2]), 1],
-                [new Date(data[i].year,data[i].month, data[i].thatday), 2],
+                [new Date(data[i].year,data[i].month, data[i].thatday), data[i].count],
 
            ]);
        }
