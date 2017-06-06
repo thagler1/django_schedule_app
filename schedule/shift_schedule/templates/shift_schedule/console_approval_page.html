@@ -16,7 +16,10 @@
 </head>
 <body>
 {% for console in desks %}
-<table class="table table-bordered full_console_schedule">
+
+<div class="row">
+    <div class="col span9">
+<table class="table table-bordered full_console_schedule display nowrap" style="font-size: smaller">
   <thead>
     <tr>
     <th>{{console}}</th>
@@ -53,6 +56,11 @@
 
   </tbody>
 </table>
+            </div>
+    <div class="col span1">
+
+    </div>
+</div>
 {% endfor %}
 
 
