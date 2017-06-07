@@ -18,18 +18,18 @@
   <li><a style="text-align: center">{{user.first_name}} {{user.last_name}}</a></li>
                 {% if user_profile.is_supervisor %}
 
-        <li><a href="/shift_schedule/debug">Run Scheduling Service</a></li>
+        <li><a href="/debug">Run Scheduling Service</a></li>
         <li><a href="/admin">Admin Console</a></li>
-        <li><a href="/shift_schedule/adduser">Add User</a> </li>
+        <li><a href="/adduser">Add User</a> </li>
         {% endif %}
   <li><a >PTO Availabe: {{user_profile.pto}}</a></li>
 
   <li><a >Overtime Offered: {{oto}}</a></li>
-  <li><a href="/shift_schedule/pto">Reqeust PTO</a></li>
+  <li><a href="/pto">Reqeust PTO</a></li>
 
 
 
-  <li><a href="/shift_schedule/login">login</a></li>
+  <li><a href="/login">login</a></li>
     </ul>
 
 </body>
