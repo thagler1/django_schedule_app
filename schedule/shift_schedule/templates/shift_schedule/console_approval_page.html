@@ -100,7 +100,7 @@
         <td>{{pto_request.console}}</td>
         <td>{{pto_request.type}}</td>
         {% if user_profile.is_supervisor %}
-        <td><a href="/shift_schedule/schedule_coverage/{{pto_request.id}}" >Schedule</a></td>
+        <td><a href="/schedule_coverage/{{pto_request.id}}" >Schedule</a></td>
         {% endif %}
     </tr>
     {% endfor %}

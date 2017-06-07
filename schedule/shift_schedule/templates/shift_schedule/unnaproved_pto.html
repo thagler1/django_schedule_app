@@ -61,7 +61,7 @@
     <tr style="text-align: left">
         {% for desk, count in pto_by_desk.items %}
         <td style="text-align: left">{{desk}}</td>
-        <td style="text-align: left"><a href="/shift_schedule/unapproved/{{desk}}" >{{count}}</a></td>
+        <td style="text-align: left"><a href="/unapproved/{{desk}}" >{{count}}</a></td>
     </tr>
     {% endfor %}
     </tbody>
