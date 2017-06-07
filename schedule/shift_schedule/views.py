@@ -103,12 +103,12 @@ def user_login(request):
                 userprofile = UserProfile.objects.get(user=user)
                 if check_supervisor(userprofile):
                     login(request, user)
-                    return HttpResponseRedirect("/shift_schedule/shift_supervisor_console.html")
+                    return HttpResponseRedirect("/shift_supervisor_console.html")
 
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the homepage.
                 login(request, user)
-                return HttpResponseRedirect('/shift_schedule/user')
+                return HttpResponseRedirect('/user')
             else:
                 # An inactive account was used - no logging in!
                 return HttpResponse("Your account is disabled.")
@@ -182,7 +182,7 @@ def controller_pto_form(request):
 
             post.save()
 
-            return HttpResponseRedirect('/shift_schedule/user')
+            return HttpResponseRedirect('/user')
     else:
         form = PTOForm()
     return render(request, 'shift_schedule/controller_pto_form.html', {'form': form})
@@ -302,7 +302,7 @@ def add_console(request):
             new_console = Console(**form.cleaned_data)
             new_console.save()
 
-            return HttpResponseRedirect('/shift_schedule/add_console')
+            return HttpResponseRedirect('/add_console')
     else:
         form = ConsoleForm()
     return render(request, 'shift_schedule/new_console.html', {'form': form, 'consoles':all_consoles})
@@ -316,7 +316,7 @@ def schedule_coverage(request, pto_id):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect('/shift_schedule/unapproved_pto')
+            return HttpResponseRedirect('/unapproved_pto')
     else:
         form  = schedule_pto(instance=pto_data)
     return render(request,'shift_schedule/schedule_coverage.html', {'form':form, 'pto_id':pto_id})
