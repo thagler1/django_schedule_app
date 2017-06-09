@@ -15,6 +15,7 @@ from .schedule_calculations import OqController, assign_coverage
 from .tasks import celery_is_awful
 from django.contrib.auth.decorators import login_required
 
+from twilio.rest import Client
 
 def index(request):
     allshifts = Shift.objects.all()
@@ -276,11 +277,19 @@ def supervisors_console(request):
 
 
 def debugpage(request):
-
+    client = Client()
     #importcsv()
     user = request.user
     user_object = User.objects.get(id=user.id)
     from .functions import pto_calandar
+
+    message = client.messages.create(
+        body = 'it worked!',
+        to = '+12147270215',
+        from_ = '+19724498463'
+    )
+
+    to = '+12147270215'
 
     userprofile = UserProfile.objects.get(user=user_object)
     r = pto_calandar(userprofile, 2017)
@@ -353,3 +362,10 @@ def console_approval(request, console):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/login')
+
+
+def reply_to_sms_message(request):
+    from twilio import twiml
+    r = twiml.Response()
+    r.message('thanks for the text')
+    return r
