@@ -277,15 +277,15 @@ def supervisors_console(request):
 
 
 def debugpage(request):
-    TWILIO_ACCOUNT_SID = 'ACd5b0e9b482445382c76c5d3c004dd8d6'
-    TWILIO_AUTH_TOKEN = 'dcde93c2e645e76d3bc4fa9e3dae2c2c'
-    client = Client(TWILIO_ACCOUNT_SID,TWILIO_AUTH_TOKEN)
+    #TWILIO_ACCOUNT_SID = 'ACd5b0e9b482445382c76c5d3c004dd8d6'
+    #TWILIO_AUTH_TOKEN = 'dcde93c2e645e76d3bc4fa9e3dae2c2c'
+    #client = Client(TWILIO_ACCOUNT_SID,TWILIO_AUTH_TOKEN)
     #importcsv()
     user = request.user
     user_object = User.objects.get(id=user.id)
-    from .functions import pto_calandar
+    #from .functions import pto_calandar
 
-    message = client.messages.create(
+   # message = client.messages.create(
         body = 'it worked!',
         to = '+12147270215',
         from_ = '+19724498463'
