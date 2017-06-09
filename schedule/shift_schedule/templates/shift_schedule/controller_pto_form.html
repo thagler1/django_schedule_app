@@ -7,7 +7,7 @@
      
 </head>
 <body>
-<form action="/shift_schedule/pto" method="post">
+<form action="/pto" method="post">
    {% csrf_token %}
 {{form.as_p}}
     End Date: <input type="date" name="end_date" />

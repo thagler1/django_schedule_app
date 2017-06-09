@@ -5,7 +5,7 @@ import datetime
 from .forms import UserForm, PTOForm, UserprofileForm, ConsoleForm, schedule_pto
 from .schedule_calculations import project_schedule
 from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, importcsv, console_schedule, controller_pto_request
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.shortcuts import render
@@ -13,7 +13,7 @@ from .schedule_validation_rules import one_shift_per_controller, deviation_check
 from collections import namedtuple
 from .schedule_calculations import OqController, assign_coverage
 from .tasks import celery_is_awful
-
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -124,7 +124,9 @@ def user_login(request):
         # blank dictionary object...
         return render(request, 'shift_schedule/login.html', {})
 
+@login_required
 def user_page(request, calyear = None,calmonth=None):
+
     from .functions import pto_calandar
 
     user = request.user
@@ -202,6 +204,8 @@ def unnaproved_pto(request):
     return HttpResponse(template.render(context, request))
 
 def supervisors_console(request):
+    if not request.user.is_authenticated:
+        HttpResponseRedirect('/login')
     from .tasks import run_schedule_service
     run_schedule_service.delay()
     user = request.user
@@ -308,6 +312,8 @@ def add_console(request):
     return render(request, 'shift_schedule/new_console.html', {'form': form, 'consoles':all_consoles})
 
 def schedule_coverage(request, pto_id):
+    if not request.user.is_authenticated:
+        HttpResponseRedirect('/login')
     pto_data = PTO_table.objects.get(id = pto_id)
 
     if request.method=="POST":
@@ -322,6 +328,8 @@ def schedule_coverage(request, pto_id):
     return render(request,'shift_schedule/schedule_coverage.html', {'form':form, 'pto_id':pto_id})
 
 def console_approval(request, console):
+    if not request.user.is_authenticated:
+        HttpResponseRedirect('/login')
     user = request.user
     user_object = User.objects.get(id = user.id)
     userprofile = UserProfile.objects.get(user= user_object)
@@ -341,3 +349,7 @@ def console_approval(request, console):
     template = loader.get_template('shift_schedule/console_approval_page.html')
     return HttpResponse(template.render(context, request))
 
+
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/login')
