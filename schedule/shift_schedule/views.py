@@ -393,28 +393,4 @@ def user_logout(request):
     return HttpResponseRedirect('/login')
 
 
-def ajax_schedule_check(request, date):
-    from .functions import get_user_profile
-    userprofile = get_user_profile(request)
-    schedule = project_schedule(date, date,userprofile)
-
-    if schedule:
-        scheduled = True
-
-    if scheduled is True:
-        # Check if DND is set for scheduled day, if it is reject the form
-        if self.cleaned_data['type'] == 'DND':
-            raise forms.ValidationError("You cannot mark a day you are scheduled to work with Do No Disturb.")
-
-        # check to see if it is short notice pto
-
-        # if on PTO already, reject
-        if PTO_table.objects.filter(user=self.userprofile, date_pto_taken=self.cleaned_data['date_pto_taken']).exists():
-            raise forms.ValidationError("You are already on PTO")
-
-    if scheduled is False:
-        # reject pto taken on days not scheduled
-        if self.cleaned_data['type'] == 'PTO' or self.cleaned_data['type'] == 'PTOS':
-            raise forms.ValidationError("You cannot take %(value)s on a day you are not scheduled",
-                                        params={'value': self.cleaned_data['type']}, )
 
