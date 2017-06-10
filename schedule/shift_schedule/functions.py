@@ -284,6 +284,15 @@ def pto_calandar(userprofile, year):
 '''
 
 
+def get_user_profile(request):
+
+    user = request.user
+    user_object = User.objects.get(id = user.id)
+    userprofile = UserProfile.objects.get(user= user_object)
+
+    return userprofile
+
+
 
 
 

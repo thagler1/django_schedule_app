@@ -2,6 +2,9 @@
 <html lang="en">
 {% load static %}
 {% csrf_token %}
+<!--  jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
 <link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
 <!-- Latest compiled and minified CSS -->
@@ -74,8 +77,42 @@
 {% include "shift_schedule/calendar.html" %}
 </div>
 
-<div class="col span3" style="padding-top: 100px; overflow: scroll; height: 250px" >
-{% include "shift_schedule/controller_pto_requests.html" %}
+<div class="col span3" style="padding-top: 100px;" >
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">PTO Request</h4>
+      </div>
+      <div class="modal-body">
+        {% include 'shift_schedule/controller_pto_form.html' %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+<!-- lock form open after submit -->
+<script type="text/javascript">
+  $('#pto_form').submit(function() { // catch the form's submit event
+    $.ajax({ // create an AJAX call...
+        data: $(this).serialize(), // get the form data
+        type: $(this).attr('method'), // GET or POST
+        url: $(this).attr('action'), // the file to call
+        success: function(response) { // on success..
+            $('.modal-content').html(response); // should check if with validation errors
+            $('#myModal').modal("hide");
+        },
+    });
+    return false;
+  });
+</script>
+  </div>
+</div>
 </div>
 <div class="col span1"> </div>
      </div>

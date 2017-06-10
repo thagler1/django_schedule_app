@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^schedule_coverage/(?P<pto_id>[0-9]+)', views.schedule_coverage, name=''),
     url(r'^unapproved/(?P<console>[A-z]+\s?[A-z]+)', views.console_approval, name=''),
     url(r'^logout/', views.user_logout, name='logout'),
+    url(r'^Ajax/Data_validator', views.ajax_schedule_check),
 
 
 

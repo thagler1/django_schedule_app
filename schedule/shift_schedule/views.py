@@ -122,7 +122,7 @@ def user_login(request):
 
 @login_required
 def user_page(request, calyear = None,calmonth=None):
-
+    args = {}
     from .functions import pto_calandar
 
     user = request.user
@@ -136,6 +136,32 @@ def user_page(request, calyear = None,calmonth=None):
     #importcsv()
     pending_pto, approved_pto = controller_pto_request(request)
     pto_events = pto_calandar(userprofile, 2017)
+
+    if request.method =='POST':
+        form = PTOForm(request.POST,userprofile = userprofile)
+
+
+        if form.is_valid():
+
+            #form.clean_recipeants(userprofile)
+            post =form.save(commit=False)  # saves form and commits to DB
+            post.date_requested=datetime.datetime.now()
+            post.user = userprofile
+            #post.coverage = userprofile
+
+            if post.type == 'DND':
+                post.supervisor_approval = True
+
+            post.save()
+
+            return HttpResponseRedirect('/user')
+    else:
+        form = PTOForm()
+        args['form'] = form
+
+
+
+
     context = {
         'consoles':consoles,
         'daterange':daterange,
@@ -151,6 +177,7 @@ def user_page(request, calyear = None,calmonth=None):
 
         'pending_pto':pending_pto,
         'approved_pto': approved_pto,
+        'form': form
     }
 
     template = loader.get_template('shift_schedule/user_page.html')
@@ -366,8 +393,28 @@ def user_logout(request):
     return HttpResponseRedirect('/login')
 
 
-def reply_to_sms_message(request):
-    from twilio import twiml
-    r = twiml.Response()
-    r.message('thanks for the text')
-    return r
+def ajax_schedule_check(request, date):
+    from .functions import get_user_profile
+    userprofile = get_user_profile(request)
+    schedule = project_schedule(date, date,userprofile)
+
+    if schedule:
+        scheduled = True
+
+    if scheduled is True:
+        # Check if DND is set for scheduled day, if it is reject the form
+        if self.cleaned_data['type'] == 'DND':
+            raise forms.ValidationError("You cannot mark a day you are scheduled to work with Do No Disturb.")
+
+        # check to see if it is short notice pto
+
+        # if on PTO already, reject
+        if PTO_table.objects.filter(user=self.userprofile, date_pto_taken=self.cleaned_data['date_pto_taken']).exists():
+            raise forms.ValidationError("You are already on PTO")
+
+    if scheduled is False:
+        # reject pto taken on days not scheduled
+        if self.cleaned_data['type'] == 'PTO' or self.cleaned_data['type'] == 'PTOS':
+            raise forms.ValidationError("You cannot take %(value)s on a day you are not scheduled",
+                                        params={'value': self.cleaned_data['type']}, )
+

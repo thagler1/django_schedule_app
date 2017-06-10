@@ -8,7 +8,7 @@ from .schedule_calculations import project_schedule
 
 
 class DateInput(forms.DateInput):
-    input_type = 'date'
+    input_type = 'datepicker'
 
 class UserForm(ModelForm):
     class Meta:
