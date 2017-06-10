@@ -284,13 +284,13 @@ def debugpage(request):
     user = request.user
     user_object = User.objects.get(id=user.id)
     #from .functions import pto_calandar
-
-   # message = client.messages.create(
+    '''
+    message = client.messages.create(
         body = 'it worked!',
         to = '+12147270215',
         from_ = '+19724498463'
     )
-
+    '''
     to = '+12147270215'
 
     userprofile = UserProfile.objects.get(user=user_object)
