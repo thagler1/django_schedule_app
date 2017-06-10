@@ -38,7 +38,7 @@ def send_txt_message(to, body):
     client = Client(TWILIO_ACCOUNT_SID,TWILIO_AUTH_TOKEN)
 
     message = client.messages.create(
-        body = 'it worked!',
+        body = body,
         to = '+12147270215',
         from_ = '+19724498463'
     )

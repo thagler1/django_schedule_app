@@ -28,19 +28,15 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
-
+@login_required
 def create_user(request):
-    from .tasks import add_schedule_record
-    add_schedule_record.delay()
-
-
     #template = loader.get_template("shift_schedule/adduser.html")
     if request.method == "POST":
         form = UserForm(request.POST)
         uform = UserprofileForm(request.POST,  request.FILES)
-        #image = ImageUploadForm(request.POST, request.FILES)
+
         new_up = uform.save(commit=False)
-        #print(request.FILES)
+
 
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
@@ -331,10 +327,11 @@ def schedule_coverage(request, pto_id):
         form = schedule_pto(request.POST,instance = pto_data)
         print(form)
         if form.is_valid():
-            if form.supervisor_approval:
-                txt = "You have been scheduled to work %s %s"%(form.date_pto_taken, form.shift_type)
-                send_txt_message(form.coverage,).delay()
-            form.save()
+
+            pto_event = form.save()
+            if pto_event.supervisor_approval:
+                txt = "You have been scheduled to work %s %s"%(pto_event.date_pto_taken, pto_event.shift_type)
+                send_txt_message(pto_event.coverage,txt).delay()
 
             return HttpResponseRedirect('/unapproved_pto')
     else:
