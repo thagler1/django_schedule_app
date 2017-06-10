@@ -31,14 +31,15 @@ def run_schedule_service():
 
 @app.task
 def send_txt_message(to, body):
+    if to.phone is not None:
+        sendto = to.phone
+        sendfrom = '+19724498463'
+        TWILIO_ACCOUNT_SID = 'ACd5b0e9b482445382c76c5d3c004dd8d6'
+        TWILIO_AUTH_TOKEN = 'dcde93c2e645e76d3bc4fa9e3dae2c2c'
+        client = Client(TWILIO_ACCOUNT_SID,TWILIO_AUTH_TOKEN)
 
-    sendto = to.phone
-    TWILIO_ACCOUNT_SID = 'ACd5b0e9b482445382c76c5d3c004dd8d6'
-    TWILIO_AUTH_TOKEN = 'dcde93c2e645e76d3bc4fa9e3dae2c2c'
-    client = Client(TWILIO_ACCOUNT_SID,TWILIO_AUTH_TOKEN)
-
-    message = client.messages.create(
-        body = body,
-        to = '+12147270215',
-        from_ = '+19724498463'
+        message = client.messages.create(
+            body = body,
+            to = sendto,
+            from_ = sendfrom
     )
