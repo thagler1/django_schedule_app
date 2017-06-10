@@ -15,7 +15,6 @@ from .schedule_calculations import OqController, assign_coverage
 from .tasks import celery_is_awful
 from django.contrib.auth.decorators import login_required
 
-from twilio.rest import Client
 
 def index(request):
     allshifts = Shift.objects.all()
@@ -328,9 +327,13 @@ def schedule_coverage(request, pto_id):
     pto_data = PTO_table.objects.get(id = pto_id)
 
     if request.method=="POST":
+        from .tasks import send_txt_message
         form = schedule_pto(request.POST,instance = pto_data)
         print(form)
         if form.is_valid():
+            if form.supervisor_approval:
+                txt = "You have been scheduled to work %s %s"%(form.date_pto_taken, form.shift_type)
+                send_txt_message(form.coverage,).delay()
             form.save()
 
             return HttpResponseRedirect('/unapproved_pto')
