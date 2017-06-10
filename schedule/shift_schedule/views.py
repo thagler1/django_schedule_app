@@ -331,7 +331,7 @@ def schedule_coverage(request, pto_id):
             pto_event = form.save()
             if pto_event.supervisor_approval:
                 txt = "You have been scheduled to work %s %s"%(pto_event.date_pto_taken, pto_event.shift_type)
-                send_txt_message.delay(pto_event.coverage,txt)
+                send_txt_message(pto_event.coverage,txt)
 
             return HttpResponseRedirect('/unapproved_pto')
     else:
