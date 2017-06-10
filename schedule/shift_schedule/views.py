@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from .models import Shift, UserProfile, Console, Master_schedule, Console_schedule, Console_oq, PTO_table, Console_Map
 import datetime
@@ -186,31 +186,38 @@ def user_page(request, calyear = None,calmonth=None):
 
 
 def controller_pto_form(request):
+    import json
     user = request.user
     user_object = User.objects.get(id=user.id)  # returns userprofile for logged in user
     userprofile = UserProfile.objects.get(user=user_object)
 
     if request.method =='POST':
-        form = PTOForm(request.POST,userprofile = userprofile)
+        form = PTOForm(data=request.POST,userprofile = userprofile)
 
-
+        print('post request made')
         if form.is_valid():
-            print(request.POST['end_date'])
+            print('form is valid')
+            response_data = {}
             #form.clean_recipeants(userprofile)
             post =form.save(commit=False)  # saves form and commits to DB
             post.date_requested=datetime.datetime.now()
             post.user = userprofile
             #post.coverage = userprofile
 
+            response_data['pto_added'] = 1
+            response_data['success_message'] = "Request added successfully"
+
+
+
             if post.type == 'DND':
                 post.supervisor_approval = True
 
             post.save()
+            return JsonResponse(response_data)
 
-            return HttpResponseRedirect('/user')
-    else:
-        form = PTOForm()
-    return render(request, 'shift_schedule/controller_pto_form.html', {'form': form})
+        else:
+            return JsonResponse(form.errors)
+
 
 def unnaproved_pto(request):
     user = request.user

@@ -31,7 +31,11 @@ def run_schedule_service():
 
 @app.task
 def send_txt_message(to, body):
-    if to.phone is not None:
+    if to.phone:
+        print(True)
+    print(to)
+
+    if to.phone:
         sendto = '+1' +to.phone
 
         sendfrom = '+19724498463'
