@@ -6,7 +6,13 @@
 
 {% load static %}
     <title>Title</title>
+<style>
+    .highlight{
+        color: black;
+        background-color: red;
 
+    }
+</style>
 
 </head>
 <body>
@@ -21,7 +27,7 @@
 
     <div class="row">
         <div class="col span2" style="text-align: left; width= 4em;">
-            <h2>{{pto_data.date_pto_taken}} {{pto_data.shift_type|lower}} shift, for {{pto_data.user}} {{pto_data.type}}</h2>
+            <h2>{{pto_data.date_pto_taken|date:'M d'}} {{pto_data.shift_type|lower}} shift, for {{pto_data.user}} {{pto_data.type}}</h2>
             <form action="/schedule_coverage/{{pto_id}}" method="post">
             {% csrf_token %}
             {{form.as_p}}
@@ -54,8 +60,31 @@
         </div>
     </div>
 </div>
+
 <script>
+$(document).ready(function () {
+
+
+    $("#id_coverage").bind('change',function() {
+        var controler = $('#id_coverage option:selected').text();
+        var date = "{{pto_data.date_pto_taken|date:'d'}}";
+        var test = controler.replace(/\s+/g, '') + date.replace(/\s+/g, '');
+
+        $(".highlight").removeClass("highlight");
+        $("#" + test).addClass("highlight");
+    });
+    $("#id_coverage").trigger('change');
+
+});
+
+    $(document).ready(function () {
+        var requestor = '{{pto_data.user|cut:" "}}';
+        var date = "{{pto_data.date_pto_taken|date:'d'}}";
+        var test = requestor+date;
+        $("#"+test).css("background-color","yellow");
+})
 
 </script>
+
 </body>
 </html>
