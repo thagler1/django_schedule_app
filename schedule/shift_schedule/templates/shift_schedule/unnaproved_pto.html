@@ -4,8 +4,12 @@
 {% load static %}
 
 <!-- Jquery -->
+<!-- dependencies -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" src="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 
 
 <link rel ="stylesheet" type="text/css" href="{% static 'shift_schedule/style.css' %}"/>
@@ -17,9 +21,9 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<div>
 
-<div class="col span5">
+
+
 {% for desk in desks %}
 <table class="table">
     <caption>Unnaproved PTO</caption>
@@ -53,26 +57,43 @@
 </table>
 {% endfor %}
 </div>
-<table class="table">
+<table class="table table-bordered" id="example" cellspacing="0">
     <caption>Unnaproved PTO</caption>
     <thead>
     <tr>
         <tr>
         <th>Console</th>
-        <th>PTO Request Count</th>
+        <th>Controller</th>
+        <th>Best Fit Coverage</th>
+        <th>PTO Date</th>
+        <th>PTO Type</th>
+        <th>Notes</th>
+        <th>Schedule</th>
 
     </tr>
     </thead>
     <tbody>
     <tr style="text-align: left">
-        {% for desk, count in pto_by_desk.items %}
-        <td style="text-align: left">{{desk}}</td>
-        <td style="text-align: left"><a href="/unapproved/{{desk}}" >{{count}}</a></td>
+        {% for event in all_unapproved_pto %}
+        <td style="text-align: left">{{event.console}}</td>
+        <td style="text-align: left">{{event.user}}</td>
+        <td style="text-align: left">{{event.coverage}}</td>
+        <td style="text-align: left">{{event.date_pto_taken}}</td>
+        <td style="text-align: left">{{event.type}}</td>
+        <td style="text-align: left">{{event.notes}}</td>
+        <td><a href="/schedule_coverage/{{event.id}}" >Schedule</a></td>
+
     </tr>
     {% endfor %}
     </tbody>
 
 </table>
+    <script>
+    $(document).ready(function() {
+    $('#example').DataTable( {
+            } );
+} );
+    </script>
 </div>
 </body>
 </html>

@@ -225,7 +225,7 @@ def unnaproved_pto(request):
     userprofile = UserProfile.objects.get(user=user_object)
 
     template = loader.get_template('shift_schedule/unnaproved_pto.html')
-    all_unapproved_pto = PTO_table.objects.filter(supervisor_approval=False)
+    all_unapproved_pto = PTO_table.objects.filter(date_pto_taken__gte= datetime.datetime.today())
     pto_by_desk = {pto.console:PTO_table.objects.filter(supervisor_approval=False, console=pto.console).count() for pto in all_unapproved_pto}
     context = {
         'all_unapproved_pto': all_unapproved_pto,
@@ -354,8 +354,11 @@ def add_console(request):
 def schedule_coverage(request, pto_id):
     if not request.user.is_authenticated:
         HttpResponseRedirect('/login')
-    pto_data = PTO_table.objects.get(id = pto_id)
 
+    pto_data = PTO_table.objects.get(id = pto_id)
+    month = pto_data.date_pto_taken.month
+    console = pto_data.console
+    calendar, allshifts_console_schedule, shifts, desks = console_schedule(console, month)
     if request.method=="POST":
         from .tasks import send_txt_message
         form = schedule_pto(request.POST,instance = pto_data)
@@ -367,10 +370,20 @@ def schedule_coverage(request, pto_id):
                 txt = "You have been scheduled to work %s %s"%(pto_event.date_pto_taken, pto_event.shift_type)
                 send_txt_message(pto_event.coverage,txt)
 
-            return HttpResponseRedirect('/unapproved_pto')
+            return HttpResponseRedirect('/shift_supervisor_console')
     else:
         form  = schedule_pto(instance=pto_data)
-    return render(request,'shift_schedule/schedule_coverage.html', {'form':form, 'pto_id':pto_id})
+        context = {
+            'form':form,
+            'pto_id':pto_id,
+            'calendar':calendar,
+            'allshifts_console_schedule':allshifts_console_schedule,
+            'shifts':shifts,
+            'consoles':desks,
+            'pto_data':pto_data
+
+        }
+    return render(request,'shift_schedule/schedule_coverage.html', context)
 
 def console_approval(request, console):
     if not request.user.is_authenticated:
