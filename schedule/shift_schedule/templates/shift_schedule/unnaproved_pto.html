@@ -24,41 +24,9 @@
 
 
 
-{% for desk in desks %}
-<table class="table">
-    <caption>Unnaproved PTO</caption>
-    <thead>
-    <tr>
-        <tr>
-        <th>Date</th>
-        <th>Date Requested</th>
-        <th>Controller</th>
-        <th>Console</th>
-        <th>Type</th>
-        <th>id</th>
-
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        {% for pto_request in desk.pto_requests %}
-
-        <td>{{pto_request.date_pto_taken|date:"n"}}/{{pto_request.date_pto_taken|date:"d"}}<Br>{{pto_request.date_pto_taken|date:"D"}}
-        <Br>
-            {{pto_request.shift_type}}</td>
-        <td>{{pto_request.date_requested|date:"n"}}/{{pto_request.date_requested|date:"d"}}</td>
-        <td>{{pto_request.user.full_name}}</td>
-        <td>{{pto_request.console}}</td>
-        <td>{{pto_request.type}}</td>
-        <td><a href="/shift_schedule/schedule_coverage/{{pto_request.id}}" >Schedule</a></td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
-{% endfor %}
 </div>
 <table class="table table-bordered" id="example" cellspacing="0">
-    <caption>Unnaproved PTO</caption>
+    <caption>Unaproved PTO</caption>
     <thead>
     <tr>
         <tr>
@@ -78,7 +46,7 @@
         <td style="text-align: left">{{event.console}}</td>
         <td style="text-align: left">{{event.user}}</td>
         <td style="text-align: left">{{event.coverage}}</td>
-        <td style="text-align: left">{{event.date_pto_taken}}</td>
+        <td style="text-align: left">{{event.date_pto_taken|date:"M-d-Y"}}</td>
         <td style="text-align: left">{{event.type}}</td>
         <td style="text-align: left">{{event.notes}}</td>
         <td><a href="/schedule_coverage/{{event.id}}" >Schedule</a></td>
