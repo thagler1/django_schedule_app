@@ -376,7 +376,7 @@ def project_schedule(start_date, end_date, userprofile):
         if PTO_table.objects.filter(date_pto_taken=day, coverage=userprofile).exists():
             try:
                 # for day search for pto coverage. if schedule, create a dateItem with the control assigned to it
-                coverage_event = PTO_table.objects.get(date_pto_taken=day, coverage=userprofile, supervispor_approval=True)
+                coverage_event = PTO_table.objects.get(date_pto_taken=day, coverage=userprofile, supervisor_approval=True)
                 other_controller_schedule = project_schedule(day,day+datetime.timedelta(days=1),coverage_event.user)
                 shift_object = other_controller_schedule
                 shift_object.change_controller(userprofile)

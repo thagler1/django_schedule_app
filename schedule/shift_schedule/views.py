@@ -225,7 +225,7 @@ def unnaproved_pto(request):
     userprofile = UserProfile.objects.get(user=user_object)
 
     template = loader.get_template('shift_schedule/unnaproved_pto.html')
-    all_unapproved_pto = PTO_table.objects.filter(date_pto_taken__gte= datetime.datetime.today())
+    all_unapproved_pto = PTO_table.objects.filter(supervisors_approval =False)
     pto_by_desk = {pto.console:PTO_table.objects.filter(supervisor_approval=False, console=pto.console).count() for pto in all_unapproved_pto}
     context = {
         'all_unapproved_pto': all_unapproved_pto,
