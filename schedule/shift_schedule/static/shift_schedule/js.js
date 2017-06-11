@@ -69,6 +69,7 @@ function select_month(obj) {
 function create_post() {
     console.log("create post is working!") // sanity check
     var formData = $("#pto_form").serializeArray()
+
     console.log(formData)
         $.ajax({
 
@@ -84,9 +85,10 @@ function create_post() {
             $('#id_date_pto_taken').val('');
             $('#id_notes').val('');
             $("#talk").empty()
-            $("#talk").prepend("<li><strong>"+json.success_message+"</span></li>");;
+            $("#talk").html(json.success_message);
         } else {
-        $("#talk").prepend("<li><strong>"+json.type[0]+"</span></li>");
+        $("#talk").empty()
+        $("#talk").html(json.type[0]);
         console.log("success"); // another sanity check
 }},
 

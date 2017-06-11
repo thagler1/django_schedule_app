@@ -64,19 +64,6 @@
 <div class="wrapper">
 <div class="row"><div class="col span9"></div> </div>
 
-      {% for row in map %}
-      <div class="row">
-          {% if forloop.counter > 2%}
-          <div class="col span5"></div>
-          {% endif %}
-        {% for console in row %}
-        <div class="layoutcol span1">
-            {{console.console.console_name}}
-        {{console.console.address}}</div>
-        {% endfor %}
-
-	</div>
-        {% endfor %}
 
     <div class="row">
         <div class="col span8">
