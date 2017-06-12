@@ -6,6 +6,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome, {{ user.first_name }} {{ user.last_name }}</title>
+
+    <style>
+            .noHover{
+                pointer-events: none;
+                }
+    </style>
+
+
+
 </head>
 <body>
 
@@ -15,21 +24,23 @@
         <li><img src={{user_profile.profile_image.url}}></li>
         {% endif %}
 
-  <li><a style="text-align: center">{{user.first_name}} {{user.last_name}}</a></li>
+  <li><a style="text-align: center" class="noHover">{{user.first_name}} {{user.last_name}}</a></li>
                 {% if user_profile.is_supervisor %}
 
         <li><a href="/admin">Admin Console</a></li>
         <li><a href="/adduser">Add User</a> </li>
         {% endif %}
-  <li><a >PTO Availabe: {{user_profile.pto}}</a></li>
+  <li><a class="noHover">PTO Availabe: {{user_profile.pto}}</a></li>
 
-  <li><a >Overtime Offered: {{oto}}</a></li>
+  <li><a class="noHover">Overtime Offered: {{oto}}</a></li>
   <li><a data-toggle="modal" data-target="#myModal">Reqeust PTO</a></li>
-
-
-
   <li><a href="/logout">logout</a></li>
     </ul>
+<scrip>
+
+
+</scrip>
+
 
 </body>
 </html>

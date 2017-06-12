@@ -220,7 +220,7 @@ def console_schedule(console, month, year = datetime.date.today().year):
     for controller in all_qualified_controllers:
         found_event = False
         temp_cal = []  # this is a temp calendar to move the dates through
-        recurring_calendar = project_schedule(start_date,end_date,controller[0]) # get controller specific event calendar
+        recurring_calendar = project_schedule(start_date,end_date+datetime.timedelta(days=1),controller[0]) # get controller specific event calendar
         for i, date in enumerate(calender): # scroll through requested date range
 
             display_date= date.day #this is to pull just the date number
@@ -254,7 +254,7 @@ def scheduleing_service():
     pto_events = PTO_table.objects.all()
     test_coverage = []
     for event in pto_events:
-        if event.coverage is None:
+        if event.supervisors_approval is False:
             if event.type != 'DND':
                 test_coverage.append(assign_coverage(event))
 
