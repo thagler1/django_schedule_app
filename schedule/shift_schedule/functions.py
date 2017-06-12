@@ -254,7 +254,7 @@ def scheduleing_service():
     pto_events = PTO_table.objects.all()
     test_coverage = []
     for event in pto_events:
-        if event.supervisors_approval is False:
+        if event.supervisor_approval is False:
             if event.type != 'DND':
                 test_coverage.append(assign_coverage(event))
 
