@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.user_login, name='index'),
     url(r'adduser', views.create_user, name ="adduser"),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^user/(?P<calmonth>[0-9]{2})', views.user_page, name ='userpage'),
