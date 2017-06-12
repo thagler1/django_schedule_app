@@ -184,7 +184,7 @@ def user_page(request, calyear = None,calmonth=None):
 
     return HttpResponse(template.render(context, request))
 
-
+@login_required
 def controller_pto_form(request):
     import json
     user = request.user
@@ -232,7 +232,7 @@ def unnaproved_pto(request):
         'pto_by_desk':pto_by_desk
     }
     return HttpResponse(template.render(context, request))
-
+@login_required
 def supervisors_console(request):
     if not request.user.is_authenticated:
         HttpResponseRedirect('/login')
@@ -336,7 +336,7 @@ def debugpage(request):
 
     }
     return HttpResponse(template.render(context, request))
-
+@login_required
 def add_console(request):
     all_consoles = Console.objects.all()
     if request.method =='POST':
@@ -350,9 +350,16 @@ def add_console(request):
     else:
         form = ConsoleForm()
     return render(request, 'shift_schedule/new_console.html', {'form': form, 'consoles':all_consoles})
-
+@login_required
 def schedule_coverage(request, pto_id):
     if not request.user.is_authenticated:
+        HttpResponseRedirect('/login')
+
+    user = request.user
+    user_object = User.objects.get(id = user.id)
+    userprofile = UserProfile.objects.get(user= user_object)
+
+    if userprofile.is_supervisor is False:
         HttpResponseRedirect('/login')
 
     pto_data = PTO_table.objects.get(id = pto_id)
@@ -380,11 +387,12 @@ def schedule_coverage(request, pto_id):
             'allshifts_console_schedule':allshifts_console_schedule,
             'shifts':shifts,
             'consoles':desks,
-            'pto_data':pto_data
+            'pto_data':pto_data,
+            'user_profile':userprofile,
 
         }
     return render(request,'shift_schedule/schedule_coverage.html', context)
-
+@login_required
 def console_approval(request, console):
     if not request.user.is_authenticated:
         HttpResponseRedirect('/login')

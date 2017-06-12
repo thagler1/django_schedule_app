@@ -269,4 +269,33 @@ class Schedule_Record(models.Model):
         else:
             shift_type = "Night"
         return "%s %s %s %s"%(date,shift_type, console_name,controller)
+
+class CommsLog(models.Model):
+    date = models.DateTimeField(default=None, null=True)
+    message_to = models.ForeignKey(UserProfile,on_delete=None,)
+    pto_event = models.ForeignKey(PTO_table,on_delete=None)
+    message_from = models.ForeignKey(UserProfile,on_delete=None,related_name="+")
+    message_body = models.ForeignKey()
+
+    def __str__(self):
+        return "%s: %s to %s"%(self.date,self.message_from,self.message_to)
+
+class OT_offer(models.Model):
+
+    pto_event = models.ForeignKey(PTO_table)
+    coverage_user = models.ForeignKey(UserProfile)
+    assigned_by = models.ForeignKey(UserProfile,limit_choices_to={'is_supervisor':True})
+    condition = models.BooleanField(default=True)
+    forced = models.BooleanField(default=False)
+    date_first_assigned=models.DateTimeField(default=None, null=True)
+    date_last_modified = models.DateTimeField(default=None, null=True)
+
+    def __str__(self):
+        return "%s %s"%(self.coverage_user,self.date_last_modified)
+
+
+
+
+
 from .signals import add_pto_to_schedule
+
