@@ -4,7 +4,7 @@
 {% load static %}
 
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Approved PTO</title>
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
   <link rel="stylesheet" src="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
@@ -56,7 +56,7 @@
         <td style="text-align: left">{{event.date_pto_taken|date:"M-d-Y"}}</td>
         <td style="text-align: left">{{event.type}}</td>
         <td style="text-align: left">{{event.notes|truncatechars:75}}</td>
-        <td><a href="/schedule_coverage/{{event.id}}" >Edit</a></td>
+        <td><a stlye ="text-align:left" href="/schedule_coverage/{{event.id}}" >Edit</a></td>
 
     </tr>
     {% endfor %}
