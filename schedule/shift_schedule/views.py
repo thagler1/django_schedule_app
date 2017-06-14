@@ -420,5 +420,17 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/login')
 
+def approved_pto(request):
+    user = request.user
+    user_object = User.objects.get(id = user.id)
+    userprofile = UserProfile.objects.get(user= user_object)
+    pto_events = PTO_table.objects.filter(supervisor_approval=True)
+    pto_events.extra(order_by=['-date_pto_taken'])
 
+    template = loader.get_template('shift_schedule/approved_pto.html')
+    context = {
+        'approved_pto_events':pto_events,
+        'user_profile':userprofile
+    }
 
+    return HttpResponse(template.render(context,request))
