@@ -36,7 +36,7 @@ def send_txt_message(to, body):
     print(to)
 
     if to.phone:
-        sendto = '+1' +to.phone
+        sendto = to.phone
 
         sendfrom = '+19724498463'
         TWILIO_ACCOUNT_SID = 'ACd5b0e9b482445382c76c5d3c004dd8d6'

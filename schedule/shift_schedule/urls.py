@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from . import views
+from .sms import incoming
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
@@ -20,6 +21,7 @@ urlpatterns = [
     url(r'^schedule_coverage/(?P<pto_id>[0-9]+)', views.schedule_coverage, name=''),
     url(r'^unapproved/(?P<console>[A-z]+\s?[A-z]+)', views.console_approval, name=''),
     url(r'^logout/', views.user_logout, name='logout'),
+    url(r'^twilio_response_2147270215', incoming.receive_response ),
 
 
 
