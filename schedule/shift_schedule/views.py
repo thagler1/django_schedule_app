@@ -503,9 +503,11 @@ def ajax_schedule(request):
 
                                 try:
                                     if cname != controller[dcount][2].controller.full_name():
-                                        val = ''
+                                        val = controller[dcount][2].pto.type
                                 except:
                                     pass
+
+
 
 
 
@@ -515,7 +517,7 @@ def ajax_schedule(request):
 
 
         #format dates
-        rcalendar = [day.strftime("%-m/%d") for day in calendar]
+        rcalendar = [day.strftime("%-m/%d\n %a") for day in calendar]
         rdesks = [desk.console_name for desk in desks]
         print(cal_rows)
         context ={
