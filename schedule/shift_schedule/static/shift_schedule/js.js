@@ -121,11 +121,11 @@ function fetch_schedule() {
 
                 for(desknum=0; desknum<json.desks.length; desknum++ ) {
                     console.log(json.cal_rows[desknum])
-                    var table = $('<table class="table table-bordered"><caption>' + json.desks[desknum] + '</caption></table>').addClass('cal');
+                    var table = $('<table class="table table-bordered table-striped"><caption>' + json.desks[desknum] + '</caption></table>').addClass('cal');
                     var row = $('<th></th>').addClass('cal').text(json.desks[desknum]);
                     table.append(row);
                     for (i = 0; i < json.calendar.length; i++) {
-                        var row = $('<th></th>').addClass('cal').text(json.calendar[i]);
+                        var row = $('<th style="padding: 5px;"></th>').addClass('cal').text(json.calendar[i]);
                         table.append(row);
                     };
 

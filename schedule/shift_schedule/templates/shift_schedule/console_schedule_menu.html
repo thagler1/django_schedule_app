@@ -43,9 +43,10 @@
 
 
 
-            <input type="text" name="item" value="" placeholder="Enter Username" size="50" />
 
-            <input type="submit" value="Login" />
+
+            <input type="submit" value="Show Schedule" /><button id="hide">Hide Schedule</button>
+
 
 </form>
 <div id="container">
@@ -58,6 +59,10 @@ $('#selectionform').on('submit', function(event){
     console.log("form submitted!")  // sanity check
 
     fetch_schedule();
+});
+
+$("hide").click(function(){
+    $("container").empty();
 });
 </script>
 

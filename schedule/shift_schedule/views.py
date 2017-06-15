@@ -268,6 +268,7 @@ def supervisors_console(request):
     #PTO map
     pto_days = PTO_table.objects.all()
 
+    console_list = Console.objects.all()
     ptodata = {}
     #dlist = [[] for i in range(pto_days.count())]
     for day in pto_days:
@@ -298,8 +299,8 @@ def supervisors_console(request):
         'user_profile':userprofile,
         'pto_by_desk': pto_by_desk,
         'all_unapproved_pto': all_unapproved_pto,
-        'pto_days':ptodata
-
+        'pto_days':ptodata,
+        'console_list':console_list
 
     }
     return HttpResponse(template.render(context, request))
