@@ -102,3 +102,56 @@ function create_post() {
     });
 
 };
+
+
+function fetch_schedule() {
+    console.log("create post is working!") // sanity check
+    var formData = $("#selectionform").serializeArray()
+    jQuery('#container').empty();
+    console.log(formData)
+        $.ajax({
+            url: "/ajax_schedule", // the endpoint
+            type: "POST", // http method
+            data: formData, // data sent with the post request
+
+            // handle a successful response
+            success: function (json) {
+                console.log("success - next is json"); // another sanity check
+                console.log(json.calendar); // log the returned json to the console
+
+                for(desknum=0; desknum<json.desks.length; desknum++ ) {
+                    console.log(json.cal_rows[desknum])
+                    var table = $('<table class="table table-bordered"><caption>' + json.desks[desknum] + '</caption></table>').addClass('cal');
+                    var row = $('<th></th>').addClass('cal').text(json.desks[desknum]);
+                    table.append(row);
+                    for (i = 0; i < json.calendar.length; i++) {
+                        var row = $('<th></th>').addClass('cal').text(json.calendar[i]);
+                        table.append(row);
+                    };
+
+                    for (i = 0; i < json.cal_rows[desknum].length; i++) {
+                        var row = $('<tr><td></td></tr>').addClass('cal').text(json.cal_rows[desknum][i][0]);//name is added
+
+                        for (d = 0; d < json.calendar.length; d++) {
+                            row.append('<td>' + json.cal_rows[desknum][i][d + 1] + '</td>');
+                            table.append(row);
+
+                        };
+
+
+                    };
+
+
+                    $('#container').append(table);} ;           },
+
+
+
+
+
+            error:function(json){
+                console.log("somethings wrong")
+            },
+});
+};
+
+

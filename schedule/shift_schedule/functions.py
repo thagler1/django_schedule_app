@@ -218,6 +218,7 @@ def console_schedule(console, month, year = datetime.date.today().year):
     allshifts_console_schedule = []
 
     for controller in all_qualified_controllers:
+
         found_event = False
         temp_cal = []  # this is a temp calendar to move the dates through
         recurring_calendar = project_schedule(start_date,end_date+datetime.timedelta(days=1),controller[0]) # get controller specific event calendar

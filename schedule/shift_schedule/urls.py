@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^approved_pto_list', views.approved_pto),
     url(r'^logout/', views.user_logout, name='logout'),
     url(r'^twilio_response_2147270215', incoming.receive_response ),
+    url(r'^ajax_cal', views.console_schedule_menu),
+    url(r'^ajax_schedule', views.ajax_schedule),
 
 
 

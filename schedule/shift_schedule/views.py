@@ -434,3 +434,97 @@ def approved_pto(request):
     }
 
     return HttpResponse(template.render(context,request))
+
+
+def console_schedule_menu(request):
+    '''
+    add manage sooooon
+    :param request: 
+    :param month: 
+    :param console: 
+    :return: 
+    '''
+
+    console_list = Console.objects.all()
+
+    #calendar, allshifts_console_schedule, shifts, desks = console_schedule(console, month)
+    template = loader.get_template('shift_schedule/console_schedule_menu.html')
+
+
+    context = {
+        'console_list':console_list,
+
+    }
+    return HttpResponse(template.render(context,request))
+
+def ajax_schedule(request):
+    if request.method == 'POST':
+        data = request.POST
+        console = Console.objects.get(console_name=data['console'])
+        month = int(data['month'])
+        calendar, allshifts_console_schedule, shifts, desks = console_schedule(console, month)
+        rshift = [[shift.shift_id,""] for shift in shifts]
+        ascs = {}
+
+        #######
+        cal_rows ={}
+        for desknum, desk in enumerate(desks):
+            cal_rows[desknum] = []
+            for shift in shifts:
+                for controller in allshifts_console_schedule:
+                    cname = controller[0][0].full_name()
+                    new_controller_row = []
+                    if controller[0][0].shift == shift and controller[0][1].console_name == desk.console_name:
+                        new_controller_row.append(controller[0][0].full_name())
+
+                        for dcount, day in enumerate(calendar):
+                            #print(controller[dcount][2])
+                            if type(controller[dcount][2]) is str:
+                                new_controller_row.append("")
+                            else:
+                                val = ''
+                                try:
+                                    stype = controller[dcount][2].date_object.is_day
+
+                                except:
+                                    stype = controller[dcount][2].date_object.type
+
+                                overtime = controller[dcount][2].is_overtime()
+
+
+                                if stype is True and overtime is True:
+                                    val = 'DO'
+                                elif stype is True and overtime is False:
+                                    val = 'D'
+                                elif stype is False and overtime is True:
+                                    val = "NO"
+                                elif stype is False and overtime is False:
+                                    val = "N"
+
+                                try:
+                                    if cname != controller[dcount][2].controller.full_name():
+                                        val = ''
+                                except:
+                                    pass
+
+
+
+
+                                new_controller_row.append(val)
+                        cal_rows[desknum].append(new_controller_row)
+
+
+        #format dates
+        rcalendar = [day.strftime("%-m/%d") for day in calendar]
+        rdesks = [desk.console_name for desk in desks]
+        print(cal_rows)
+        context ={
+            'calendar':rcalendar,
+            'shifts': rshift,
+            'cal_rows':cal_rows,
+            'desks':rdesks,
+
+        }
+
+
+        return JsonResponse(context)
