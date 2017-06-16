@@ -17,8 +17,8 @@
 
 </head>
 <body>
-
-    <ul class="sidenav">
+<div style="position: fixed">
+    <ul class="sidenav" >
 
         {% if user_profile.profile_image %}
         <li><img src={{user_profile.profile_image.url}}></li>
@@ -45,6 +45,7 @@
 
   <li><a style="cursor: pointer" href="/logout">logout</a></li>
     </ul>
+</div>
 <scrip>
 
 
