@@ -39,7 +39,7 @@
         {% if user_profile.is_supervisor == False %}
   <li><a style="cursor: pointer" data-toggle="modal" data-target="#myModal">Reqeust PTO</a></li>
    <li><a class="noHover">PTO Availabe: {{user_profile.pto}}</a></li>
-   <li><a class="noHover">Overtime Offered: {{oto}}</a></li>
+   <li><a class="noHover">Overtime Scheduled: {{user_profile.oto}}</a></li>
         {% endif %}
 
 

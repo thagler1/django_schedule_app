@@ -75,6 +75,10 @@ class UserProfile(models.Model):
 
         return "%s %s" % (user_first_name, user_last_name)
 
+    def oto(self):
+        from .functions import OTO_calc
+        return OTO_calc(self,2017, approved=True)
+
     def __str__(self):
         return self.full_name()
 

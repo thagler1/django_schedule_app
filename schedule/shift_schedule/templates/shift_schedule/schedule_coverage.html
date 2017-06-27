@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <meta charset="UTF-8">
+    <title>Schedule {{pto_data.date_pto_taken|date:'m-d-y'}} {{pto_data.user}}</title>
 <head>
 
 
@@ -27,7 +28,7 @@
 
     <div class="row">
         <div class="col span2" style="text-align: left; width= 4em;">
-            <h2>{{pto_data.date_pto_taken|date:'M d'}} {{pto_data.shift_type|lower}} shift, for {{pto_data.user}}</h2>
+            <h2>{{pto_data.date_pto_taken|date:'m-d-y'}} {{pto_data.shift_type|lower}} shift, for {{pto_data.user}}</h2>
             <form action="/schedule_coverage/{{pto_id}}" method="post">
             {% csrf_token %}
             {{form.as_p}}
@@ -42,7 +43,8 @@
 <thead>
         <tr>
             <th>Controller</th>
-            <th>Year</th>
+            <th>PTO Balance(hours)</th>
+            <th>Overtime days Scheduled</th>
 
             </tr>
             </thead>
@@ -52,6 +54,7 @@
         <tr>
             <td>{{controller.0.0}}</td>
             <td>{{controller.0.0.pto}}</td>
+            <td>{{controller.0.0.oto}}</td>
         </tr>
 
         {% endfor %}

@@ -120,10 +120,16 @@ def user_console_schedules(user, users_oqs, calyear,calmonth):
     return ( user_calendar, desk_shift_name, shifts, consoles, cal_dates, daterange, request_range)
 
 
-def OTO_calc(userprofile, year):
+def OTO_calc(userprofile, year, approved=False):
+
     total =0
-    if PTO_table.objects.filter(coverage = userprofile,date_pto_taken__gte=datetime.date(year,1,1)).exists():
-        total = len(PTO_table.objects.filter(coverage = userprofile, date_pto_taken__gte=datetime.date(year,1,1)))
+    if approved:
+        if PTO_table.objects.filter(coverage=userprofile, supervisor_approval=True,date_pto_taken__gte=datetime.date(year, 1, 1)).exists():
+            total = len(PTO_table.objects.filter(coverage=userprofile,supervisor_approval=True, date_pto_taken__gte=datetime.date(year, 1, 1)))
+
+    else:
+        if PTO_table.objects.filter(coverage = userprofile,date_pto_taken__gte=datetime.date(year,1,1)).exists():
+            total = len(PTO_table.objects.filter(coverage = userprofile, date_pto_taken__gte=datetime.date(year,1,1)))
     return total
 
 def check_supervisor(userprofile):
