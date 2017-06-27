@@ -127,12 +127,22 @@ def OTO_calc(userprofile, year):
     return total
 
 def check_supervisor(userprofile):
+    '''
+    
+    :param userprofile: 
+    :return: boolean True if supervisor, false if not
+    '''
     if userprofile.is_supervisor:
         return True
     else:
         return False
 
 def get_model_fields(model):
+    '''
+    Used for import CSV
+    :param model: 
+    :return: 
+    '''
     return model._meta.get_fields()
 
 def importcsv(model):
@@ -155,10 +165,6 @@ def importcsv(model):
             new_model.save()
 
 
-def handle_uploaded_file(f):
-    with open('some/file/name.txt', 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
 
 def last_day_of_month(any_day):
     next_month = any_day.replace(day=28) + datetime.timedelta(days=4)  # this will never fail

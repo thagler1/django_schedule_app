@@ -399,6 +399,7 @@ def by_score_key(controller):
 
 
 def assign_coverage(pto_event):
+
     controller_return = []
     pto_dateItem = project_schedule(pto_event.date_pto_taken, pto_event.date_pto_taken, pto_event.user)
     console = pto_dateItem.console

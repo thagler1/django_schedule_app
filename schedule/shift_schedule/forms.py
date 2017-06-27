@@ -48,6 +48,9 @@ class PTOForm(ModelForm):
 
             #check to see if it is short notice pto
 
+            #see if controller has enough PTO
+            
+
             #if on PTO already, reject
             if PTO_table.objects.filter(user = self.userprofile, date_pto_taken = self.cleaned_data['date_pto_taken']).exists():
                 raise forms.ValidationError("You are already on PTO")
