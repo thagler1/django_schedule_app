@@ -31,7 +31,7 @@
 
 <div class="wrapper">
     <div class="row">
-        <div class="col span 5">
+        <div style="text-align: left" class="col span 5">
 <table class="table table-bordered" id="approved" cellspacing="0">
     <caption>Approved PTO</caption>
     <thead>
@@ -53,7 +53,7 @@
         <td style="text-align: left">{{event.console}}</td>
         <td style="text-align: left">{{event.user}}</td>
         <td style="text-align: left">{{event.coverage}}</td>
-        <td style="text-align: left">{{event.date_pto_taken|date:"M-d-Y"}}</td>
+        <td style="text-align: left">{{event.date_pto_taken|date:"m-d-Y"}}</td>
         <td style="text-align: left">{{event.type}}</td>
         <td style="text-align: left">{{event.notes|truncatechars:75}}</td>
         <td><a stlye ="text-align:left" href="/schedule_coverage/{{event.id}}" >Edit</a></td>
@@ -71,6 +71,8 @@
     <script>
     $(document).ready(function() {
     $('#approved').DataTable( {
+        "order": [[ 3, "desc" ]]
+
             } );
 } );
     </script>
