@@ -46,7 +46,7 @@
         <td style="text-align: left">{{event.console}}</td>
         <td style="text-align: left">{{event.user}}</td>
         <td style="text-align: left">{{event.coverage}}</td>
-        <td style="text-align: left">{{event.date_pto_taken|date:"M-d-Y"}}</td>
+        <td style="text-align: left">{{event.date_pto_taken|date:"m-d-Y"}}</td>
         <td style="text-align: left">{{event.type}}</td>
         <td style="text-align: left">{{event.notes}}</td>
         <td><a href="/schedule_coverage/{{event.id}}" >Schedule</a></td>
@@ -59,6 +59,7 @@
     <script>
     $(document).ready(function() {
     $('#example').DataTable( {
+        "order": [[ 3, "asc" ]]
             } );
 } );
     </script>
