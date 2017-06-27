@@ -16,14 +16,12 @@ def receive_response(request):
     userprofile =UserProfile.objects.get(phone=from_)
     next = ['Next', 'Nxt', 'next']
     if txtin['Body'] in next:
-        today = datetime.date.today() + datetime.timedelta(days=3)
+        today = datetime.date.today()
         found = False
         nextshift = project_schedule(today, today, userprofile)
         while type(nextshift) is list:
             today = today + datetime.timedelta(days=1)
             nextshift = project_schedule(today, today, userprofile)
-        print(nextshift)
-        print(nextshift.shift_start_time)
         send_txt_message(userprofile, nextshift.shift_start_time)
 
 
