@@ -82,7 +82,7 @@ def oq_controllers(console):
 class schedule_pto(ModelForm):
     class Meta:
         model = PTO_table
-        fields = ['supervisor_approval', 'notes', 'type', 'coverage']
+        fields = ['notes', 'type', 'coverage','supervisor_approval']
 
 
     def __init__(self, *args, **kwargs):
