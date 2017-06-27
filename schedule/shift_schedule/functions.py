@@ -279,7 +279,7 @@ def pto_calandar(userprofile, year):
 
 
     pto_events = PTO_table.objects.filter(date_pto_taken__year =year, user = userprofile)
-    overtime_events = PTO_table.objects.filter(date_pto_taken__year =year, coverage = userprofile)
+    overtime_events = PTO_table.objects.filter(date_pto_taken__year =year, coverage = userprofile, supervisor_approval=True)
     pto_calendar_data = {}
     for event in pto_events:
         pto_calendar_data.setdefault(event.date_pto_taken, 1)
