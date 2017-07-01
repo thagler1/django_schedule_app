@@ -105,6 +105,7 @@ def user_login(request):
 
 @login_required
 def user_page(request, calyear=None, calmonth=None):
+
     args = {}
     from .functions import pto_calandar
 
@@ -414,6 +415,7 @@ def console_schedule_menu(request):
 
 
 def ajax_schedule(request):
+    from .functions import serialize_instance
     if request.method == 'POST':
         data = request.POST
         console = Console.objects.get(console_name=data['console'])
@@ -424,6 +426,7 @@ def ajax_schedule(request):
 
         #######
         cal_rows = {}
+
         for desknum, desk in enumerate(desks):
             cal_rows[desknum] = []
             for shift in shifts:
@@ -438,9 +441,11 @@ def ajax_schedule(request):
                             if type(controller[dcount][2]) is str:
                                 new_controller_row.append("")
                             else:
+                                dateitem = serialize_instance(controller[dcount][2])
+                                print(dateitem)
                                 val = ''
                                 try:
-                                    stype = controller[dcount][2].date_object.is_day
+                                    stype = dateitem['date_object'].is_day
 
                                 except:
                                     stype = controller[dcount][2].date_object.type
@@ -455,7 +460,8 @@ def ajax_schedule(request):
                                     val = "NO"
                                 elif stype is False and overtime is False:
                                     val = "N"
-
+                                elif dateitem['dnd']:
+                                    val = 'DND'
                                 try:
                                     if cname != controller[dcount][2].controller.full_name():
                                         val = controller[dcount][2].pto.type
