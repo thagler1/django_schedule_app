@@ -233,6 +233,9 @@ class PTO_table(models.Model):
                             choices=pto_choices,
                             default=regularPTO)
     console = models.ForeignKey(Console, default=None, null=True)
+    cancelled = models.ForeignKey('Cancelled_PTO', default=None, null=True)
+    active = models.BooleanField(default=True)
+
 
 
     def __str__(self):
@@ -297,7 +300,19 @@ class OT_offer(models.Model):
     def __str__(self):
         return "%s %s"%(self.coverage_user,self.date_last_modified)
 
+class Cancelled_PTO(models.Model):
+    '''
+    Recrediting PTO hours to the user is going to be handled by the caller
+    '''
+    pto_event = models.ForeignKey(PTO_table)
+    user = models.ForeignKey(UserProfile)
+    cancelled_by = models.ForeignKey(UserProfile, related_name="cancelled_by")
+    date_request_made = models.DateTimeField(default=None, null=True)
+    date_of_pto = models.DateTimeField(default=None, null=True)
+    notes = models.TextField(max_length=300)
 
+    def __str__(self):
+        return "%s - %s cancelled by: %s"%(self.user, self.date_of_pto, self.cancelled_by.full_name())
 
 
 

@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^console_calendars', views.console_schedule_menu),
     url(r'^ajax_schedule', views.ajax_schedule),
     url(r'^ajax_user_pto_report', views.ajax_user_pto_table),
-
+    url(r'^cancel_pto', views.cancel_pto_by_controller),
 
 
 

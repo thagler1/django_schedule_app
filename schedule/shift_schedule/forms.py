@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
-from .models import PTO_table, UserProfile, Console, Console_oq
+from .models import PTO_table, UserProfile, Console, Console_oq, Cancelled_PTO
 from django.contrib.admin import widgets
 from .schedule_calculations import project_schedule
+import datetime
 
 
 
@@ -92,6 +93,17 @@ class schedule_pto(ModelForm):
         self.fields['coverage'].queryset = oq_controllers(console)
 
 class user_pto_form(forms.Form): #Note that it is not inheriting from forms.ModelForm
-    startdate = forms.DateTimeField()
-    enddate = forms.DateTimeField()
+    startdate = forms.DateTimeField(label='Start Date')
+    enddate = forms.DateTimeField(label='End Date')
 
+class Cancel_PTO_controller(ModelForm):
+    class Meta:
+        model = Cancelled_PTO
+        fields = ['pto_event', 'notes']
+
+    def __init__(self, *args, **kwargs):
+        #console = kwargs.pop('instance')
+        userprofile = kwargs['instance']
+
+        super(Cancel_PTO_controller, self).__init__(*args, **kwargs)
+        self.fields['pto_event'].queryset = PTO_table.objects.filter(user=userprofile, date_pto_taken__gt=datetime.datetime.today())

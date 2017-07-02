@@ -1,6 +1,6 @@
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
-from .models import Shift, UserProfile, Console, PTO_table, Console_Map
+from .models import Shift, UserProfile, Console, PTO_table, Console_Map, Cancelled_PTO
 import datetime
 from .forms import UserForm, PTOForm, UserprofileForm, ConsoleForm, schedule_pto, user_pto_form
 from .schedule_calculations import project_schedule
@@ -501,3 +501,27 @@ def ajax_user_pto_table(request):
             return JsonResponse(pto_dict)
         else:
             print(form.errors)
+def cancel_pto_by_controller(request):
+    from .forms import Cancel_PTO_controller
+    user = request.user
+    user_object = User.objects.get(id=user.id)
+    userprofile = UserProfile.objects.get(user=user_object)
+    if request.method == 'POST':
+        cancel_form = Cancel_PTO_controller(request.POST, instance= userprofile)
+        if cancel_form.is_valid():
+
+            data = cancel_form.cleaned_data
+
+            data['user'] = userprofile
+            data['cancelled_by'] = userprofile
+            data['date_request_made'] = datetime.datetime.today()
+            data['date_of_pto'] = data['pto_event'].date_pto_taken
+            print(data)
+            cancel_record = Cancelled_PTO(**data)
+            cancel_record.save()
+        return HttpResponseRedirect('/shift_supervisor_console')
+    else:
+        # No context variables to pass to the template system, hence the
+        # blank dictionary object...
+        form = Cancel_PTO_controller(instance=userprofile)
+        return render(request, 'shift_schedule/controller_cancel_pto.html', {'form':form})
