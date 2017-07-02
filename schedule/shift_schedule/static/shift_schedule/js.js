@@ -168,11 +168,15 @@ function controller_pto_report() {
                 console.log(json); // another sanity check
 
                 var table = $('<table class="table table-bordered table-striped"><caption>PTO Report</caption></table>');
-                var row = $('<th>Date</th><th>Date Requested</th><th>Assigned Coverage</th><th>Cancel</th>');
+                var row = $('<th>Date</th><th>Date Requested</th><th>Assigned Coverage</th><th>Type</th><th>Approved</th><th>Cancel</th>');
                 table.append(row);
                 console.log(json["report"][0]["date_pto_taken"])
                 for(ptoevent=0; ptoevent<json['report'].length; ptoevent++ ) {
-                    var row = $('<tr><td>'+json['report'][ptoevent]["date_pto_taken"]+'</td><td>'+json["report"][ptoevent]["date_requested"]+'</td><td>'+json["report"][ptoevent]["coverage_id"]+'</td><td>Cancel</td></tr>');
+                    var row = $('<tr><td>'+json['report'][ptoevent]["date_pto_taken"]+'</td><td>'+json["report"][ptoevent]["date_requested"]+'</td><td>'
+                        +json["report"][ptoevent]["coverage_id"]+'</td>' +
+                        '<td>'+json["report"][ptoevent]["type"]+'</td>' +
+                        '<td>'+json["report"][ptoevent]["supervisor_approval"]+'</td>' +
+                        '<td>Cancel</td></tr>');
                     table.append(row);}
                     ;
 
