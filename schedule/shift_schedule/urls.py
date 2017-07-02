@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^twilio_response_2147270215', incoming.receive_response ),
     url(r'^console_calendars', views.console_schedule_menu),
     url(r'^ajax_schedule', views.ajax_schedule),
+    url(r'^ajax_user_pto_report', views.ajax_user_pto_table),
 
 
 

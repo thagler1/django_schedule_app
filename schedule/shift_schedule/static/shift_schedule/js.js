@@ -154,4 +154,38 @@ function fetch_schedule() {
 });
 };
 
+function controller_pto_report() {
+    console.log("create post is working!") // sanity check
+    var formData = $("#pto_report").serializeArray()
+    jQuery('#container').empty();
+        $.ajax({
+            url: "/ajax_user_pto_report", // the endpoint
+            type: "POST", // http method
+            data: formData, // data sent with the post request
+
+            // handle a successful response
+            success: function (json) {
+                console.log(json); // another sanity check
+
+                var table = $('<table class="table table-bordered table-striped"><caption>PTO Report</caption></table>');
+                var row = $('<th>Date</th><th>Date Requested</th><th>Assigned Coverage</th><th>Cancel</th>');
+                table.append(row);
+                console.log(json["report"][0]["date_pto_taken"])
+                for(ptoevent=0; ptoevent<json['report'].length; ptoevent++ ) {
+                    var row = $('<tr><td>'+json['report'][ptoevent]["date_pto_taken"]+'</td><td>'+json["report"][ptoevent]["date_requested"]+'</td><td>'+json["report"][ptoevent]["coverage_id"]+'</td><td>Cancel</td></tr>');
+                    table.append(row);}
+                    ;
+
+                $('#container').append(table);
+                },
+
+
+
+
+
+            error:function(json){
+                console.log("somethings wrong")
+            },
+});
+};
 

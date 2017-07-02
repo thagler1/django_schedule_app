@@ -2,7 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from .models import Shift, UserProfile, Console, PTO_table, Console_Map
 import datetime
-from .forms import UserForm, PTOForm, UserprofileForm, ConsoleForm, schedule_pto
+from .forms import UserForm, PTOForm, UserprofileForm, ConsoleForm, schedule_pto, user_pto_form
 from .schedule_calculations import project_schedule
 from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, console_schedule, \
     controller_pto_request
@@ -105,13 +105,12 @@ def user_login(request):
 
 @login_required
 def user_page(request, calyear=None, calmonth=None):
-
     args = {}
     from .functions import pto_calandar
-
     user = request.user
     user_object = User.objects.get(id=user.id)
     userprofile = UserProfile.objects.get(user=user_object)
+
     oto = OTO_calc(userprofile, 2017)
     # scroll through oq's and and get a list of consoles the user is oq'd on
     users_oqs = user_oqs(user)
@@ -143,7 +142,7 @@ def user_page(request, calyear=None, calmonth=None):
     else:
         form = PTOForm()
         args['form'] = form
-
+    ptoreport = user_pto_form()
     context = {
         'consoles': consoles,
         'daterange': daterange,
@@ -158,7 +157,9 @@ def user_page(request, calyear=None, calmonth=None):
         'pto_days': pto_events,
         'pending_pto': pending_pto,
         'approved_pto': approved_pto,
-        'form': form
+        'form': form,
+        'ptoreport':ptoreport
+
     }
 
     template = loader.get_template('shift_schedule/user_page.html')
@@ -485,3 +486,18 @@ def ajax_schedule(request):
         }
 
         return JsonResponse(context)
+def ajax_user_pto_table(request):
+    from.functions import serialize_instance
+    from .reportLib.userReports import user_pto_requests
+    from .forms import user_pto_form
+    user = request.user
+    user_object = User.objects.get(id=user.id)
+    userprofile = UserProfile.objects.get(user=user_object)
+    if request.method == 'POST':
+        form=user_pto_form(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            pto_dict = user_pto_requests(userprofile,start=data['startdate'], end=data['enddate'])
+            return JsonResponse(pto_dict)
+        else:
+            print(form.errors)

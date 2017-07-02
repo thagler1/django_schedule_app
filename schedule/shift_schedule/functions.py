@@ -310,6 +310,8 @@ def get_user_profile(request):
 def serialize_instance(obj):
     d= {'__classname__':type(obj).__name__}
     d.update(vars(obj))
+    if '_state' in d:
+        del d['_state']
     return d
 
 

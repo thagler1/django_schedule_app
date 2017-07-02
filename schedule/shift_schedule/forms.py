@@ -91,5 +91,7 @@ class schedule_pto(ModelForm):
         super(schedule_pto, self).__init__(*args, **kwargs)
         self.fields['coverage'].queryset = oq_controllers(console)
 
-
+class user_pto_form(forms.Form): #Note that it is not inheriting from forms.ModelForm
+    startdate = forms.DateTimeField()
+    enddate = forms.DateTimeField()
 
