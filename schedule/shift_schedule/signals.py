@@ -27,15 +27,6 @@ def initialize_desk_schedule(sender, instance, created, **kwargs):
 #@receiver(pre_save, sender = PTO_table)
 
 
-@receiver(post_save, sender = User)
-def create_new_user_profife(sender, instance, created, **kwargs):
-    '''
-    creates a UserProfile when a new user is added. Extends Djangos standard user class
-    '''
-    user = instance
-    if created:
-        user_profile = UserProfile(user = user)
-        user_profile.save()
 
 @receiver(pre_save, sender = PTO_table)
 def assign_console_to_pto(sender, instance, **kwargs):

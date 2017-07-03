@@ -314,6 +314,9 @@ def serialize_instance(obj):
         del d['_state']
     return d
 
-
-
+def check_username_availability(username):
+    if User.objects.filter(username=username).exist():
+        return False
+    else:
+        return True
 

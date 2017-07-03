@@ -16,46 +16,33 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def create_user(request):
-    # template = loader.get_template("shift_schedule/adduser.html")
-    if request.method == "POST":
+    if request.method == 'POST':
         form = UserForm(request.POST)
-        uform = UserprofileForm(request.POST, request.FILES)
-        uform.save(commit=False)
+        user_fields = ('username first_name last_name email').split()
+        userprofile_fields = ('manager shift hire_date phone').split()
 
         if form.is_valid():
-            new_user = User.objects.create_user(**form.cleaned_data)
-            userobject = User.objects.get(username=request.POST['username'])
-            userprofile = UserProfile.objects.get(user=userobject)
-            try:
-                userprofile.pto = request.POST['pto']
-            except:
-                pass
+            print(form.cleaned_data)
+            new_user = {field:value for field,value in form.cleaned_data.items() if field in user_fields}
+            new_profile = {field:value for field,value in form.cleaned_data.items() if field in userprofile_fields}
 
-            try:
-                userprofile.profile_image = request.FILES['profile_image']
-            except:
-                pass
-            try:
-                userprofile.manager = UserProfile.objects.get(id=request.POST['manager'])
-            except:
-                pass
-            try:
-                userprofile.shift = Shift.objects.get(id=request.POST['shift'])
-            except:
-                pass
-            try:
-                userprofile.phone = request.POST['phone']
-            except:
-                pass
-            userprofile.save()
-            # redirect, or however you want to get to the main view
-            return HttpResponseRedirect('login.html')
+            #set default password of firstnamelastname
+            password=("%s%s"%(new_user['first_name'],new_user['last_name']))
+            userobj = User(**new_user)
+            userobj.set_password(password)
+            userobj.save()
+
+            #add userobj to userprofile
+            new_profile['user'] = userobj
+            profileobj = UserProfile(**new_profile)
+            profileobj.save()
+            return HttpResponseRedirect("/shift_supervisor_console.html")
+        else:
+            print(form.errors)
+
     else:
         form = UserForm()
-        uform = UserprofileForm()
-
-    return render(request, 'shift_schedule/adduser.html', {'form': form, 'uform': uform})
-
+    return render(request, 'shift_schedule/adduser.html', {'form': form,})
 
 def user_login(request):
     # If the request is a HTTP POST, try to pull out the relevant information.
@@ -516,9 +503,13 @@ def cancel_pto_by_controller(request):
             data['cancelled_by'] = userprofile
             data['date_request_made'] = datetime.datetime.today()
             data['date_of_pto'] = data['pto_event'].date_pto_taken
-            print(data)
+            #edit PTO Record
+            pto_event = data['pto_event']
+            pto_event.active = False
             cancel_record = Cancelled_PTO(**data)
             cancel_record.save()
+            pto_event.cancelled = cancel_record
+            pto_event.save()
         return HttpResponseRedirect('/shift_supervisor_console')
     else:
         # No context variables to pass to the template system, hence the

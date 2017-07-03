@@ -1,23 +1,48 @@
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
-from .models import PTO_table, UserProfile, Console, Console_oq, Cancelled_PTO
+from .models import PTO_table, UserProfile, Console, Console_oq, Cancelled_PTO, Shift
 from django.contrib.admin import widgets
 from .schedule_calculations import project_schedule
 import datetime
+from django.contrib.auth.models import User
 
 
 
 class DateInput(forms.DateInput):
     input_type = 'datepicker'
 
-class UserForm(ModelForm):
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password', 'first_name', 'last_name']
-        widgets = {
-            'password':forms.PasswordInput(attrs={'placeholder': ''}),
-        }
+class UserForm(forms.Form):
+    managers = UserProfile.objects.filter(is_manager= True)
+    manager_choices  = [(profile.id,profile.full_name()) for profile in managers ]
+
+    shifts = Shift.objects.all()
+    shift_choices = [(shift.id, shift.shift_id) for shift in shifts]
+
+    username = forms.CharField(label="Username",widget=forms.TextInput(attrs={'placeholder':"Enter Username", 'class':'form-control'}))
+    first_name =forms.CharField(label="First Name",widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
+    last_name = forms.CharField(label="Last Name",widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
+    manager = forms.ChoiceField(label="Manager", choices=manager_choices )
+    shift = forms.ChoiceField(label="Select Shift", choices=shift_choices)
+    hire_date = forms.DateField(label="Date Hired")
+    email = forms.EmailField(label="Last Name",widget=forms.TextInput(attrs={'placeholder': 'email@gmail.com'}))
+    phone = forms.CharField(label="Phone Number")
+    def clean_username(self):
+        if User.objects.filter(username=self.cleaned_data['username']).exists():
+            raise forms.ValidationError("%s is unavailable"%(self.cleaned_data['username']))
+        return self.cleaned_data['username']
+
+    def clean_hire_date(self):
+        if self.cleaned_data['hire_date'] > datetime.date.today():
+            raise forms.ValidationError('Hire date can not be in the future')
+        return self.cleaned_data['hire_date']
+
+    def clean_manager(self):
+        return UserProfile.objects.get(id=self.cleaned_data['manager'])
+
+    def clean_shift(self):
+        return Shift.objects.get(id=self.cleaned_data['shift'])
+
 
 class PTOForm(ModelForm):
     class Meta:
@@ -32,7 +57,7 @@ class PTOForm(ModelForm):
 
 
     def clean_type(self):
-        # test the rate limit by passing in the cached user object
+
         scheduled = False
         #Check to see if controller is scheduled that day
 
@@ -66,10 +91,8 @@ class PTOForm(ModelForm):
 class UserprofileForm(ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['hire_date','pto', 'manager', 'shift', 'phone', 'profile_image']
-        widgets = {
-            'hire_date':forms.DateInput(attrs={'class':'datepicker'}),
-        }
+        fields = ['pto', 'manager', 'shift', 'phone', 'profile_image']
+
 
 class ConsoleForm(ModelForm):
     class Meta:
