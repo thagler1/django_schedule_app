@@ -38,7 +38,7 @@
 
     <div class="row">
         <div class="col span4 container" style="text-align: left" >
-        <form id="login_form" method="post" name="userform" class="userform">
+        <form id="login_form" method="post" name="userform" class="userform" enctype="multipart/form-data" >
             {% csrf_token %}
 {{form.as_p}}
 
