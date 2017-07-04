@@ -17,9 +17,9 @@ def user_pto_requests(userProfile, start=None, end=None):
             end = datetime.datetime.today()
         else:
             pass
-        pto_events = PTO_table.objects.filter(date_pto_taken__range = [start, end],user=userProfile, )
+        pto_events = PTO_table.objects.filter(active = True, date_pto_taken__range = [start, end],user=userProfile, )
     else:
-        pto_events = PTO_table.objects.filter(user=userProfile)
+        pto_events = PTO_table.objects.filter(user=userProfile, active = True)
 
     rdict =  {'report':[serialize_instance(pto_event) for pto_event in pto_events]}
 

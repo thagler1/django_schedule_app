@@ -488,11 +488,12 @@ def ajax_user_pto_table(request):
             return JsonResponse(pto_dict)
         else:
             print(form.errors)
-def cancel_pto_by_controller(request):
+def cancel_pto_by_controller(request, pto_id):
     from .forms import Cancel_PTO_controller
     user = request.user
     user_object = User.objects.get(id=user.id)
     userprofile = UserProfile.objects.get(user=user_object)
+
     if request.method == 'POST':
         cancel_form = Cancel_PTO_controller(request.POST, instance= userprofile)
         if cancel_form.is_valid():
@@ -514,5 +515,37 @@ def cancel_pto_by_controller(request):
     else:
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
-        form = Cancel_PTO_controller(instance=userprofile)
+        form = Cancel_PTO_controller(instance = userprofile)
         return render(request, 'shift_schedule/controller_cancel_pto.html', {'form':form})
+
+def ajax_pto_cancel(request):
+    from.functions import serialize_instance
+    from .reportLib.userReports import user_pto_requests
+    from .forms import Cancelled_PTO
+    user = request.user
+    user_object = User.objects.get(id=user.id)
+    userprofile = UserProfile.objects.get(user=user_object)
+
+
+    if request.method == 'POST':
+        print(request.POST)
+        pto_event = PTO_table.objects.get(id= request.POST['pto_id'])
+        print("ajax received")
+        data = {}
+        data['pto_event'] = pto_event
+        data['user'] = userprofile
+        data['cancelled_by'] = userprofile
+        data['date_request_made'] = datetime.datetime.today()
+        data['date_of_pto'] = data['pto_event'].date_pto_taken
+        #edit PTO Record
+        pto_event = data['pto_event']
+        pto_event.active = False
+        cancel_record = Cancelled_PTO(**data)
+        cancel_record.save()
+        pto_event.cancelled = cancel_record
+        pto_event.save()
+        rdict = {'success':'success'}
+        print("did it!")
+
+        return JsonResponse(rdict)
+

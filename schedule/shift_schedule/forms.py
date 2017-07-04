@@ -129,4 +129,5 @@ class Cancel_PTO_controller(ModelForm):
         userprofile = kwargs['instance']
 
         super(Cancel_PTO_controller, self).__init__(*args, **kwargs)
+
         self.fields['pto_event'].queryset = PTO_table.objects.filter(user=userprofile, date_pto_taken__gt=datetime.datetime.today())

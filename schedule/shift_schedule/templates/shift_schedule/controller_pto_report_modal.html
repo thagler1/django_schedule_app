@@ -17,7 +17,7 @@
 
 </head>
 <body>
-<form id ="pto_report" action="/ajax_user_pto_report" method="post">
+<form id ="pto_report" action="/" method="post">
    {% csrf_token %}
     {{ptoreport.as_p}}
 
@@ -36,16 +36,32 @@
         autoclose: true,
       };
       date_input.datepicker(options);
-    })
+    });
 
     $('#pto_report').on('submit', function(event){
+
     event.preventDefault();
     console.log("form submitted!")  // sanity check
     controller_pto_report();
 });
 
-</script>
 
+
+</script>
+<script>
+
+    $(document).on('click','.cancelform' , function(event){
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        var pto_id = event.target.id;
+        console.log("registered click");
+        cancel_pto(pto_id)
+
+
+
+});
+</script>
 
 </form>
 </body>

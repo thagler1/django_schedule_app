@@ -154,9 +154,31 @@ function fetch_schedule() {
 });
 };
 
+
+
 function controller_pto_report() {
+
+    // This function gets cookie with a given name
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
     console.log("create post is working!") // sanity check
     var formData = $("#pto_report").serializeArray()
+
     jQuery('#container').empty();
         $.ajax({
             url: "/ajax_user_pto_report", // the endpoint
@@ -172,11 +194,16 @@ function controller_pto_report() {
                 table.append(row);
                 console.log(json["report"][0]["date_pto_taken"])
                 for(ptoevent=0; ptoevent<json['report'].length; ptoevent++ ) {
-                    var row = $('<tr><td>'+json['report'][ptoevent]["date_pto_taken"]+'</td><td>'+json["report"][ptoevent]["date_requested"]+'</td><td>'
-                        +json["report"][ptoevent]["coverage_id"]+'</td>' +
-                        '<td>'+json["report"][ptoevent]["type"]+'</td>' +
-                        '<td>'+json["report"][ptoevent]["supervisor_approval"]+'</td>' +
-                        '<td>Cancel</td></tr>');
+                    var date_pto_taken = json['report'][ptoevent]["date_pto_taken"]
+                    var date_requested = json["report"][ptoevent]["date_requested"]
+                    var coverage = json["report"][ptoevent]["coverage_id"]
+                    var type = json["report"][ptoevent]["type"]
+                    var supervisor_approval = json["report"][ptoevent]["supervisor_approval"]
+                    var pto_id = json['report'][ptoevent]["id"]
+                    var row = $('<tr><td>'+date_pto_taken+'</td><td>'+date_requested+'</td><td>'+
+                        coverage+'</td>' +
+                        '<td>'+type+'</td><td>'+supervisor_approval+'</td>' +
+                        '<td><div><form id ="data'+pto_id+'"action="" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="' + csrftoken +'"><input type="hidden" name ="pto_id" value="'+pto_id+'"><input id ="'+pto_id+'" class="cancelform" type="submit" value="Cancel"></form></div></td></tr>');
                     table.append(row);}
                     ;
 
@@ -193,3 +220,22 @@ function controller_pto_report() {
 });
 };
 
+function cancel_pto(pto_id) {
+    console.log("Entering cancel PTO") // sanity check
+    var formData = $('#data'+pto_id+'').serializeArray()
+    jQuery('#container').empty();
+    console.log(formData)
+        $.ajax({
+            url: "/ajax_cancel_pto", // the endpoint
+            type: "POST", // http method
+            data: formData, // data sent with the post request
+
+            // handle a successful response
+            success: controller_pto_report()
+               ,
+
+            error:function(json){
+                console.log("somethings wrong")
+            },
+});
+};
