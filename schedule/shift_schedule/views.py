@@ -5,7 +5,7 @@ import datetime
 from .forms import UserForm, PTOForm, UserprofileForm, ConsoleForm, schedule_pto, user_pto_form
 from .schedule_calculations import project_schedule
 from .functions import user_oqs, user_console_schedules, OTO_calc, check_supervisor, console_schedule, \
-    controller_pto_request
+    controller_pto_request, get_user_profile
 from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -16,10 +16,11 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def create_user(request):
+    userprofile = get_user_profile(request)
     if request.method == 'POST':
         form = UserForm(request.POST)
         user_fields = ('username first_name last_name email').split()
-        userprofile_fields = ('manager shift hire_date phone').split()
+        userprofile_fields = ('manager shift hire_date phone profile_image').split()
 
         if form.is_valid():
             print(form.cleaned_data)
@@ -42,7 +43,7 @@ def create_user(request):
 
     else:
         form = UserForm()
-    return render(request, 'shift_schedule/adduser.html', {'form': form,})
+    return render(request, 'shift_schedule/adduser.html', {'form': form, 'userprofile':userprofile})
 
 def user_login(request):
     # If the request is a HTTP POST, try to pull out the relevant information.
@@ -212,8 +213,8 @@ def supervisors_console(request):
     user = request.user
     user_object = User.objects.get(id=user.id)
     userprofile = UserProfile.objects.get(user=user_object)
-    all_unapproved_pto = PTO_table.objects.filter(supervisor_approval=False)
-    pto_by_desk = {pto.console: PTO_table.objects.filter(supervisor_approval=False, console=pto.console).count() for pto
+    all_unapproved_pto = PTO_table.objects.filter(supervisor_approval=False, active = True)
+    pto_by_desk = {pto.console: PTO_table.objects.filter(supervisor_approval=False, console=pto.console, active=True).count() for pto
                    in all_unapproved_pto}
 
     template = loader.get_template('shift_schedule/shift_supervisor_console.html')
@@ -251,9 +252,8 @@ def supervisors_console(request):
         ptodata[day.date_pto_taken]['count'] += 1
 
     ############################
-    # pto repot
-    record = namedtuple('Record', 'controller pto'.split())
-    pto_events = PTO_table.objects.all()
+    # pto report
+    pto_events = PTO_table.objects.filter(active=True)
     pto_records = {}
 
     for item in pto_events:
@@ -519,7 +519,8 @@ def cancel_pto_by_controller(request, pto_id):
         return render(request, 'shift_schedule/controller_cancel_pto.html', {'form':form})
 
 def ajax_pto_cancel(request):
-    from.functions import serialize_instance
+    import time
+    from.functions import recredit_pto
     from .reportLib.userReports import user_pto_requests
     from .forms import Cancelled_PTO
     user = request.user
@@ -528,9 +529,7 @@ def ajax_pto_cancel(request):
 
 
     if request.method == 'POST':
-        print(request.POST)
         pto_event = PTO_table.objects.get(id= request.POST['pto_id'])
-        print("ajax received")
         data = {}
         data['pto_event'] = pto_event
         data['user'] = userprofile
@@ -544,8 +543,10 @@ def ajax_pto_cancel(request):
         cancel_record.save()
         pto_event.cancelled = cancel_record
         pto_event.save()
+        recredit_pto(pto_event)
+
         rdict = {'success':'success'}
-        print("did it!")
+
 
         return JsonResponse(rdict)
 

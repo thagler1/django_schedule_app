@@ -124,12 +124,12 @@ def OTO_calc(userprofile, year, approved=False):
 
     total =0
     if approved:
-        if PTO_table.objects.filter(coverage=userprofile, supervisor_approval=True,date_pto_taken__gte=datetime.date(year, 1, 1)).exists():
-            total = len(PTO_table.objects.filter(coverage=userprofile,supervisor_approval=True, date_pto_taken__gte=datetime.date(year, 1, 1)))
+        if PTO_table.objects.filter(active=True, coverage=userprofile, supervisor_approval=True,date_pto_taken__gte=datetime.date(year, 1, 1)).exists():
+            total = len(PTO_table.objects.filter(active=True,coverage=userprofile,supervisor_approval=True, date_pto_taken__gte=datetime.date(year, 1, 1)))
 
     else:
-        if PTO_table.objects.filter(coverage = userprofile,date_pto_taken__gte=datetime.date(year,1,1)).exists():
-            total = len(PTO_table.objects.filter(coverage = userprofile, date_pto_taken__gte=datetime.date(year,1,1)))
+        if PTO_table.objects.filter(active = True,coverage = userprofile,date_pto_taken__gte=datetime.date(year,1,1)).exists():
+            total = len(PTO_table.objects.filter(active=True, coverage = userprofile, date_pto_taken__gte=datetime.date(year,1,1)))
     return total
 
 def check_supervisor(userprofile):
@@ -319,4 +319,14 @@ def check_username_availability(username):
         return False
     else:
         return True
+
+def recredit_pto(pto_event):
+    noncredit_events = ("DND J STD LTP").split()
+    if pto_event.type in noncredit_events:
+        pass
+    else:
+        userprofile = pto_event.user
+        userprofile.pto +=12
+        userprofile.save()
+    return 0
 

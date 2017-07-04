@@ -178,8 +178,8 @@ function controller_pto_report() {
 
     console.log("create post is working!") // sanity check
     var formData = $("#pto_report").serializeArray()
-
     jQuery('#container').empty();
+
         $.ajax({
             url: "/ajax_user_pto_report", // the endpoint
             type: "POST", // http method
@@ -187,10 +187,11 @@ function controller_pto_report() {
 
             // handle a successful response
             success: function (json) {
+
                 console.log(json); // another sanity check
 
                 var table = $('<table class="table table-bordered table-striped"><caption>PTO Report</caption></table>');
-                var row = $('<th>Date</th><th>Date Requested</th><th>Assigned Coverage</th><th>Type</th><th>Approved</th><th>Cancel</th>');
+                var row = $('<th>Date</th><th>Date Requested</th><th>Assigned Coverage</th><th>Type</th><th>Approved</th><th>Remove</th>');
                 table.append(row);
                 console.log(json["report"][0]["date_pto_taken"])
                 for(ptoevent=0; ptoevent<json['report'].length; ptoevent++ ) {
@@ -203,7 +204,7 @@ function controller_pto_report() {
                     var row = $('<tr><td>'+date_pto_taken+'</td><td>'+date_requested+'</td><td>'+
                         coverage+'</td>' +
                         '<td>'+type+'</td><td>'+supervisor_approval+'</td>' +
-                        '<td><div><form id ="data'+pto_id+'"action="" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="' + csrftoken +'"><input type="hidden" name ="pto_id" value="'+pto_id+'"><input id ="'+pto_id+'" class="cancelform" type="submit" value="Cancel"></form></div></td></tr>');
+                        '<td><div><form id ="data'+pto_id+'"action="" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="' + csrftoken +'"><input type="hidden" name ="pto_id" value="'+pto_id+'"><input id ="'+pto_id+'" class="cancelform" type="submit" value="Remove"></form></div></td></tr>');
                     table.append(row);}
                     ;
 
@@ -223,7 +224,6 @@ function controller_pto_report() {
 function cancel_pto(pto_id) {
     console.log("Entering cancel PTO") // sanity check
     var formData = $('#data'+pto_id+'').serializeArray()
-    jQuery('#container').empty();
     console.log(formData)
         $.ajax({
             url: "/ajax_cancel_pto", // the endpoint

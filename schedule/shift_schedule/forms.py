@@ -27,6 +27,7 @@ class UserForm(forms.Form):
     hire_date = forms.DateField(label="Date Hired")
     email = forms.EmailField(label="Last Name",widget=forms.TextInput(attrs={'placeholder': 'email@gmail.com'}))
     phone = forms.CharField(label="Phone Number")
+    profile_image = forms.FileField(label="Profile Picture")
     def clean_username(self):
         if User.objects.filter(username=self.cleaned_data['username']).exists():
             raise forms.ValidationError("%s is unavailable"%(self.cleaned_data['username']))
@@ -78,7 +79,7 @@ class PTOForm(ModelForm):
             
 
             #if on PTO already, reject
-            if PTO_table.objects.filter(user = self.userprofile, date_pto_taken = self.cleaned_data['date_pto_taken']).exists():
+            if PTO_table.objects.filter(user = self.userprofile, date_pto_taken = self.cleaned_data['date_pto_taken'], active=True).exists():
                 raise forms.ValidationError("You are already on PTO")
 
         if scheduled is False:
@@ -116,8 +117,10 @@ class schedule_pto(ModelForm):
         self.fields['coverage'].queryset = oq_controllers(console)
 
 class user_pto_form(forms.Form): #Note that it is not inheriting from forms.ModelForm
-    startdate = forms.DateTimeField(label='Start Date')
-    enddate = forms.DateTimeField(label='End Date')
+    today = datetime.date.today()
+    end = today + datetime.timedelta(days=90)
+    startdate = forms.DateField(label='Start Date', initial=today)
+    enddate = forms.DateField(label='End Date', initial=end)
 
 class Cancel_PTO_controller(ModelForm):
     class Meta:
