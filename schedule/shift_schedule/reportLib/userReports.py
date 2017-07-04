@@ -24,6 +24,9 @@ def user_pto_requests(userProfile, start=None, end=None):
     rdict =  {'report':[serialize_instance(pto_event) for pto_event in pto_events]}
 
     for event in rdict['report']:
+        '''
+        adds the name of the covering controller
+        '''
         id = event['coverage_id']
         if UserProfile.objects.filter(id=id).exists():
             event['coverage_id'] = UserProfile.objects.get(id=id).full_name()

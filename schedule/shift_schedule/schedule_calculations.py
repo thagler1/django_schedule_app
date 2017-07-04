@@ -105,8 +105,8 @@ class DateItem:
         :return: binarry
         '''
 
-        if PTO_table.objects.filter(date_pto_taken=self.date, user= self.original_controller).exists():
-            pto_return = PTO_table.objects.filter(date_pto_taken=self.date, user= self.original_controller)
+        if PTO_table.objects.filter(date_pto_taken=self.date, user= self.original_controller, active=True).exists():
+            pto_return = PTO_table.objects.filter(date_pto_taken=self.date, user= self.original_controller, active=True)
             for pto_event in pto_return:
                 if pto_event.type != "DND":
                     if pto_event.supervisor_approval is True and pto_event.manager_approval is True:
@@ -373,7 +373,7 @@ def project_schedule(start_date, end_date, userprofile):
                     event_calendar.append(new_event)
             #/todo check for non repeating events
 
-        if PTO_table.objects.filter(date_pto_taken=day, coverage=userprofile).exists():
+        if PTO_table.objects.filter(date_pto_taken=day, coverage=userprofile, active=True).exists():
             try:
                 # for day search for pto coverage. if schedule, create a dateItem with the control assigned to it
                 coverage_event = PTO_table.objects.get(date_pto_taken=day, coverage=userprofile, supervisor_approval=True)
@@ -383,8 +383,8 @@ def project_schedule(start_date, end_date, userprofile):
                 event_calendar.append(shift_object)
             except:
                 pass
-        if PTO_table.objects.filter(date_pto_taken=day, user=userprofile, type='DND').exists():
-            dnd = PTO_table.objects.get(date_pto_taken=day, user=userprofile, type='DND')
+        if PTO_table.objects.filter(date_pto_taken=day, user=userprofile, type='DND', active=True).exists():
+            dnd = PTO_table.objects.get(date_pto_taken=day, user=userprofile, type='DND', active=True)
             new_event = DateItem(dnd, userprofile,day,dnd=True)
             event_calendar.append(new_event)
 
