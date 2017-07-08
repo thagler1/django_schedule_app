@@ -1,0 +1,5 @@
+schedule/settings_secret.py
+*.pyc
+*.sock
+/schedule/shift_schedule/migrations/*
+
