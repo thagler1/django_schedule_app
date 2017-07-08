@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import login_required
 def create_user(request):
     userprofile = get_user_profile(request)
     if request.method == 'POST':
-        form = UserForm(request.POST)
+        form = UserForm(request.POST, request.FILES)
         user_fields = ('username first_name last_name email').split()
         userprofile_fields = ('manager shift hire_date phone profile_image').split()
 
